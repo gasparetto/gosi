@@ -27,6 +27,11 @@ import "log"
 //   D7 D6 D5 D4 D3 D2 D1 D0
 //   S  Z  0  AC 0  P  1  CY
 
+func execute(fp func() int) int {
+
+	return fp()
+}
+
 // ********** Data Transfer Group **********
 // This group of instructions transfers data to and from registers and memory.
 // Condition flags are not affected by any instruction in this group.
@@ -458,58 +463,51 @@ func opMOV_M_A() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: none
 
 func opMVI_B() int {
-	r := memRead(regs.PC+1)
+	r := fetch()
 	dasmOpRegVal("MVI", "B", r)
 	regs.B = r
-	regs.PC++
 	return 2
 }
 
 func opMVI_C() int {
-	r := memRead(regs.PC+1)
+	r := fetch()
 	dasmOpRegVal("MVI", "C", r)
 	regs.C = r
-	regs.PC++
 	return 2
 }
 
 func opMVI_D() int {
-	r := memRead(regs.PC+1)
+	r := fetch()
 	dasmOpRegVal("MVI", "D", r)
 	regs.D = r
-	regs.PC++
 	return 2
 }
 
 func opMVI_E() int {
-	r := memRead(regs.PC+1)
+	r := fetch()
 	dasmOpRegVal("MVI", "E", r)
 	regs.E = r
-	regs.PC++
 	return 2
 }
 
 func opMVI_H() int {
-	r := memRead(regs.PC+1)
+	r := fetch()
 	dasmOpRegVal("MVI", "H", r)
 	regs.H = r
-	regs.PC++
 	return 2
 }
 
 func opMVI_L() int {
-	r := memRead(regs.PC+1)
+	r := fetch()
 	dasmOpRegVal("MVI", "L", r)
 	regs.L = r
-	regs.PC++
 	return 2
 }
 
 func opMVI_A() int {
-	r := memRead(regs.PC+1)
+	r := fetch()
 	dasmOpRegVal("MVI", "A", r)
 	regs.A = r
-	regs.PC++
 	return 2
 }
 
@@ -523,11 +521,10 @@ func opMVI_A() int {
 //   Cycles: 3  States: 10  Addressing: immed./reg. indirect  Flags: none
 
 func opMVI_M() int {
-	r := memRead(regs.PC+1)
+	r := fetch()
 	addr := getHL()
 	dasmOpAddrVal("MVI", addr, r)
 	memWrite(addr, r)
-	regs.PC++
 	return 3
 }
 
@@ -543,40 +540,36 @@ func opMVI_M() int {
 //   Cycles: 3  States: 10  Addressing: immediate  Flags: none
 
 func opLXI_BC() int {
-	rh := memRead(regs.PC+2)
-	rl := memRead(regs.PC+1)
+	rl := fetch()
+	rh := fetch()
 	dasmOpRegVal1Val2("LXI", "BC", rh, rl)
 	regs.B = rh
 	regs.C = rl
-	regs.PC += 2
 	return 3
 }
 
 func opLXI_DE() int {
-	rh := memRead(regs.PC+2)
-	rl := memRead(regs.PC+1)
+	rl := fetch()
+	rh := fetch()
 	dasmOpRegVal1Val2("LXI", "DE", rh, rl)
 	regs.D = rh
 	regs.E = rl
-	regs.PC += 2
 	return 3
 }
 
 func opLXI_HL() int {
-	rh := memRead(regs.PC+2)
-	rl := memRead(regs.PC+1)
+	rl := fetch()
+	rh := fetch()
 	dasmOpRegVal1Val2("LXI", "HL", rh, rl)
 	regs.H = rh
 	regs.L = rl
-	regs.PC += 2
 	return 3
 }
 
 func opLXI_SP() int {
-	rp := memRead16(regs.PC+1)
+	rp := fetch16()
 	dasmOpRegAddr("LXI", "SP", rp)
 	regs.SP = rp
-	regs.PC += 2
 	return 3
 }
 
@@ -590,10 +583,9 @@ func opLXI_SP() int {
 //   Cycles: 4  States: 13  Addressing: direct  Flags: none
 
 func opLDA() int {
-	addr := memRead16(regs.PC+1)
+	addr := fetch16()
 	dasmOpAddr("LDA", addr)
 	regs.A = memRead(addr)
-	regs.PC += 2
 	return 4
 }
 
@@ -608,11 +600,44 @@ func opLDA() int {
 //   Cycles: 4  States: 13  Addressing: direct  Flags: none
 
 func opSTA() int {
-	addr := memRead16(regs.PC+1)
+	addr := fetch16()
 	dasmOpAddr("STA", addr)
 	memWrite(addr, regs.A)
-	regs.PC += 2
 	return 4
+}
+
+//endregion
+
+//region LHLD addr (Load H and L direct)
+
+//   (L) <- ((byte 3)(byte 2)) ; (H) <- ((byte 3)(byte 2) + 1)
+//   The content of the memory location, whose address is specified in byte 2 and byte 3 of the instruction, is moved to register L.
+//   The content of the memory location at the succeeding address is moved to register H.
+//   00101010
+//   Cycles: 5  States: 16  Addressing: direct  Flags: none
+
+func opLHLD() int {
+	addr := fetch16()
+	dasmOpAddr("LHLD", addr)
+	setHL(memRead16(addr))
+	return 5
+}
+
+//endregion
+
+//region SHLD rp (Store H and L direct)
+
+//   ((byte 3)(byte 2)) <- (L) ; ((byte 3)(byte 2) + 1) <- (H)
+//   The content of register L is moved to the memory location whose address is specified in byte 2 and byte 3.
+//   The content of register H is moved to the succeeding memory location.
+//   00100010
+//   Cycles: 5  States: 16  Addressing: direct  Flags: none
+
+func opSHLD() int {
+	addr := fetch16()
+	dasmOpAddr("SHLD", addr)
+	memWrite16(addr, getHL())
+	return 5
 }
 
 //endregion
@@ -687,6 +712,74 @@ func opXCHG() int {
 // This group of instructions performs arithmetic operations on data in registers and memory.
 // Unless indicated otherwise, all instructions in this group affect the flags according to the standard rules.
 
+//region ADD r (Add Register)
+
+//   (A) <- (A) + r
+//   The content of register r is added to the content of the accumulator. The result is placed in the accumulator.
+//   10000SSS
+//   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
+
+func opADD_B() int {
+	dasmOpReg("ADD", "B")
+	regs.A = add_CY(regs.A, regs.B)
+	return 1
+}
+
+func opADD_C() int {
+	dasmOpReg("ADD", "C")
+	regs.A = add_CY(regs.A, regs.C)
+	return 1
+}
+
+func opADD_D() int {
+	dasmOpReg("ADD", "D")
+	regs.A = add_CY(regs.A, regs.D)
+	return 1
+}
+
+func opADD_E() int {
+	dasmOpReg("ADD", "E")
+	regs.A = add_CY(regs.A, regs.E)
+	return 1
+}
+
+func opADD_H() int {
+	dasmOpReg("ADD", "H")
+	regs.A = add_CY(regs.A, regs.H)
+	return 1
+}
+
+func opADD_L() int {
+	dasmOpReg("ADD", "L")
+	regs.A = add_CY(regs.A, regs.L)
+	return 1
+}
+
+func opADD_A() int {
+	dasmOpReg("ADD", "A")
+	regs.A = add_CY(regs.A, regs.A)
+	return 1
+}
+
+//endregion
+
+//region ADD M (Add memory)
+
+//   (A) <- (A) + ((H) (L))
+//   The content of the memory location whose address is contained in the H and L registers is added to the content of the
+//   accumulator. The result is placed in the accumulator.
+//   10000110
+//   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
+
+func opADD_M() int {
+	addr := getHL()
+	dasmOpAddr("ADD", addr)
+	regs.A = add_CY(regs.A, memRead(addr))
+	return 3
+}
+
+//endregion
+
 //region ADI data (Add immediate)
 
 //   (A) <- (A) + (byte 2)
@@ -696,10 +789,266 @@ func opXCHG() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
 
 func opADI() int {
-	r := memRead(regs.PC+1)
+	r := fetch()
 	dasmOpVal("ADI", r)
 	regs.A = add_CY(regs.A, r)
-	regs.PC++
+	return 2
+}
+
+//endregion
+
+//region ADC r (Add Register with carry)
+
+//   (A) <- (A) + r + (CY)
+//   The content of register r and the content of the carry bit are added to the content of the accumulator.
+//   The result is placed in the accumulator.
+//   10001SSS
+//   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
+
+func opADC_B() int {
+	dasmOpReg("ADC", "B")
+	regs.A = add3_CY(regs.A, regs.B, btoi(flags.CY))
+	return 1
+}
+
+func opADC_C() int {
+	dasmOpReg("ADC", "C")
+	regs.A = add3_CY(regs.A, regs.C, btoi(flags.CY))
+	return 1
+}
+
+func opADC_D() int {
+	dasmOpReg("ADC", "D")
+	regs.A = add3_CY(regs.A, regs.D, btoi(flags.CY))
+	return 1
+}
+
+func opADC_E() int {
+	dasmOpReg("ADC", "E")
+	regs.A = add3_CY(regs.A, regs.E, btoi(flags.CY))
+	return 1
+}
+
+func opADC_H() int {
+	dasmOpReg("ADC", "H")
+	regs.A = add3_CY(regs.A, regs.H, btoi(flags.CY))
+	return 1
+}
+
+func opADC_L() int {
+	dasmOpReg("ADC", "L")
+	regs.A = add3_CY(regs.A, regs.L, btoi(flags.CY))
+	return 1
+}
+
+func opADC_A() int {
+	dasmOpReg("ADC", "A")
+	regs.A = add3_CY(regs.A, regs.A, btoi(flags.CY))
+	return 1
+}
+
+//endregion
+
+//region ADC M (Add memory with carry)
+
+//   (A) <- (A) + ((H) (L)) + (CY)
+//   The content of the memory location whose address is contained in the H and L registers and the content of the CY flag are
+//   added to the accumulator. The result is placed in the accumulator.
+//   10001110
+//   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
+
+func opADC_M() int {
+	addr := getHL()
+	dasmOpAddr("ADC", addr)
+	regs.A = add3_CY(regs.A, memRead(addr), btoi(flags.CY))
+	return 3
+}
+
+//endregion
+
+//region ACI data (Add immediate with carry)
+
+//   (A) <- (A) + (byte 2) + (CY)
+//   The content of the second byte of the instruction and the content of the CY flag are added to the contents of the accumulator.
+//   The result is placed in the accumulator.
+//   11001110
+//   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
+
+func opACI() int {
+	r := fetch()
+	dasmOpVal("ACI", r)
+	regs.A = add3_CY(regs.A, r, btoi(flags.CY))
+	return 2
+}
+
+//endregion
+
+//region SUB r (Subtract Register)
+
+//   (A) <- (A) - r
+//   The content of register r is subtracted from the content of the accumulator. The result is placed in the accumulator.
+//   10010SSS
+//   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
+
+func opSUB_B() int {
+	dasmOpReg("SUB", "B")
+	regs.A = sub_CY(regs.A, regs.B)
+	return 1
+}
+
+func opSUB_C() int {
+	dasmOpReg("SUB", "C")
+	regs.A = sub_CY(regs.A, regs.C)
+	return 1
+}
+
+func opSUB_D() int {
+	dasmOpReg("SUB", "D")
+	regs.A = sub_CY(regs.A, regs.D)
+	return 1
+}
+
+func opSUB_E() int {
+	dasmOpReg("SUB", "E")
+	regs.A = sub_CY(regs.A, regs.E)
+	return 1
+}
+
+func opSUB_H() int {
+	dasmOpReg("SUB", "H")
+	regs.A = sub_CY(regs.A, regs.H)
+	return 1
+}
+
+func opSUB_L() int {
+	dasmOpReg("SUB", "L")
+	regs.A = sub_CY(regs.A, regs.L)
+	return 1
+}
+
+func opSUB_A() int {
+	dasmOpReg("SUB", "A")
+	regs.A = sub_CY(regs.A, regs.A)
+	return 1
+}
+
+//endregion
+
+//region SUB M (Subtract memory)
+
+//   (A) <- (A) - ((H) (L))
+//   The content of the memory location whose address is contained in the H and L registers is subtracted from the content of the
+//   accumulator. The result is placed in the accumulator.
+//   10010110
+//   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
+
+func opSUB_M() int {
+	addr := getHL()
+	dasmOpAddr("SUB", addr)
+	regs.A = sub_CY(regs.A, memRead(addr))
+	return 3
+}
+
+//endregion
+
+//region SUI data (Subtract immediate)
+
+//   (A) <- (A) - (byte 2)
+//   The content of the second byte of the instruction is subtracted from the content of the accumulator. The result is placed in the
+//   accumulator.
+//   11010110
+//   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
+
+func opSUI() int {
+	r := fetch()
+	dasmOpVal("SUI", r)
+	regs.A = sub_CY(regs.A, r)
+	return 2
+}
+
+//endregion
+
+//region SBB r (Subtract Register with borrow)
+
+//   (A) <- (A) - r - (CY)
+//   The content of register r and the content of the CY flag are both subtracted from the the accumulator.
+//   The result is placed in the accumulator.
+//   10011SSS
+//   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
+
+func opSBB_B() int {
+	dasmOpReg("SBB", "B")
+	regs.A = sub3_CY(regs.A, regs.B, btoi(flags.CY))
+	return 1
+}
+
+func opSBB_C() int {
+	dasmOpReg("SBB", "C")
+	regs.A = sub3_CY(regs.A, regs.C, btoi(flags.CY))
+	return 1
+}
+
+func opSBB_D() int {
+	dasmOpReg("SBB", "D")
+	regs.A = sub3_CY(regs.A, regs.D, btoi(flags.CY))
+	return 1
+}
+
+func opSBB_E() int {
+	dasmOpReg("SBB", "E")
+	regs.A = sub3_CY(regs.A, regs.E, btoi(flags.CY))
+	return 1
+}
+
+func opSBB_H() int {
+	dasmOpReg("SBB", "H")
+	regs.A = sub3_CY(regs.A, regs.H, btoi(flags.CY))
+	return 1
+}
+
+func opSBB_L() int {
+	dasmOpReg("SBB", "L")
+	regs.A = sub3_CY(regs.A, regs.L, btoi(flags.CY))
+	return 1
+}
+
+func opSBB_A() int {
+	dasmOpReg("SBB", "A")
+	regs.A = sub3_CY(regs.A, regs.A, btoi(flags.CY))
+	return 1
+}
+
+//endregion
+
+//region SBB M (Subtract memory with borrow)
+
+//   (A) <- (A) - ((H) (L)) - (CY)
+//   The content of the memory location whose address is contained in the H and L registers and the content of the CY flag are
+//   both subtracted from the accumulator. The result is placed in the accumulator.
+//   10011110
+//   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
+
+func opSBB_M() int {
+	addr := getHL()
+	dasmOpAddr("SBB", addr)
+	regs.A = sub3_CY(regs.A, memRead(addr), btoi(flags.CY))
+	return 3
+}
+
+//endregion
+
+//region SBI data (Subtract immediate with borrow)
+
+//   (A) <- (A) - (byte 2) - (CY)
+//   The content of the second byte of the instruction and the content of the CY flag are both subtracted from the contents of the accumulator.
+//   The result is placed in the accumulator.
+//   11011110
+//   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
+
+func opSBI() int {
+	r := fetch()
+	dasmOpVal("SBI", r)
+	regs.A = sub3_CY(regs.A, r, btoi(flags.CY))
 	return 2
 }
 
@@ -756,6 +1105,24 @@ func opINR_A() int {
 
 //endregion
 
+//region INR M (Increment memory)
+
+//   ((H) (L)) <- ((H) (L)) + 1
+//   The content of the memory location whose address is contained in the H and L registers is incremented by one.
+//   00110100
+//   Cycles: 3  States: 10  Addressing: reg. indirect  Flags: Z,S,P,AC
+
+func opINR_M() int {
+	addr := getHL()
+	dasmOpAddr("INR", addr)
+	v := memRead(addr)
+	v = add(v, 1)
+	memWrite(addr, v)
+	return 3
+}
+
+//endregion
+
 //region DCR r (Decrement Register)
 
 //   (r) <- (r) - 1
@@ -803,6 +1170,24 @@ func opDCR_A() int {
 	dasmOpReg("DCR", "A")
 	regs.A = sub(regs.A, 1)
 	return 1
+}
+
+//endregion
+
+//region DCR M (Decrement memory)
+
+//   ((H) (L)) <- ((H) (L)) - 1
+//   The content of the memory location whose address is contained in the H and L registers is decremented by one.
+//   00110101
+//   Cycles: 3  States: 10  Addressing: reg. indirect  Flags: Z,S,P,AC
+
+func opDCR_M() int {
+	addr := getHL()
+	dasmOpAddr("DCR", addr)
+	v := memRead(addr)
+	v = sub(v, 1)
+	memWrite(addr, v)
+	return 3
 }
 
 //endregion
@@ -947,7 +1332,7 @@ func opDAD_SP() int {
 func opANA_B() int {
 	dasmOpReg("ANA", "B")
 	regs.A = regs.A & regs.B
-	sub(regs.A, regs.B) // flags Z,S,P & AC
+	sub(regs.A, regs.B)
 	flags.CY = false
 	return 1
 }
@@ -955,7 +1340,7 @@ func opANA_B() int {
 func opANA_C() int {
 	dasmOpReg("ANA", "C")
 	regs.A = regs.A & regs.C
-	sub(regs.A, regs.C) // flags Z,S,P & AC
+	sub(regs.A, regs.C)
 	flags.CY = false
 	return 1
 }
@@ -963,7 +1348,7 @@ func opANA_C() int {
 func opANA_D() int {
 	dasmOpReg("ANA", "D")
 	regs.A = regs.A & regs.D
-	sub(regs.A, regs.D) // flags Z,S,P & AC
+	sub(regs.A, regs.D)
 	flags.CY = false
 	return 1
 }
@@ -971,7 +1356,7 @@ func opANA_D() int {
 func opANA_E() int {
 	dasmOpReg("ANA", "E")
 	regs.A = regs.A & regs.E
-	sub(regs.A, regs.E) // flags Z,S,P & AC
+	sub(regs.A, regs.E)
 	flags.CY = false
 	return 1
 }
@@ -979,7 +1364,7 @@ func opANA_E() int {
 func opANA_H() int {
 	dasmOpReg("ANA", "H")
 	regs.A = regs.A & regs.H
-	sub(regs.A, regs.H) // flags Z,S,P & AC
+	sub(regs.A, regs.H)
 	flags.CY = false
 	return 1
 }
@@ -987,7 +1372,7 @@ func opANA_H() int {
 func opANA_L() int {
 	dasmOpReg("ANA", "L")
 	regs.A = regs.A & regs.L
-	sub(regs.A, regs.L) // flags Z,S,P & AC
+	sub(regs.A, regs.L)
 	flags.CY = false
 	return 1
 }
@@ -995,7 +1380,7 @@ func opANA_L() int {
 func opANA_A() int {
 	dasmOpReg("ANA", "A")
 	regs.A = regs.A & regs.A
-	sub(regs.A, regs.A) // flags Z,S,P & AC
+	sub(regs.A, regs.A)
 	flags.CY = false
 	return 1
 }
@@ -1015,7 +1400,7 @@ func opANA_M() int {
 	dasmOpAddr("ANA", addr)
 	v := memRead(addr)
 	regs.A = regs.A & v
-	sub(regs.A, v) // flags Z,S,P & AC
+	sub(regs.A, v)
 	flags.CY = false
 	return 2
 }
@@ -1031,13 +1416,12 @@ func opANA_M() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
 
 func opANI() int {
-	r := memRead(regs.PC+1)
+	r := fetch()
 	dasmOpVal("ANI", r)
 	regs.A = regs.A & r
 	flags_Z_S_P(regs.A)
 	flags.AC = false
 	flags.CY = false
-	regs.PC++
 	return 2
 }
 
@@ -1136,6 +1520,15 @@ func opXRA_M() int {
 
 // endregion
 
+//todo XRI data
+
+//todo ORA r
+//todo ORA m
+//todo ORI data
+
+//todo CMP r
+//todo CMP m
+
 //region CPI data (Compare immediate)
 
 //   (A) - (byte 2)
@@ -1145,14 +1538,15 @@ func opXRA_M() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
 
 func opCPI() int {
-	r := memRead(regs.PC+1)
+	r := fetch()
 	dasmOpVal("CPI", r)
 	sub_CY(regs.A, r)
-	regs.PC++
 	return 2
 }
 
 //endregion
+
+//todo RLC
 
 //region RRC (Rotate right)
 
@@ -1165,8 +1559,29 @@ func opCPI() int {
 func opRRC() int {
 	dasmOp("RRC")
 	a0 := regs.A & 0x01
-	regs.A = (regs.A>>1 & 0x7f) | a0<<7
+	regs.A = (regs.A >> 1 & 0x7f) | a0<<7
 	flags.CY = a0 != 0
+	return 1
+}
+
+//endregion
+
+//todo RAL
+//todo RAR
+
+//todo CMA
+//todo CMC
+
+//region STC (Set carry)
+
+//   (CY) <- 1
+//   The CY flag is set to 1.
+//   00110111
+//   Cycles: 1  States: 4  Flags: CY
+
+func opSTC() int {
+	dasmOp("STC")
+	flags.CY = true
 	return 1
 }
 
@@ -1184,10 +1599,9 @@ func opRRC() int {
 //   Cycles: 3  States: 10  Addressing: immediate  Flags: none
 
 func opJMP() int {
-	addr := memRead16(regs.PC+1)
+	addr := fetch16()
 	dasmOpAddr("JMP", addr)
 	regs.PC = addr
-	regs.PC--
 	return 3
 }
 
@@ -1203,97 +1617,73 @@ func opJMP() int {
 //   Cycles: 3  States: 10  Addressing: immediate  Flags: none
 
 func opJNZ() int {
-	addr := memRead16(regs.PC+1)
+	addr := fetch16()
 	dasmOpAddr("JNZ", addr)
 	if !flags.Z {
 		regs.PC = addr
-		regs.PC--
-	} else {
-		regs.PC += 2
 	}
 	return 3
 }
 
 func opJZ() int {
-	addr := memRead16(regs.PC+1)
+	addr := fetch16()
 	dasmOpAddr("JZ", addr)
 	if flags.Z {
 		regs.PC = addr
-		regs.PC--
-	} else {
-		regs.PC += 2
 	}
 	return 3
 }
 
 func opJNC() int {
-	addr := memRead16(regs.PC+1)
+	addr := fetch16()
 	dasmOpAddr("JNC", addr)
 	if !flags.CY {
 		regs.PC = addr
-		regs.PC--
-	} else {
-		regs.PC += 2
 	}
 	return 3
 }
 
 func opJC() int {
-	addr := memRead16(regs.PC+1)
+	addr := fetch16()
 	dasmOpAddr("JC", addr)
 	if flags.CY {
 		regs.PC = addr
-		regs.PC--
-	} else {
-		regs.PC += 2
 	}
 	return 3
 }
 
 func opJPO() int {
-	addr := memRead16(regs.PC+1)
+	addr := fetch16()
 	dasmOpAddr("JPO", addr)
 	if !flags.P {
 		regs.PC = addr
-		regs.PC--
-	} else {
-		regs.PC += 2
 	}
 	return 3
 }
 
 func opJPE() int {
-	addr := memRead16(regs.PC+1)
+	addr := fetch16()
 	dasmOpAddr("JPE", addr)
 	if flags.P {
 		regs.PC = addr
-		regs.PC--
-	} else {
-		regs.PC += 2
 	}
 	return 3
 }
 
 func opJP() int {
-	addr := memRead16(regs.PC+1)
+	addr := fetch16()
 	dasmOpAddr("JP", addr)
 	if !flags.S {
 		regs.PC = addr
-		regs.PC--
-	} else {
-		regs.PC += 2
 	}
 	return 3
 }
 
 func opJM() int {
-	addr := memRead16(regs.PC+1)
+	addr := fetch16()
 	dasmOpAddr("JM", addr)
 	if flags.S {
 		regs.PC = addr
-		regs.PC--
-	} else {
-		regs.PC += 2
 	}
 	return 3
 }
@@ -1311,14 +1701,118 @@ func opJM() int {
 //   Cycles: 5  States: 17  Addressing: immediate/reg. indirect  Flags: none
 
 func opCALL() int {
-	addr := memRead16(regs.PC+1)
+	addr := fetch16()
 	dasmOpAddr("CALL", addr)
-	nextOp := regs.PC+3
-	memWrite16(regs.SP-2, nextOp)
+	memWrite16(regs.SP-2, regs.PC)
 	regs.SP -= 2
 	regs.PC = addr
-	regs.PC--
 	return 5
+}
+
+//endregion
+
+//region Ccondition (Conditional call)
+
+//   If (CCC): ((SP) - 1) <- (PCH) ; ((SP) - 2) <- (PCL) ; (SP) <- (SP) - 2 ; (PC) <- (byte 3) (byte2)
+//   If the specified condition is true, the actions specified in the CALL instruction (see above) are performed; otherwise,
+//   control continues sequentially.
+//   11CCC100
+//   Cycles: 3/5  States: 11/17  Addressing: immediate/reg. indirect  Flags: none
+
+func opCNZ() int {
+	addr := fetch16()
+	dasmOpAddr("CNZ", addr)
+	if !flags.Z {
+		memWrite16(regs.SP-2, regs.PC)
+		regs.SP -= 2
+		regs.PC = addr
+		return 5
+	}
+	return 3
+}
+
+func opCZ() int {
+	addr := fetch16()
+	dasmOpAddr("CZ", addr)
+	if flags.Z {
+		memWrite16(regs.SP-2, regs.PC)
+		regs.SP -= 2
+		regs.PC = addr
+		return 5
+	}
+	return 3
+}
+
+func opCNC() int {
+	addr := fetch16()
+	dasmOpAddr("CNC", addr)
+	if !flags.CY {
+		memWrite16(regs.SP-2, regs.PC)
+		regs.SP -= 2
+		regs.PC = addr
+		return 5
+	}
+	return 3
+}
+
+func opCC() int {
+	addr := fetch16()
+	dasmOpAddr("CC", addr)
+	if flags.CY {
+		memWrite16(regs.SP-2, regs.PC)
+		regs.SP -= 2
+		regs.PC = addr
+		return 5
+	}
+	return 3
+}
+
+func opCPO() int {
+	addr := fetch16()
+	dasmOpAddr("CPO", addr)
+	if !flags.P {
+		memWrite16(regs.SP-2, regs.PC)
+		regs.SP -= 2
+		regs.PC = addr
+		return 5
+	}
+	return 3
+}
+
+func opCPE() int {
+	addr := fetch16()
+	dasmOpAddr("CPE", addr)
+	if flags.P {
+		memWrite16(regs.SP-2, regs.PC)
+		regs.SP -= 2
+		regs.PC = addr
+		return 5
+	}
+	return 3
+}
+
+func opCP() int {
+	addr := fetch16()
+	dasmOpAddr("CP", addr)
+	if !flags.S {
+		memWrite16(regs.SP-2, regs.PC)
+		regs.SP -= 2
+		regs.PC = addr
+		return 5
+	}
+	return 3
+}
+
+func opCM() int {
+	addr := fetch16()
+	dasmOpAddr("CM", addr)
+	if flags.S {
+		memWrite16(regs.SP-2, regs.PC)
+		regs.SP -= 2
+		regs.PC = addr
+		return 5
+	}
+	return 3
 }
 
 //endregion
@@ -1333,16 +1827,189 @@ func opCALL() int {
 //   Cycles: 3  States: 10  Addressing: reg. indirect  Flags: none
 
 func opRET() int {
-	//trace()
 	dasmOp("RET")
 	regs.PC = memRead16(regs.SP)
 	regs.SP += 2
-	regs.PC--
-	//breakpoint = true
 	return 5
 }
 
 //endregion
+
+//region Rcondition (Conditional return)
+
+//   If (CCC): (PCL) <- ((SP)) ; (PCH) <- ((SP) + 1) ; (SP) <- (SP) + 2
+//   If the specified condition is true, the actions specified in the RET instruction (see above) are performed; otherwise,
+//   control continues sequentially.
+//   11CCC000
+//   Cycles: 1/3  States: 5/11  Addressing: reg. indirect  Flags: none
+
+func opRNZ() int {
+	dasmOp("RNZ")
+	if !flags.Z {
+		regs.PC = memRead16(regs.SP)
+		regs.SP += 2
+		return 3
+	}
+	return 1
+}
+
+func opRZ() int {
+	dasmOp("RZ")
+	if flags.Z {
+		regs.PC = memRead16(regs.SP)
+		regs.SP += 2
+		return 3
+	}
+	return 1
+}
+
+func opRNC() int {
+	dasmOp("RNC")
+	if !flags.CY {
+		regs.PC = memRead16(regs.SP)
+		regs.SP += 2
+		return 3
+	}
+	return 1
+}
+
+func opRC() int {
+	dasmOp("RC")
+	if flags.CY {
+		regs.PC = memRead16(regs.SP)
+		regs.SP += 2
+		return 3
+	}
+	return 1
+}
+
+func opRPO() int {
+	dasmOp("RPO")
+	if !flags.P {
+		regs.PC = memRead16(regs.SP)
+		regs.SP += 2
+		return 3
+	}
+	return 1
+}
+
+func opRPE() int {
+	dasmOp("RPE")
+	if flags.P {
+		regs.PC = memRead16(regs.SP)
+		regs.SP += 2
+		return 3
+	}
+	return 1
+}
+
+func opRP() int {
+	dasmOp("RP")
+	if !flags.S {
+		regs.PC = memRead16(regs.SP)
+		regs.SP += 2
+		return 3
+	}
+	return 1
+}
+
+func opRM() int {
+	dasmOp("RM")
+	if flags.S {
+		regs.PC = memRead16(regs.SP)
+		regs.SP += 2
+		return 3
+	}
+	return 1
+}
+
+//endregion
+
+//region RST n (Restart)
+
+//   ((SP) - 1) <- (PCH) ; ((SP) - 2) <- (PCL) ; (SP) <- (SP) - 2 ; (PC) <- 8 * (NNN)
+//   The high-order eight bits of the next instruction address are moved to the memory location whose address is one less than the
+//   content of register SP. The low-order eight bits of the next instruction address are moved to the memory location whose
+//   address is two less than the content of register SP. The content of register SP is decremented by two. Control is transferred
+//   to the instruction whose address is eight times the content of NNN.
+//   11NNN111
+//   Cycles: 3  States: 11  Addressing: reg. indirect  Flags: none
+
+func opRST_0() int {
+	dasmOpReg("RST", "0")
+	nextOp := regs.PC + 1
+	memWrite16(regs.SP-2, nextOp)
+	regs.SP -= 2
+	regs.PC = 0x0000
+	return 3
+}
+
+func opRST_1() int {
+	dasmOpReg("RST", "1")
+	nextOp := regs.PC + 1
+	memWrite16(regs.SP-2, nextOp)
+	regs.SP -= 2
+	regs.PC = 0x0008
+	return 3
+}
+
+func opRST_2() int {
+	dasmOpReg("RST", "2")
+	nextOp := regs.PC + 1
+	memWrite16(regs.SP-2, nextOp)
+	regs.SP -= 2
+	regs.PC = 0x0010
+	return 3
+}
+
+func opRST_3() int {
+	dasmOpReg("RST", "3")
+	nextOp := regs.PC + 1
+	memWrite16(regs.SP-2, nextOp)
+	regs.SP -= 2
+	regs.PC = 0x0018
+	return 3
+}
+
+func opRST_4() int {
+	dasmOpReg("RST", "4")
+	nextOp := regs.PC + 1
+	memWrite16(regs.SP-2, nextOp)
+	regs.SP -= 2
+	regs.PC = 0x0020
+	return 3
+}
+
+func opRST_5() int {
+	dasmOpReg("RST", "5")
+	nextOp := regs.PC + 1
+	memWrite16(regs.SP-2, nextOp)
+	regs.SP -= 2
+	regs.PC = 0x0028
+	return 3
+}
+
+func opRST_6() int {
+	dasmOpReg("RST", "6")
+	nextOp := regs.PC + 1
+	memWrite16(regs.SP-2, nextOp)
+	regs.SP -= 2
+	regs.PC = 0x0030
+	return 3
+}
+
+func opRST_7() int {
+	dasmOpReg("RST", "7")
+	nextOp := regs.PC + 1
+	memWrite16(regs.SP-2, nextOp)
+	regs.SP -= 2
+	regs.PC = 0x0038
+	return 3
+}
+
+//endregion
+
+//todo PCHL
 
 // ********** Stack, I/O, and Machine Control Group **********
 // This group of instructions performs I/O, manipulates the Stack, and alters internal control flags.
@@ -1414,7 +2081,7 @@ func opPUSH_PSW() int {
 func opPOP_BC() int {
 	dasmOpReg("POP", "BC")
 	regs.C = memRead(regs.SP)
-	regs.B = memRead(regs.SP+1)
+	regs.B = memRead(regs.SP + 1)
 	regs.SP += 2
 	return 3
 }
@@ -1422,7 +2089,7 @@ func opPOP_BC() int {
 func opPOP_DE() int {
 	dasmOpReg("POP", "DE")
 	regs.E = memRead(regs.SP)
-	regs.D = memRead(regs.SP+1)
+	regs.D = memRead(regs.SP + 1)
 	regs.SP += 2
 	return 3
 }
@@ -1430,7 +2097,7 @@ func opPOP_DE() int {
 func opPOP_HL() int {
 	dasmOpReg("POP", "HL")
 	regs.L = memRead(regs.SP)
-	regs.H = memRead(regs.SP+1)
+	regs.H = memRead(regs.SP + 1)
 	regs.SP += 2
 	return 3
 }
@@ -1449,8 +2116,31 @@ func opPOP_HL() int {
 func opPOP_PSW() int {
 	dasmOpReg("POP", "PSW")
 	setFlags(memRead(regs.SP))
-	regs.A = memRead(regs.SP+1)
+	regs.A = memRead(regs.SP + 1)
 	regs.SP += 2
+	return 3
+}
+
+//endregion
+
+//todo XTHL
+
+//todo SPHL
+
+//region IN port (Input)
+
+//   (A) <- (data)
+//   The data placed on the eight bit bi-directional data bus by the specified port is moved to register A.
+//   11011011
+//   Cycles: 3  States: 10  Addressing: direct  Flags: none
+
+func opIN() int {
+	port := fetch()
+	dasmOpVal("IN", port)
+	if port == 0x03 {
+		log.Fatal("16 bit shift register")
+	}
+	//fixme
 	return 3
 }
 
@@ -1464,13 +2154,12 @@ func opPOP_PSW() int {
 //   Cycles: 3  States: 10  Addressing: direct  Flags: none
 
 func opOUT() int {
-	port := memRead(regs.PC+1)
+	port := fetch()
 	dasmOpVal("OUT", port)
 	if port == 0x02 || port == 0x04 {
 		log.Fatal("16 bit shift register")
 	}
 	//fixme
-	regs.PC++
 	return 3
 }
 
@@ -1484,11 +2173,27 @@ func opOUT() int {
 
 func opEI() int {
 	dasmOp("EI")
-	//fixme
+	interrupt = true
 	return 1
 }
 
 //endregion
+
+//region DI (Disable interrupts)
+
+//   The interrupt system is disabled immediately following the execution of the DI instruction.
+//   1110011
+//   Cycles: 1  States: 4  Flags: none
+
+func opDI() int {
+	dasmOp("DI")
+	interrupt = false
+	return 1
+}
+
+//endregion
+
+//todo HLT
 
 //region NOP (No op)
 
@@ -1502,3 +2207,76 @@ func opNOP() int {
 }
 
 //endregion
+
+// ********** Utils **********
+
+func add(a uint8, b uint8) uint8 {
+	res16 := uint16(a) + uint16(b)
+	res8 := uint8(res16)
+	flags_Z_S_P(res8)
+	flags.AC = (res16 & 0xff00) != 0
+	return res8
+}
+
+func add_CY(a uint8, b uint8) uint8 {
+	res16 := uint16(a) + uint16(b)
+	res8 := uint8(res16)
+	flags_Z_S_P(res8)
+	flags.AC = (res16 & 0xff00) != 0
+	//todo flags.CY
+	return res8
+}
+
+func add3_CY(a uint8, b uint8, c uint8) uint8 {
+	res16 := uint16(a) + uint16(b) + uint16(c)
+	res8 := uint8(res16)
+	flags_Z_S_P(res8)
+	flags.AC = (res16 & 0xff00) != 0
+	//todo flags.CY
+	return res8
+}
+
+func sub(a uint8, b uint8) uint8 {
+	res16 := uint16(a) - uint16(b)
+	res8 := uint8(res16)
+	flags_Z_S_P(res8)
+	flags.AC = (res16 & 0xff00) != 0
+	return res8
+}
+
+func sub_CY(a uint8, b uint8) uint8 {
+	res16 := uint16(a) - uint16(b)
+	res8 := uint8(res16)
+	flags_Z_S_P(res8)
+	flags.AC = (res16 & 0xff00) != 0
+	//todo flags.CY
+	return res8
+}
+
+func sub3_CY(a uint8, b uint8, c uint8) uint8 {
+	res16 := uint16(a) - uint16(b) - uint16(c)
+	res8 := uint8(res16)
+	flags_Z_S_P(res8)
+	flags.AC = (res16 & 0xff00) != 0
+	//todo flags.CY
+	return res8
+}
+
+func flags_Z_S_P(v uint8) {
+	flags.Z = v == 0
+	flags.S = (v & 0x80) != 0
+	flags.P = evenParity(v)
+}
+
+func evenParity(v uint8) bool {
+	b0 := v & 0x01
+	b1 := v & 0x02
+	b2 := v & 0x04
+	b3 := v & 0x08
+	b4 := v & 0x10
+	b5 := v & 0x20
+	b6 := v & 0x40
+	b7 := v & 0x80
+	r := b7 + b6 + b5 + b4 + b3 + b2 + b1 + b0
+	return (r & 0x01) == 0
+}

@@ -5,8 +5,6 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 )
 
-// https://github.com/faiface/pixel
-
 type SdlDisplayController struct{}
 
 var ram []byte

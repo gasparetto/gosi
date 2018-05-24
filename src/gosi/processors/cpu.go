@@ -7,7 +7,9 @@ type Cpu interface {
 
 	Step() int
 
-	DasmTrace()
+	Interrupt(op uint8) int
 
-	Breakpoint() bool
+	DebugPrint()
+
+	DebugBreakpoint() bool
 }
