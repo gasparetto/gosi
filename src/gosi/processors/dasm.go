@@ -12,6 +12,12 @@ func dasmOpReg(op string, r string) {
 	}
 }
 
+func dasmOpVal(op string, v uint8) {
+	if debug {
+		print(fmt.Sprintf("%s\t0x%02x", op, v))
+	}
+}
+
 func dasmOpReg1Reg2(op string, r1 string, r2 string) {
 	if debug {
 		print(fmt.Sprintf("%s\t%s, %s", op, r1, r2))
@@ -65,8 +71,24 @@ func print(message string) {
 }
 
 func trace() {
-	fmt.Printf("> SP = %04x   mem = %02x %02x [%02x] %02x %02x\n",
-		regs.SP, memRead(regs.SP-2), memRead(regs.SP-1), memRead(regs.SP), memRead(regs.SP+1), memRead(regs.SP+2))
-	fmt.Printf("> PC = %04x   mem = %02x %02x [%02x] %02x %02x\n",
-		regs.PC, memRead(regs.PC-2), memRead(regs.PC-1), memRead(regs.PC), memRead(regs.PC+1), memRead(regs.PC+2))
+	fmt.Printf("> PC = %04x   mem = %s\n", regs.PC, traceMem(regs.PC))
+	fmt.Printf("> SP = %04x   mem = %s\n", regs.SP, traceMem(regs.SP))
+	fmt.Printf("> regs A:%02x B:%02x C:%02x D:%02x E:%02x H:%02x L:%02x\n",
+		regs.A, regs.B, regs.C, regs.D, regs.E, regs.H, regs.L)
+	fmt.Printf("> flags Z:%t S:%t P:%t AC:%t CY:%t\n", flags.Z, flags.S, flags.P, flags.AC, flags.CY)
+}
+
+func traceMem(addr uint16) string {
+	return fmt.Sprintf("%02x %02x [%02x] %02x %02x", memReadUnsafe(addr-2), memReadUnsafe(addr-1),
+		 memReadUnsafe(addr), memReadUnsafe(addr+1), memReadUnsafe(addr+2))
+}
+func memReadUnsafe(addr uint16) uint8 {
+	switch {
+	case inBetween(addr, ramStart, ramEnd):
+		return ram[addr-ramStart]
+	case inBetween(addr, romStart, romEnd):
+		return rom[addr-romStart]
+	default:
+		return 0
+	}
 }

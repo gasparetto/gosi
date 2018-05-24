@@ -1,8 +1,6 @@
 package processors
 
-import (
-	"encoding/binary"
-)
+import "log"
 
 // ********** Symbols and Abbreviations **********
 //
@@ -24,6 +22,10 @@ import (
 //   01   D-E
 //   10   H-L
 //   11   SP
+//
+// Flags
+//   D7 D6 D5 D4 D3 D2 D1 D0
+//   S  Z  0  AC 0  P  1  CY
 
 // ********** Data Transfer Group **********
 // This group of instructions transfers data to and from registers and memory.
@@ -72,6 +74,12 @@ func opMOV_B_L() int {
 	return 1
 }
 
+func opMOV_B_A() int {
+	dasmOpReg1Reg2("MOV", "B", "A")
+	regs.B = regs.A
+	return 1
+}
+
 func opMOV_C_B() int {
 	dasmOpReg1Reg2("MOV", "C", "B")
 	regs.C = regs.B
@@ -105,6 +113,12 @@ func opMOV_C_H() int {
 func opMOV_C_L() int {
 	dasmOpReg1Reg2("MOV", "C", "L")
 	regs.C = regs.L
+	return 1
+}
+
+func opMOV_C_A() int {
+	dasmOpReg1Reg2("MOV", "C", "A")
+	regs.C = regs.A
 	return 1
 }
 
@@ -144,6 +158,12 @@ func opMOV_D_L() int {
 	return 1
 }
 
+func opMOV_D_A() int {
+	dasmOpReg1Reg2("MOV", "D", "A")
+	regs.D = regs.A
+	return 1
+}
+
 func opMOV_E_B() int {
 	dasmOpReg1Reg2("MOV", "E", "B")
 	regs.E = regs.B
@@ -177,6 +197,12 @@ func opMOV_E_H() int {
 func opMOV_E_L() int {
 	dasmOpReg1Reg2("MOV", "E", "L")
 	regs.E = regs.L
+	return 1
+}
+
+func opMOV_E_A() int {
+	dasmOpReg1Reg2("MOV", "E", "A")
+	regs.E = regs.A
 	return 1
 }
 
@@ -216,6 +242,12 @@ func opMOV_H_L() int {
 	return 1
 }
 
+func opMOV_H_A() int {
+	dasmOpReg1Reg2("MOV", "H", "A")
+	regs.H = regs.A
+	return 1
+}
+
 func opMOV_L_B() int {
 	dasmOpReg1Reg2("MOV", "L", "B")
 	regs.L = regs.B
@@ -252,59 +284,107 @@ func opMOV_L_L() int {
 	return 1
 }
 
+func opMOV_L_A() int {
+	dasmOpReg1Reg2("MOV", "L", "A")
+	regs.L = regs.A
+	return 1
+}
+
+func opMOV_A_B() int {
+	dasmOpReg1Reg2("MOV", "A", "B")
+	regs.A = regs.B
+	return 1
+}
+
+func opMOV_A_C() int {
+	dasmOpReg1Reg2("MOV", "A", "C")
+	regs.A = regs.C
+	return 1
+}
+
+func opMOV_A_D() int {
+	dasmOpReg1Reg2("MOV", "A", "D")
+	regs.A = regs.D
+	return 1
+}
+
+func opMOV_A_E() int {
+	dasmOpReg1Reg2("MOV", "A", "E")
+	regs.A = regs.E
+	return 1
+}
+
+func opMOV_A_H() int {
+	dasmOpReg1Reg2("MOV", "A", "H")
+	regs.A = regs.H
+	return 1
+}
+
+func opMOV_A_L() int {
+	dasmOpReg1Reg2("MOV", "A", "L")
+	regs.A = regs.L
+	return 1
+}
+
+func opMOV_A_A() int {
+	dasmOpReg1Reg2("MOV", "A", "A")
+	//regs.A = regs.A
+	return 1
+}
+
 // endregion
 
 //region MOV r, M (Move from memory)
 
 //   (r) <- ((H) (L))
-//   The content of the memory location, whose address is in registers Hand L, is moved to register r.
+//   The content of the memory location, whose address is in registers H and L, is moved to register r.
 //   01DDD110
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: none
 
 func opMOV_B_M() int {
-	addr := hlRead()
+	addr := getHL()
 	dasmOpRegAddr("MOV", "B", addr)
 	regs.B = memRead(addr)
 	return 2
 }
 
 func opMOV_C_M() int {
-	addr := hlRead()
+	addr := getHL()
 	dasmOpRegAddr("MOV", "C", addr)
 	regs.C = memRead(addr)
 	return 2
 }
 
 func opMOV_D_M() int {
-	addr := hlRead()
+	addr := getHL()
 	dasmOpRegAddr("MOV", "D", addr)
 	regs.D = memRead(addr)
 	return 2
 }
 
 func opMOV_E_M() int {
-	addr := hlRead()
+	addr := getHL()
 	dasmOpRegAddr("MOV", "E", addr)
 	regs.E = memRead(addr)
 	return 2
 }
 
 func opMOV_H_M() int {
-	addr := hlRead()
+	addr := getHL()
 	dasmOpRegAddr("MOV", "H", addr)
 	regs.H = memRead(addr)
 	return 2
 }
 
 func opMOV_L_M() int {
-	addr := hlRead()
+	addr := getHL()
 	dasmOpRegAddr("MOV", "L", addr)
 	regs.L = memRead(addr)
 	return 2
 }
 
 func opMOV_A_M() int {
-	addr := hlRead()
+	addr := getHL()
 	dasmOpRegAddr("MOV", "A", addr)
 	regs.A = memRead(addr)
 	return 2
@@ -320,49 +400,49 @@ func opMOV_A_M() int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: none
 
 func opMOV_M_B() int {
-	addr := hlRead()
+	addr := getHL()
 	dasmOpAddrReg("MOV", addr, "B")
 	memWrite(addr, regs.B)
 	return 2
 }
 
 func opMOV_M_C() int {
-	addr := hlRead()
+	addr := getHL()
 	dasmOpAddrReg("MOV", addr, "C")
 	memWrite(addr, regs.C)
 	return 2
 }
 
 func opMOV_M_D() int {
-	addr := hlRead()
+	addr := getHL()
 	dasmOpAddrReg("MOV", addr, "D")
 	memWrite(addr, regs.D)
 	return 2
 }
 
 func opMOV_M_E() int {
-	addr := hlRead()
+	addr := getHL()
 	dasmOpAddrReg("MOV", addr, "E")
 	memWrite(addr, regs.E)
 	return 2
 }
 
 func opMOV_M_H() int {
-	addr := hlRead()
+	addr := getHL()
 	dasmOpAddrReg("MOV", addr, "H")
 	memWrite(addr, regs.H)
 	return 2
 }
 
 func opMOV_M_L() int {
-	addr := hlRead()
+	addr := getHL()
 	dasmOpAddrReg("MOV", addr, "L")
 	memWrite(addr, regs.L)
 	return 2
 }
 
 func opMOV_M_A() int {
-	addr := hlRead()
+	addr := getHL()
 	dasmOpAddrReg("MOV", addr, "A")
 	memWrite(addr, regs.A)
 	return 2
@@ -377,50 +457,58 @@ func opMOV_M_A() int {
 //   00DDD110
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: none
 
-func opMVI_B_data() int {
-	r := rom[regs.PC+1]
+func opMVI_B() int {
+	r := memRead(regs.PC+1)
 	dasmOpRegVal("MVI", "B", r)
 	regs.B = r
 	regs.PC++
 	return 2
 }
 
-func opMVI_C_data() int {
-	r := rom[regs.PC+1]
+func opMVI_C() int {
+	r := memRead(regs.PC+1)
 	dasmOpRegVal("MVI", "C", r)
 	regs.C = r
 	regs.PC++
 	return 2
 }
 
-func opMVI_D_data() int {
-	r := rom[regs.PC+1]
+func opMVI_D() int {
+	r := memRead(regs.PC+1)
 	dasmOpRegVal("MVI", "D", r)
 	regs.D = r
 	regs.PC++
 	return 2
 }
 
-func opMVI_E_data() int {
-	r := rom[regs.PC+1]
+func opMVI_E() int {
+	r := memRead(regs.PC+1)
 	dasmOpRegVal("MVI", "E", r)
 	regs.E = r
 	regs.PC++
 	return 2
 }
 
-func opMVI_H_data() int {
-	r := rom[regs.PC+1]
+func opMVI_H() int {
+	r := memRead(regs.PC+1)
 	dasmOpRegVal("MVI", "H", r)
 	regs.H = r
 	regs.PC++
 	return 2
 }
 
-func opMVI_L_data() int {
-	r := rom[regs.PC+1]
+func opMVI_L() int {
+	r := memRead(regs.PC+1)
 	dasmOpRegVal("MVI", "L", r)
 	regs.L = r
+	regs.PC++
+	return 2
+}
+
+func opMVI_A() int {
+	r := memRead(regs.PC+1)
+	dasmOpRegVal("MVI", "A", r)
+	regs.A = r
 	regs.PC++
 	return 2
 }
@@ -434,9 +522,9 @@ func opMVI_L_data() int {
 //   00110110
 //   Cycles: 3  States: 10  Addressing: immed./reg. indirect  Flags: none
 
-func opMVI_M_data() int {
-	r := rom[regs.PC+1]
-	addr := hlRead()
+func opMVI_M() int {
+	r := memRead(regs.PC+1)
+	addr := getHL()
 	dasmOpAddrVal("MVI", addr, r)
 	memWrite(addr, r)
 	regs.PC++
@@ -454,9 +542,9 @@ func opMVI_M_data() int {
 //   00RP0001
 //   Cycles: 3  States: 10  Addressing: immediate  Flags: none
 
-func opLXI_BC_data16() int {
-	rh := rom[regs.PC+2]
-	rl := rom[regs.PC+1]
+func opLXI_BC() int {
+	rh := memRead(regs.PC+2)
+	rl := memRead(regs.PC+1)
 	dasmOpRegVal1Val2("LXI", "BC", rh, rl)
 	regs.B = rh
 	regs.C = rl
@@ -464,9 +552,9 @@ func opLXI_BC_data16() int {
 	return 3
 }
 
-func opLXI_DE_data16() int {
-	rh := rom[regs.PC+2]
-	rl := rom[regs.PC+1]
+func opLXI_DE() int {
+	rh := memRead(regs.PC+2)
+	rl := memRead(regs.PC+1)
 	dasmOpRegVal1Val2("LXI", "DE", rh, rl)
 	regs.D = rh
 	regs.E = rl
@@ -474,9 +562,9 @@ func opLXI_DE_data16() int {
 	return 3
 }
 
-func opLXI_HL_data16() int {
-	rh := rom[regs.PC+2]
-	rl := rom[regs.PC+1]
+func opLXI_HL() int {
+	rh := memRead(regs.PC+2)
+	rl := memRead(regs.PC+1)
 	dasmOpRegVal1Val2("LXI", "HL", rh, rl)
 	regs.H = rh
 	regs.L = rl
@@ -484,8 +572,8 @@ func opLXI_HL_data16() int {
 	return 3
 }
 
-func opLXI_SP_data16() int {
-	rp := binary.LittleEndian.Uint16(rom[regs.PC+1:])
+func opLXI_SP() int {
+	rp := memRead16(regs.PC+1)
 	dasmOpRegAddr("LXI", "SP", rp)
 	regs.SP = rp
 	regs.PC += 2
@@ -502,7 +590,7 @@ func opLXI_SP_data16() int {
 //   Cycles: 4  States: 13  Addressing: direct  Flags: none
 
 func opLDA() int {
-	addr := binary.LittleEndian.Uint16(rom[regs.PC+1:])
+	addr := memRead16(regs.PC+1)
 	dasmOpAddr("LDA", addr)
 	regs.A = memRead(addr)
 	regs.PC += 2
@@ -520,7 +608,7 @@ func opLDA() int {
 //   Cycles: 4  States: 13  Addressing: direct  Flags: none
 
 func opSTA() int {
-	addr := binary.LittleEndian.Uint16(rom[regs.PC+1:])
+	addr := memRead16(regs.PC+1)
 	dasmOpAddr("STA", addr)
 	memWrite(addr, regs.A)
 	regs.PC += 2
@@ -538,23 +626,84 @@ func opSTA() int {
 
 func opLDAX_BC() int {
 	dasmOpReg("LDAX", "BC")
-	addr := bcRead()
+	addr := getBC()
 	regs.A = memRead(addr)
 	return 2
 }
 
 func opLDAX_DE() int {
 	dasmOpReg("LDAX", "DE")
-	addr := deRead()
+	addr := getDE()
 	regs.A = memRead(addr)
 	return 2
 }
 
 //endregion
 
+//region STAX rp (Store accumulator indirect)
+
+//   ((rp)) <- (A)
+//   The content of register A is moved to the memory location whose address is in the register pair rp.
+//   00RP0010
+//   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: none
+
+func opSTAX_BC() int {
+	dasmOpReg("STAX", "BC")
+	addr := getBC()
+	memWrite(addr, regs.A)
+	return 2
+}
+
+func opSTAX_DE() int {
+	dasmOpReg("STAX", "DE")
+	addr := getDE()
+	memWrite(addr, regs.A)
+	return 2
+}
+
+//endregion
+
+//region XCHG (Exchange H and L with D and E)
+
+//   (H) <-> (D) ; (L) <-> (E)
+//   The contents of registers H and L are exchanged with the contents of registers D and E.
+//   11101011
+//   Cycles: 1  States: 4  Addressing: register  Flags: none
+
+func opXCHG() int {
+	dasmOp("XCHG")
+	r1 := regs.H
+	regs.H = regs.D
+	regs.D = r1
+	r2 := regs.L
+	regs.L = regs.E
+	regs.E = r2
+	return 1
+}
+
+//endregion
+
 // ********** Arithmetic Group **********
 // This group of instructions performs arithmetic operations on data in registers and memory.
-// Unless indicated otherwise, all instructions in this group affect the flags accord ing to the standard rules.
+// Unless indicated otherwise, all instructions in this group affect the flags according to the standard rules.
+
+//region ADI data (Add immediate)
+
+//   (A) <- (A) + (byte 2)
+//   The content of the second byte of the instruction is added to the content of the accumulator. The result is placed in the
+//   accumulator.
+//   11000110
+//   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
+
+func opADI() int {
+	r := memRead(regs.PC+1)
+	dasmOpVal("ADI", r)
+	regs.A = add_CY(regs.A, r)
+	regs.PC++
+	return 2
+}
+
+//endregion
 
 //region INR r (Increment Register)
 
@@ -596,6 +745,12 @@ func opINR_H() int {
 func opINR_L() int {
 	dasmOpReg("INR", "L")
 	regs.L = add(regs.L, 1)
+	return 1
+}
+
+func opINR_A() int {
+	dasmOpReg("INR", "A")
+	regs.A = add(regs.A, 1)
 	return 1
 }
 
@@ -644,6 +799,12 @@ func opDCR_L() int {
 	return 1
 }
 
+func opDCR_A() int {
+	dasmOpReg("DCR", "A")
+	regs.A = sub(regs.A, 1)
+	return 1
+}
+
 //endregion
 
 //region INX rp (Increment register pair)
@@ -655,25 +816,25 @@ func opDCR_L() int {
 
 func opINX_BC() int {
 	dasmOpReg("INX", "BC")
-	addr := bcRead()
+	addr := getBC()
 	addr++
-	bcWrite(addr)
+	setBC(addr)
 	return 1
 }
 
 func opINX_DE() int {
 	dasmOpReg("INX", "DE")
-	addr := deRead()
+	addr := getDE()
 	addr++
-	deWrite(addr)
+	setDE(addr)
 	return 1
 }
 
 func opINX_HL() int {
 	dasmOpReg("INX", "HL")
-	addr := hlRead()
+	addr := getHL()
 	addr++
-	hlWrite(addr)
+	setHL(addr)
 	return 1
 }
 
@@ -694,31 +855,318 @@ func opINX_SP() int {
 
 func opDCX_BC() int {
 	dasmOpReg("DCX", "BC")
-	addr := bcRead()
+	addr := getBC()
 	addr--
-	bcWrite(addr)
+	setBC(addr)
 	return 1
 }
 
 func opDCX_DE() int {
 	dasmOpReg("DCX", "DE")
-	addr := deRead()
+	addr := getDE()
 	addr--
-	deWrite(addr)
+	setDE(addr)
 	return 1
 }
 
 func opDCX_HL() int {
 	dasmOpReg("DCX", "HL")
-	addr := hlRead()
+	addr := getHL()
 	addr--
-	hlWrite(addr)
+	setHL(addr)
 	return 1
 }
 
 func opDCX_SP() int {
 	dasmOpReg("DCX", "SP")
 	regs.SP--
+	return 1
+}
+
+//endregion
+
+//region DAD rp (Add register pair to H and L)
+
+//   (H) (L) <- (H) (L) + (rh) (rl)
+//   The content of the register pair rp is added to the content of the register pair H and L. The result is placed in the register
+//   pair H and L. Note: Only the CY flag is affected. It is set if there is a carry out of the double precision add; otherwise it
+//   is reset.
+//   00RP1001
+//   Cycles: 3  States: 10  Addressing: register  Flags: CY
+
+func opDAD_BC() int {
+	dasmOpReg("DAD", "BC")
+	addr := getHL()
+	addr += getBC()
+	// todo flag CY
+	setHL(addr)
+	return 3
+}
+
+func opDAD_DE() int {
+	dasmOpReg("DAD", "DE")
+	addr := getHL()
+	addr += getDE()
+	// todo flag CY
+	setHL(addr)
+	return 3
+}
+
+func opDAD_HL() int {
+	dasmOpReg("DAD", "HL")
+	addr := getHL()
+	addr += addr
+	// todo flag CY
+	setHL(addr)
+	return 3
+}
+
+func opDAD_SP() int {
+	dasmOpReg("DAD", "SP")
+	addr := getHL()
+	addr += regs.SP
+	// todo flag CY
+	setHL(addr)
+	return 3
+}
+
+//endregion
+
+// ********** Logical Group **********
+// This group of instructions performs logical (Boolean) operations on data in registers and memory and on condition flags.
+// Unless indicated otherwise, all instructions in this group affect the flags according to the standard rules.
+
+//region ANA r (AND Register)
+
+//   (A) <- (A) ^ (r)
+//   The content of the second byte of the instruction is logically anded with the contents of the accumulator.
+//   The result is placed in the accumulator. The CY and AC flags are cleared.
+//   11100SSS
+//   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
+
+func opANA_B() int {
+	dasmOpReg("ANA", "B")
+	regs.A = regs.A & regs.B
+	sub(regs.A, regs.B) // flags Z,S,P & AC
+	flags.CY = false
+	return 1
+}
+
+func opANA_C() int {
+	dasmOpReg("ANA", "C")
+	regs.A = regs.A & regs.C
+	sub(regs.A, regs.C) // flags Z,S,P & AC
+	flags.CY = false
+	return 1
+}
+
+func opANA_D() int {
+	dasmOpReg("ANA", "D")
+	regs.A = regs.A & regs.D
+	sub(regs.A, regs.D) // flags Z,S,P & AC
+	flags.CY = false
+	return 1
+}
+
+func opANA_E() int {
+	dasmOpReg("ANA", "E")
+	regs.A = regs.A & regs.E
+	sub(regs.A, regs.E) // flags Z,S,P & AC
+	flags.CY = false
+	return 1
+}
+
+func opANA_H() int {
+	dasmOpReg("ANA", "H")
+	regs.A = regs.A & regs.H
+	sub(regs.A, regs.H) // flags Z,S,P & AC
+	flags.CY = false
+	return 1
+}
+
+func opANA_L() int {
+	dasmOpReg("ANA", "L")
+	regs.A = regs.A & regs.L
+	sub(regs.A, regs.L) // flags Z,S,P & AC
+	flags.CY = false
+	return 1
+}
+
+func opANA_A() int {
+	dasmOpReg("ANA", "A")
+	regs.A = regs.A & regs.A
+	sub(regs.A, regs.A) // flags Z,S,P & AC
+	flags.CY = false
+	return 1
+}
+
+//endregion
+
+//region ANA M (AND memory)
+
+//   (A) <- (A) ^ ((H) (L))
+//   The contents of the memory location whose address is contained in the H and L registers is logically anded with the content of
+//   the accumulator. The result is placed in the accumulator. The CY flag is cleared.
+//   11100110
+//   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
+
+func opANA_M() int {
+	addr := getHL()
+	dasmOpAddr("ANA", addr)
+	v := memRead(addr)
+	regs.A = regs.A & v
+	sub(regs.A, v) // flags Z,S,P & AC
+	flags.CY = false
+	return 2
+}
+
+//endregion
+
+//region ANI data (AND immediate)
+
+//   (A) <- (A) ^ (byte 2)
+//   The content of the second byte of the instruction is logically anded with the contents of the accumulator.
+//   The result is placed in the accumulator. The CY and AC flags are cleared.
+//   11100110
+//   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
+
+func opANI() int {
+	r := memRead(regs.PC+1)
+	dasmOpVal("ANI", r)
+	regs.A = regs.A & r
+	flags_Z_S_P(regs.A)
+	flags.AC = false
+	flags.CY = false
+	regs.PC++
+	return 2
+}
+
+//endregion
+
+//region XRA r (Exclusive OR register)
+
+//   (A) <- (A) Y (r)
+//   The content of register r is exclusive-or'd with the content of the accumulator. The result is placed in the accumulator.
+//   The CY and AC flags are cleared.
+//   10101SSS
+//   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
+
+func opXRA_B() int {
+	dasmOpReg("XRA", "B")
+	regs.A = regs.A ^ regs.B
+	flags_Z_S_P(regs.A)
+	flags.AC = false
+	flags.CY = false
+	return 2
+}
+
+func opXRA_C() int {
+	dasmOpReg("XRA", "C")
+	regs.A = regs.A ^ regs.C
+	flags_Z_S_P(regs.A)
+	flags.AC = false
+	flags.CY = false
+	return 2
+}
+
+func opXRA_D() int {
+	dasmOpReg("XRA", "D")
+	regs.A = regs.A ^ regs.D
+	flags_Z_S_P(regs.A)
+	flags.AC = false
+	flags.CY = false
+	return 2
+}
+
+func opXRA_E() int {
+	dasmOpReg("XRA", "E")
+	regs.A = regs.A ^ regs.E
+	flags_Z_S_P(regs.A)
+	flags.AC = false
+	flags.CY = false
+	return 2
+}
+
+func opXRA_H() int {
+	dasmOpReg("XRA", "H")
+	regs.A = regs.A ^ regs.H
+	flags_Z_S_P(regs.A)
+	flags.AC = false
+	flags.CY = false
+	return 2
+}
+
+func opXRA_L() int {
+	dasmOpReg("XRA", "L")
+	regs.A = regs.A ^ regs.L
+	flags_Z_S_P(regs.A)
+	flags.AC = false
+	flags.CY = false
+	return 2
+}
+
+func opXRA_A() int {
+	dasmOpReg("XRA", "A")
+	regs.A = regs.A ^ regs.A
+	flags_Z_S_P(regs.A)
+	flags.AC = false
+	flags.CY = false
+	return 2
+}
+
+//endregion
+
+//region XRA M (Exclusive OR Memory)
+
+//   (A) <- (A) Y ((H) (L))
+//   The content of the memory location whose address is contained in the H and L registers is exclusive-OR'd with the content of
+//   the accumulator. The result is placed in the accumulator. The CY and AC flags are cleared.
+//   10101110
+//   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
+
+func opXRA_M() int {
+	addr := getHL()
+	dasmOpAddr("XRA", addr)
+	regs.A = regs.A ^ memRead(addr)
+	flags_Z_S_P(regs.A)
+	flags.AC = false
+	flags.CY = false
+	return 2
+}
+
+// endregion
+
+//region CPI data (Compare immediate)
+
+//   (A) - (byte 2)
+//   The content of the second byte of the instruction is subtracted from the accumulator. The condition flags are set by the
+//   result of the subtraction. The Z flag is set to 1 if (A) = (byte 2). The CY flag is set to 1 if (A) < (byte 2).
+//   11111110
+//   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
+
+func opCPI() int {
+	r := memRead(regs.PC+1)
+	dasmOpVal("CPI", r)
+	sub_CY(regs.A, r)
+	regs.PC++
+	return 2
+}
+
+//endregion
+
+//region RRC (Rotate right)
+
+//   (An) <- (An-1) ; (A7) <- (A0) ; (CY) <- (A0)
+//   The content of the accumulator is rotated right one position. The high order bit and the CY flag are both set to the value
+//   shifted out of the low order bit position. Only the CY flag is affected.
+//   00001111
+//   Cycles: 1  States: 4  Flags: CY
+
+func opRRC() int {
+	dasmOp("RRC")
+	a0 := regs.A & 0x01
+	regs.A = (regs.A>>1 & 0x7f) | a0<<7
+	flags.CY = a0 != 0
 	return 1
 }
 
@@ -736,7 +1184,7 @@ func opDCX_SP() int {
 //   Cycles: 3  States: 10  Addressing: immediate  Flags: none
 
 func opJMP() int {
-	addr := binary.LittleEndian.Uint16(rom[regs.PC+1:])
+	addr := memRead16(regs.PC+1)
 	dasmOpAddr("JMP", addr)
 	regs.PC = addr
 	regs.PC--
@@ -755,7 +1203,7 @@ func opJMP() int {
 //   Cycles: 3  States: 10  Addressing: immediate  Flags: none
 
 func opJNZ() int {
-	addr := binary.LittleEndian.Uint16(rom[regs.PC+1:])
+	addr := memRead16(regs.PC+1)
 	dasmOpAddr("JNZ", addr)
 	if !flags.Z {
 		regs.PC = addr
@@ -767,7 +1215,7 @@ func opJNZ() int {
 }
 
 func opJZ() int {
-	addr := binary.LittleEndian.Uint16(rom[regs.PC+1:])
+	addr := memRead16(regs.PC+1)
 	dasmOpAddr("JZ", addr)
 	if flags.Z {
 		regs.PC = addr
@@ -779,7 +1227,7 @@ func opJZ() int {
 }
 
 func opJNC() int {
-	addr := binary.LittleEndian.Uint16(rom[regs.PC+1:])
+	addr := memRead16(regs.PC+1)
 	dasmOpAddr("JNC", addr)
 	if !flags.CY {
 		regs.PC = addr
@@ -791,7 +1239,7 @@ func opJNC() int {
 }
 
 func opJC() int {
-	addr := binary.LittleEndian.Uint16(rom[regs.PC+1:])
+	addr := memRead16(regs.PC+1)
 	dasmOpAddr("JC", addr)
 	if flags.CY {
 		regs.PC = addr
@@ -803,7 +1251,7 @@ func opJC() int {
 }
 
 func opJPO() int {
-	addr := binary.LittleEndian.Uint16(rom[regs.PC+1:])
+	addr := memRead16(regs.PC+1)
 	dasmOpAddr("JPO", addr)
 	if !flags.P {
 		regs.PC = addr
@@ -815,7 +1263,7 @@ func opJPO() int {
 }
 
 func opJPE() int {
-	addr := binary.LittleEndian.Uint16(rom[regs.PC+1:])
+	addr := memRead16(regs.PC+1)
 	dasmOpAddr("JPE", addr)
 	if flags.P {
 		regs.PC = addr
@@ -827,7 +1275,7 @@ func opJPE() int {
 }
 
 func opJP() int {
-	addr := binary.LittleEndian.Uint16(rom[regs.PC+1:])
+	addr := memRead16(regs.PC+1)
 	dasmOpAddr("JP", addr)
 	if !flags.S {
 		regs.PC = addr
@@ -839,7 +1287,7 @@ func opJP() int {
 }
 
 func opJM() int {
-	addr := binary.LittleEndian.Uint16(rom[regs.PC+1:])
+	addr := memRead16(regs.PC+1)
 	dasmOpAddr("JM", addr)
 	if flags.S {
 		regs.PC = addr
@@ -863,11 +1311,10 @@ func opJM() int {
 //   Cycles: 5  States: 17  Addressing: immediate/reg. indirect  Flags: none
 
 func opCALL() int {
-	addr := binary.LittleEndian.Uint16(rom[regs.PC+1:])
+	addr := memRead16(regs.PC+1)
 	dasmOpAddr("CALL", addr)
-	nextAddr := regs.PC+3
-	memWrite(regs.SP-1, uint8(nextAddr>>8))
-	memWrite(regs.SP-2, uint8(nextAddr))
+	nextOp := regs.PC+3
+	memWrite16(regs.SP-2, nextOp)
 	regs.SP -= 2
 	regs.PC = addr
 	regs.PC--
@@ -886,12 +1333,12 @@ func opCALL() int {
 //   Cycles: 3  States: 10  Addressing: reg. indirect  Flags: none
 
 func opRET() int {
+	//trace()
 	dasmOp("RET")
-	pcl := memRead(regs.SP)
-	pch := memRead(regs.SP+1)
-	regs.PC = uint16(pcl) | uint16(pch)<<8
+	regs.PC = memRead16(regs.SP)
 	regs.SP += 2
 	regs.PC--
+	//breakpoint = true
 	return 5
 }
 
@@ -900,6 +1347,148 @@ func opRET() int {
 // ********** Stack, I/O, and Machine Control Group **********
 // This group of instructions performs I/O, manipulates the Stack, and alters internal control flags.
 // Unless otherwise specified, condition flags are not affected by any instructions in this group.
+
+//region PUSH rp (Push)
+
+//   ((SP) - 1) <- (rh) ; ((SP) - 2) <- (rl) ; (SP) <- (SP) - 2
+//   The content of the high-order register of register pair rp is moved to the memory location whose address is one less than the
+//   content of register SP. The content of the low-order register of register pair rp is moved to the memory location whose
+//   address is two less than the content of register SP. The of register SP is decremented by 2.
+//   11RP0101
+//   Cycles: 3  States: 11  Addressing: reg. indirect  Flags: none
+
+func opPUSH_BC() int {
+	dasmOpReg("PUSH", "BC")
+	memWrite(regs.SP-1, regs.B)
+	memWrite(regs.SP-2, regs.C)
+	regs.SP -= 2
+	return 3
+}
+
+func opPUSH_DE() int {
+	dasmOpReg("PUSH", "DE")
+	memWrite(regs.SP-1, regs.D)
+	memWrite(regs.SP-2, regs.E)
+	regs.SP -= 2
+	return 3
+}
+
+func opPUSH_HL() int {
+	dasmOpReg("PUSH", "HL")
+	memWrite(regs.SP-1, regs.H)
+	memWrite(regs.SP-2, regs.L)
+	regs.SP -= 2
+	return 3
+}
+
+//endregion
+
+//region PUSH PSW (Push processor status word)
+
+//   ((SP) - 1) <- (A) ; ((SP) - 2) <- (flags) ; (SP) <- (SP) - 2
+//   The content of register A is moved to the memory location whose address is one less than register SP. The contents of the
+//   condition flags are assembled into a processor status word and the word is moved to the memory location whose address is two
+//   less than the content of register SP. The content of register SP is decremented by two.
+//   11110101
+//   Cycles: 3  States: 11  Addressing: reg. indirect  Flags: none
+
+func opPUSH_PSW() int {
+	dasmOpReg("PUSH", "PSW")
+	memWrite(regs.SP-1, regs.A)
+	memWrite(regs.SP-2, getFlags())
+	regs.SP -= 2
+	return 3
+}
+
+//endregion
+
+//region POP rp (Pop)
+
+//   (rl) <- ((SP)) ; (rh) <- ((SP) + 1) ; (SP) <- (SP) + 2
+//   The content of the memory location, whose address is specified by the content of register SP, is moved to the low-order
+//   register of register pair rp. The content of the memory location, whose address is one more than the content of register SP,
+//   is moved to the high-order register of register pair rp. The content of register SP is incremented by 2.
+//   11RP0001
+//   Cycles: 3  States: 11  Addressing: reg. indirect  Flags: none
+
+func opPOP_BC() int {
+	dasmOpReg("POP", "BC")
+	regs.C = memRead(regs.SP)
+	regs.B = memRead(regs.SP+1)
+	regs.SP += 2
+	return 3
+}
+
+func opPOP_DE() int {
+	dasmOpReg("POP", "DE")
+	regs.E = memRead(regs.SP)
+	regs.D = memRead(regs.SP+1)
+	regs.SP += 2
+	return 3
+}
+
+func opPOP_HL() int {
+	dasmOpReg("POP", "HL")
+	regs.L = memRead(regs.SP)
+	regs.H = memRead(regs.SP+1)
+	regs.SP += 2
+	return 3
+}
+
+//endregion
+
+//region POP PSW (Pop processor status word)
+
+//   (flags) <- ((SP)) ; (A) <- ((SP) + 1) ; (SP) <- (SP) + 2
+//   The content of the memory location whose address is specified by the content of register SP is used to restore the condition
+//   flags. The content of the memory location whose address is one more than the content of register SP is moved to register A.
+//   The content of register SP is incremented by 2.
+//   11110001
+//   Cycles: 3  States: 10  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
+
+func opPOP_PSW() int {
+	dasmOpReg("POP", "PSW")
+	setFlags(memRead(regs.SP))
+	regs.A = memRead(regs.SP+1)
+	regs.SP += 2
+	return 3
+}
+
+//endregion
+
+//region OUT port (Output)
+
+//   (data) <- (A)
+//   The content of register A is placed on the eight bit bi-directional data bus for transmission to the specified port.
+//   11010011
+//   Cycles: 3  States: 10  Addressing: direct  Flags: none
+
+func opOUT() int {
+	port := memRead(regs.PC+1)
+	dasmOpVal("OUT", port)
+	if port == 0x02 || port == 0x04 {
+		log.Fatal("16 bit shift register")
+	}
+	//fixme
+	regs.PC++
+	return 3
+}
+
+//endregion
+
+//region EI (Enable interrupts)
+
+//   The interrupt system is enabled following the execution of the next instruction.
+//   11111011
+//   Cycles: 1  States: 4  Flags: none
+
+func opEI() int {
+	dasmOp("EI")
+	//fixme
+	return 1
+}
+
+//endregion
 
 //region NOP (No op)
 

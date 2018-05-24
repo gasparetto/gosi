@@ -50,6 +50,7 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 	"gosi/videocards"
 	"gosi/processors"
+	"strconv"
 )
 
 func main() {
@@ -62,7 +63,7 @@ func main() {
 	defer sdl.Quit()
 
 	window, err := sdl.CreateWindow("GOSI", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
-		224, 256, sdl.WINDOW_SHOWN)
+		256, 224, sdl.WINDOW_SHOWN)
 	if err != nil {
 		panic(err)
 	}
@@ -84,7 +85,7 @@ func main() {
 
 	var cpu = new(processors.I8085)
 
-	var vdc = new(videocards.DisplayController)
+	var vdc = new(videocards.SdlDisplayController)
 	vdc.Renderer(renderer)
 
 	cpu.AttachRom(buffer.Bytes(), 0x0000)
@@ -93,34 +94,79 @@ func main() {
 	cpu.AttachRam(ram, 0x2000)
 	vdc.AttachRam(ram[0x0400:])
 
+	mainLoop(cpu, vdc)
+	//debugLoop(cpu, vdc)
+
+	fmt.Println("> end")
+}
+
+func mainLoop(cpu processors.Cpu, vdc videocards.DisplayController) {
+
 	cycles := 0
 
 	running := true
 	for running {
+
 		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
-			switch event.(type) {
+			switch t := event.(type) {
 			case *sdl.QuitEvent:
 				running = false
 				break
+			case *sdl.KeyboardEvent:
+				if t.Type == sdl.KEYDOWN && t.Keysym.Sym == sdl.K_ESCAPE {
+					running = false
+					break
+				}
 			}
 		}
 
 		cycles += cpu.Step()
-		fmt.Printf("cycles: %d\n", cycles)
-
 		if cycles > 12000 { //fixme 12000
 
 			vdc.Render()
-
 			//window.UpdateSurface()
 
 			cycles = 0
+		}
 
-			//log.Fatal("quit")
+		if cpu.Breakpoint() {
+			fmt.Println("--- Stopped at breakpoint ---")
+			cpu.DasmTrace()
+			//vdc.DasmTrace()
+			debugLoop(cpu, vdc)
 		}
 	}
+}
 
-	fmt.Println("> end")
+func debugLoop(cpu processors.Cpu, vdc videocards.DisplayController) {
+
+	running := true
+	for running {
+
+		event := sdl.WaitEvent()
+		switch t := event.(type) {
+		case *sdl.QuitEvent:
+			running = false
+			break
+		case *sdl.KeyboardEvent:
+			if t.Type == sdl.KEYDOWN {
+				if t.Keysym.Sym == sdl.K_ESCAPE {
+					running = false
+					break
+				}
+				count := getIntFromKeycode(t.Keysym.Sym)
+				for i := 0; i < count; i++ {
+					cpu.Step()
+				}
+				if count > 0 {
+					cpu.DasmTrace()
+					vdc.Render()
+					//window.UpdateSurface()
+				}
+			}
+			break
+		}
+	}
 }
 
 func read(name string, buffer *bytes.Buffer) {
@@ -134,4 +180,28 @@ func read(name string, buffer *bytes.Buffer) {
 	defer filerc.Close()
 
 	buffer.ReadFrom(filerc)
+}
+
+func getIntFromKeycode(kc sdl.Keycode) int {
+	if kc == sdl.K_z {
+		return 100
+	}
+	if kc == sdl.K_x {
+		return 500
+	}
+	if kc == sdl.K_c {
+		return 1000
+	}
+	if kc == sdl.K_v {
+		return 5000
+	}
+	if kc == sdl.K_b {
+		return 10000
+	}
+	keyName := sdl.GetKeyName(kc)
+	digit, err := strconv.ParseInt(keyName, 10, 8)
+	if err != nil {
+		return 0
+	}
+	return int(digit)
 }

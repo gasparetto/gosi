@@ -6,4 +6,8 @@ type Cpu interface {
 	AttachRom(buf []byte, offset uint16)
 
 	Step() int
+
+	DasmTrace()
+
+	Breakpoint() bool
 }
