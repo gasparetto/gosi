@@ -1,4 +1,4 @@
-package cpu
+package processors
 
 import (
 	"fmt"
@@ -62,4 +62,11 @@ func dasmOp(op string) {
 
 func print(message string) {
 	fmt.Printf("0x%04x   %s\n", regs.PC, message)
+}
+
+func trace() {
+	fmt.Printf("> SP = %04x   mem = %02x %02x [%02x] %02x %02x\n",
+		regs.SP, memRead(regs.SP-2), memRead(regs.SP-1), memRead(regs.SP), memRead(regs.SP+1), memRead(regs.SP+2))
+	fmt.Printf("> PC = %04x   mem = %02x %02x [%02x] %02x %02x\n",
+		regs.PC, memRead(regs.PC-2), memRead(regs.PC-1), memRead(regs.PC), memRead(regs.PC+1), memRead(regs.PC+2))
 }

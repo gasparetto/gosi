@@ -3,7 +3,7 @@
 	https://github.com/mamedev/mame/blob/master/src/devices/cpu/i8085/i8085.cpp
 */
 
-package cpu
+package processors
 
 import (
 	"fmt"
@@ -47,220 +47,249 @@ func (I8085) AttachRom(buf []byte, offset uint16) {
 	romEnd = offset + uint16(len(buf)) - 1
 }
 
-func (I8085) Step() {
+func (I8085) Step() int {
 
 	op := rom[regs.PC]
+	cycles := 0
 
 	switch op {
 
 	case 0x00:
-		opNOP()
+		cycles += opNOP()
 	case 0x01:
-		opLXI_BC_data16()
+		cycles += opLXI_BC_data16()
 	case 0x03:
-		opINX_BC()
+		cycles += opINX_BC()
 	case 0x04:
-		opINR_B()
+		cycles += opINR_B()
 	case 0x05:
-		opDCR_B()
+		cycles += opDCR_B()
 	case 0x06:
-		opMVI_B_data()
+		cycles += opMVI_B_data()
 	case 0x0a:
-		opLDAX_BC()
+		cycles += opLDAX_BC()
 	case 0x0b:
-		opDCX_BC()
+		cycles += opDCX_BC()
 	case 0x0c:
-		opINR_C()
+		cycles += opINR_C()
 	case 0x0d:
-		opDCR_C()
+		cycles += opDCR_C()
 	case 0x0e:
-		opMVI_C_data()
+		cycles += opMVI_C_data()
 	case 0x11:
-		opLXI_DE_data16()
+		cycles += opLXI_DE_data16()
 	case 0x13:
-		opINX_DE()
+		cycles += opINX_DE()
 	case 0x14:
-		opINR_D()
+		cycles += opINR_D()
 	case 0x15:
-		opDCR_D()
+		cycles += opDCR_D()
 	case 0x16:
-		opMVI_D_data()
+		cycles += opMVI_D_data()
 	case 0x1a:
-		opLDAX_DE()
+		cycles += opLDAX_DE()
 	case 0x1b:
-		opDCX_DE()
+		cycles += opDCX_DE()
 	case 0x1c:
-		opINR_D()
+		cycles += opINR_E()
 	case 0x1d:
-		opDCR_D()
+		cycles += opDCR_E()
 	case 0x1e:
-		opMVI_E_data()
+		cycles += opMVI_E_data()
 	case 0x21:
-		opLXI_HL_data16()
+		cycles += opLXI_HL_data16()
 	case 0x23:
-		opINX_HL()
+		cycles += opINX_HL()
 	case 0x24:
-		opINR_H()
+		cycles += opINR_H()
 	case 0x25:
-		opDCR_H()
+		cycles += opDCR_H()
 	case 0x26:
-		opMVI_H_data()
+		cycles += opMVI_H_data()
 	case 0x2b:
-		opDCX_HL()
+		cycles += opDCX_HL()
 	case 0x2c:
-		opINR_L()
+		cycles += opINR_L()
 	case 0x2d:
-		opDCR_L()
+		cycles += opDCR_L()
 	case 0x2e:
-		opMVI_L_data()
+		cycles += opMVI_L_data()
 	case 0x31:
-		opLXI_SP_data16()
+		cycles += opLXI_SP_data16()
+	case 0x32:
+		cycles += opSTA() //fixme
 	case 0x33:
-		opINX_SP()
+		cycles += opINX_SP()
 	case 0x36:
-		opMVI_M_data()
+		cycles += opMVI_M_data()
+	case 0x3a:
+		cycles += opLDA()
 	case 0x3b:
-		opDCX_SP()
+		cycles += opDCX_SP()
 	case 0x40:
-		opMOV_B_B()
+		cycles += opMOV_B_B()
 	case 0x41:
-		opMOV_C_B()
+		cycles += opMOV_C_B()
 	case 0x42:
-		opMOV_D_B()
+		cycles += opMOV_D_B()
 	case 0x43:
-		opMOV_E_B()
+		cycles += opMOV_E_B()
 	case 0x44:
-		opMOV_H_B()
+		cycles += opMOV_H_B()
 	case 0x45:
-		opMOV_L_B()
+		cycles += opMOV_L_B()
 	case 0x46:
-		opMOV_B_M()
+		cycles += opMOV_B_M()
 	case 0x48:
-		opMOV_B_C()
+		cycles += opMOV_B_C()
 	case 0x49:
-		opMOV_C_C()
+		cycles += opMOV_C_C()
 	case 0x4a:
-		opMOV_D_C()
+		cycles += opMOV_D_C()
 	case 0x4b:
-		opMOV_E_C()
+		cycles += opMOV_E_C()
 	case 0x4c:
-		opMOV_H_C()
+		cycles += opMOV_H_C()
 	case 0x4d:
-		opMOV_L_C()
+		cycles += opMOV_L_C()
 	case 0x4e:
-		opMOV_C_M()
+		cycles += opMOV_C_M()
 	case 0x50:
-		opMOV_B_D()
+		cycles += opMOV_B_D()
 	case 0x51:
-		opMOV_C_D()
+		cycles += opMOV_C_D()
 	case 0x52:
-		opMOV_D_D()
+		cycles += opMOV_D_D()
 	case 0x53:
-		opMOV_E_D()
+		cycles += opMOV_E_D()
 	case 0x54:
-		opMOV_H_D()
+		cycles += opMOV_H_D()
 	case 0x55:
-		opMOV_L_D()
+		cycles += opMOV_L_D()
 	case 0x56:
-		opMOV_D_M()
+		cycles += opMOV_D_M()
 	case 0x58:
-		opMOV_B_E()
+		cycles += opMOV_B_E()
 	case 0x59:
-		opMOV_C_E()
+		cycles += opMOV_C_E()
 	case 0x5a:
-		opMOV_D_E()
+		cycles += opMOV_D_E()
 	case 0x5b:
-		opMOV_E_E()
+		cycles += opMOV_E_E()
 	case 0x5c:
-		opMOV_H_E()
+		cycles += opMOV_H_E()
 	case 0x5d:
-		opMOV_L_E()
+		cycles += opMOV_L_E()
 	case 0x5e:
-		opMOV_E_M()
+		cycles += opMOV_E_M()
 	case 0x60:
-		opMOV_B_H()
+		cycles += opMOV_B_H()
 	case 0x61:
-		opMOV_C_H()
+		cycles += opMOV_C_H()
 	case 0x62:
-		opMOV_D_H()
+		cycles += opMOV_D_H()
 	case 0x63:
-		opMOV_E_H()
+		cycles += opMOV_E_H()
 	case 0x64:
-		opMOV_H_H()
+		cycles += opMOV_H_H()
 	case 0x65:
-		opMOV_L_H()
+		cycles += opMOV_L_H()
 	case 0x66:
-		opMOV_H_M()
+		cycles += opMOV_H_M()
 	case 0x68:
-		opMOV_B_L()
+		cycles += opMOV_B_L()
 	case 0x69:
-		opMOV_C_L()
+		cycles += opMOV_C_L()
 	case 0x6a:
-		opMOV_D_L()
+		cycles += opMOV_D_L()
 	case 0x6b:
-		opMOV_E_L()
+		cycles += opMOV_E_L()
 	case 0x6c:
-		opMOV_H_L()
+		cycles += opMOV_H_L()
 	case 0x6d:
-		opMOV_L_L()
+		cycles += opMOV_L_L()
 	case 0x6e:
-		opMOV_L_M()
+		cycles += opMOV_L_M()
 	case 0x70:
-		opMOV_M_B()
+		cycles += opMOV_M_B()
 	case 0x71:
-		opMOV_M_C()
+		cycles += opMOV_M_C()
 	case 0x72:
-		opMOV_M_D()
+		cycles += opMOV_M_D()
 	case 0x73:
-		opMOV_M_E()
+		cycles += opMOV_M_E()
 	case 0x74:
-		opMOV_M_H()
+		cycles += opMOV_M_H()
 	case 0x75:
-		opMOV_M_L()
+		cycles += opMOV_M_L()
 	case 0x77:
-		opMOV_M_A()
+		cycles += opMOV_M_A()
 	case 0x7e:
-		opMOV_A_M()
+		cycles += opMOV_A_M()
+	case 0xc2:
+		cycles += opJNZ()
 	case 0xc3:
-		opJMP()
+		cycles += opJMP()
+	case 0xc9:
+		cycles += opRET()
+	case 0xca:
+		cycles += opJZ()
 	case 0xcd:
-		opCALL()
+		cycles += opCALL()
+	case 0xd2:
+		cycles += opJNC()
+	case 0xda:
+		cycles += opJC()
+	case 0xe2:
+		cycles += opJPO()
+	case 0xea:
+		cycles += opJPE()
+	case 0xf2:
+		cycles += opJP()
+	case 0xfa:
+		cycles += opJM()
 	default:
 		log.Fatalf("ERROR: Unknown opcode 0x%02x\n", op)
 	}
 
 	regs.PC++
+
+	return cycles
 }
 
-func bcSet(addr uint16) {
-	regs.C = uint8(addr)
-	regs.B = uint8(addr >> 8)
+func bcWrite(v uint16) {
+	regs.C = uint8(v)
+	regs.B = uint8(v >> 8)
 }
 
-func bcGet() uint16 {
+func bcRead() uint16 {
 	return uint16(regs.C) | uint16(regs.B)<<8
 }
 
-func deSet(addr uint16) {
-	regs.E = uint8(addr)
-	regs.D = uint8(addr >> 8)
+func deWrite(v uint16) {
+	regs.E = uint8(v)
+	regs.D = uint8(v >> 8)
 }
 
-func deGet() uint16 {
+func deRead() uint16 {
 	return uint16(regs.E) | uint16(regs.D)<<8
 }
 
-func hlSet(addr uint16) {
-	regs.L = uint8(addr)
-	regs.H = uint8(addr >> 8)
+func hlWrite(v uint16) {
+	regs.L = uint8(v)
+	regs.H = uint8(v >> 8)
 }
 
-func hlGet() uint16 {
+func hlRead() uint16 {
 	return uint16(regs.L) | uint16(regs.H)<<8
 }
 
-func ramSet(addr uint16, v uint8) {
+func memWrite(addr uint16, v uint8) {
 	switch {
+	case addr == 0x0002 || addr == 0x0004:
+		log.Fatal("Attempted write to MB14241 shifter")
+	//case inBetween(addr, 0x2400, 0x4000):
+	//	log.Fatal("Attempted write to video memory")
 	case inBetween(addr, ramStart, ramEnd):
 		ram[addr-ramStart] = v
 	case inBetween(addr, romStart, romEnd):
@@ -270,15 +299,18 @@ func ramSet(addr uint16, v uint8) {
 	}
 }
 
-func ramGet(addr uint16) uint8 {
+func memRead(addr uint16) uint8 {
 	switch {
+	case addr == 0x0003:
+		log.Fatal("Attempted read from MB14241 shifter")
+		return 0
 	case inBetween(addr, ramStart, ramEnd):
 		return ram[addr-ramStart]
 	case inBetween(addr, romStart, romEnd):
 		return rom[addr-romStart]
 	default:
 		log.Fatal("Attempted read to unknown memory")
-		return 0x0000
+		return 0
 	}
 }
 

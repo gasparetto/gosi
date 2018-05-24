@@ -1,8 +1,14 @@
 /*
 	https://github.com/a8m/go-lang-cheat-sheet
+	https://github.com/veandco/go-sdl2
 */
 
 /*
+	http://computerarcheology.com/Arcade/SpaceInvaders/Hardware.html
+	https://www.dorkbotpdx.org/blog/skinny/use_mames_debugger_to_reverse_engineer_and_extend_old_games
+
+	$ ./mame64 -window -nomaximize -debug roms/invaders.zip
+
 	https://github.com/mamedev/mame/blob/master/src/mame/machine/mw8080bw.cpp
 
 	Midway 8080-based black and white hardware
@@ -37,16 +43,36 @@
 package main
 
 import (
-	"fmt"
-	"os"
-	"log"
 	"bytes"
-	"./cpu"
+	"fmt"
+	"log"
+	"os"
+	"github.com/veandco/go-sdl2/sdl"
+	"gosi/videocards"
+	"gosi/processors"
 )
 
 func main() {
 
 	fmt.Println("> start")
+
+	if err := sdl.Init(sdl.INIT_EVERYTHING); err != nil {
+		panic(err)
+	}
+	defer sdl.Quit()
+
+	window, err := sdl.CreateWindow("GOSI", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
+		224, 256, sdl.WINDOW_SHOWN)
+	if err != nil {
+		panic(err)
+	}
+	defer window.Destroy()
+
+	renderer, err := sdl.CreateRenderer(window, 0, sdl.RENDERER_ACCELERATED)
+	if err != nil {
+		panic(err)
+	}
+	defer renderer.Destroy()
 
 	fmt.Println("> load buffer files")
 	buffer := new(bytes.Buffer)
@@ -56,15 +82,42 @@ func main() {
 	read("res/invaders/invaders.e", buffer)
 	fmt.Printf("> read %d bytes\n", buffer.Len())
 
-	var c = new(cpu.I8085)
+	var cpu = new(processors.I8085)
 
-	c.AttachRom(buffer.Bytes(), 0x0000)
+	var vdc = new(videocards.DisplayController)
+	vdc.Renderer(renderer)
 
-	c.AttachRam(make([]byte, 0x2000), 0x2000)
+	cpu.AttachRom(buffer.Bytes(), 0x0000)
 
-	for i := 0; i < 20; i++ {
+	ram := make([]byte, 0x2000)
+	cpu.AttachRam(ram, 0x2000)
+	vdc.AttachRam(ram[0x0400:])
 
-		c.Step()
+	cycles := 0
+
+	running := true
+	for running {
+		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
+			switch event.(type) {
+			case *sdl.QuitEvent:
+				running = false
+				break
+			}
+		}
+
+		cycles += cpu.Step()
+		fmt.Printf("cycles: %d\n", cycles)
+
+		if cycles > 12000 { //fixme 12000
+
+			vdc.Render()
+
+			//window.UpdateSurface()
+
+			cycles = 0
+
+			//log.Fatal("quit")
+		}
 	}
 
 	fmt.Println("> end")
