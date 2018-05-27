@@ -5,6 +5,7 @@ import (
 )
 
 var debug = false
+var trace = false
 
 func dasmOp(op string) {
 	if debug {
@@ -22,14 +23,14 @@ func printLine(message string) {
 	fmt.Printf("MB14241  %s\n", message)
 }
 
-func trace() {
-	if debug {
+func traceState() {
+	if trace {
 		fmt.Printf("> (count = %02x   data = %04x)\n", count, data)
 	}
 }
 
-func traceResult(result uint8) {
-	if debug {
+func traceStateAndResult(result uint8) {
+	if trace {
 		fmt.Printf("> (count = %02x   data = %04x   result = %02x)\n", count, data, result)
 	}
 }

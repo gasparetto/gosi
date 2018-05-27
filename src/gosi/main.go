@@ -123,7 +123,6 @@ func mainLoop(cpu processors.Cpu, vdc videocards.DisplayController) {
 		// breakpoints
 		if cpu.DebugBreakpoint() {
 			fmt.Println("--- Stopped at breakpoint ---")
-			cpu.DebugPrint()
 			vdc.Render()
 			//vdc.DasmTrace()
 			debugLoop(cpu, vdc)
@@ -169,7 +168,6 @@ func debugLoop(cpu processors.Cpu, vdc videocards.DisplayController) {
 					cpu.Step()
 				}
 				if count > 0 {
-					cpu.DebugPrint()
 					vdc.Render()
 				}
 			}

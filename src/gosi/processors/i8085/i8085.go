@@ -66,7 +66,9 @@ func (I8085) Step() int {
 
 	op := fetch()
 	fp := decode(op)
-	return execute(fp)
+	cycles := execute(fp)
+	traceState()
+	return cycles
 }
 
 func (I8085) Interrupt(op uint8) int {
@@ -78,16 +80,14 @@ func (I8085) Interrupt(op uint8) int {
 		interrupt = false
 
 		fp := decode(op)
-		return execute(fp)
+		cycles := execute(fp)
+		traceState()
+		return cycles
 	}
 	return 0
 }
 
-func (I8085) DebugPrint() {
-	trace()
-}
-
 func (I8085) DebugBreakpoint() bool {
-	//return debugPC == 0x0aa5
-	return false
+	return debugPC == 0x0ae1
+	//return false
 }

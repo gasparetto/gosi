@@ -8,18 +8,18 @@ var data uint16
 func (MB14241) WriteCount(v uint8) {
 	dasmOpVal("WriteCount", v)
 	count = v & 0x07
-	trace()
+	traceState()
 }
 
 func (MB14241) WriteData(v uint8) {
 	dasmOpVal("WriteData", v)
 	data = (uint16(v)<<7) | (data>>8)
-	trace()
+	traceState()
 }
 
 func (MB14241) ReadResult() uint8 {
 	dasmOp("ReadResult")
 	v := uint8(data >> (8 - count))
-	traceResult(v)
+	traceStateAndResult(v)
 	return v
 }

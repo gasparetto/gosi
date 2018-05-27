@@ -2547,14 +2547,14 @@ func flags_Z_S_P(v uint8) {
 }
 
 func evenParity(v uint8) bool {
-	b0 := v & 0x01
-	b1 := v & 0x02
-	b2 := v & 0x04
-	b3 := v & 0x08
-	b4 := v & 0x10
-	b5 := v & 0x20
-	b6 := v & 0x40
-	b7 := v & 0x80
+	b0 := btoi((v & 0x01) != 0)
+	b1 := btoi((v & 0x02) != 0)
+	b2 := btoi((v & 0x04) != 0)
+	b3 := btoi((v & 0x08) != 0)
+	b4 := btoi((v & 0x10) != 0)
+	b5 := btoi((v & 0x20) != 0)
+	b6 := btoi((v & 0x40) != 0)
+	b7 := btoi((v & 0x80) != 0)
 	r := b7 + b6 + b5 + b4 + b3 + b2 + b1 + b0
 	return (r & 0x01) == 0
 }

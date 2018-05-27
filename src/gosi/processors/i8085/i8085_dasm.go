@@ -5,6 +5,7 @@ import (
 )
 
 var debug = false
+var trace = false
 var debugPC uint16
 
 func dasmOpReg(op string, r string) {
@@ -76,12 +77,14 @@ func printLine(message string) {
 	//}
 }
 
-func trace() {
-	fmt.Printf("> PC = %04x   mem = %s\n", debugPC, traceMem(debugPC))
-	fmt.Printf("> SP = %04x   mem = %s\n", regs.SP, traceMem(regs.SP))
-	fmt.Printf("> regs A:%02x B:%02x C:%02x D:%02x E:%02x H:%02x L:%02x\n",
-		regs.A, regs.B, regs.C, regs.D, regs.E, regs.H, regs.L)
-	fmt.Printf("> flags Z:%t S:%t P:%t AC:%t CY:%t\n", flags.Z, flags.S, flags.P, flags.AC, flags.CY)
+func traceState() {
+	if trace {
+		fmt.Printf("> PC = %04x   mem = %s\n", debugPC, traceMem(debugPC))
+		fmt.Printf("> SP = %04x   mem = %s\n", regs.SP, traceMem(regs.SP))
+		fmt.Printf("> regs A:%02x B:%02x C:%02x D:%02x E:%02x H:%02x L:%02x\n",
+			regs.A, regs.B, regs.C, regs.D, regs.E, regs.H, regs.L)
+		fmt.Printf("> flags Z:%t S:%t P:%t AC:%t CY:%t\n", flags.Z, flags.S, flags.P, flags.AC, flags.CY)
+	}
 }
 
 func traceMem(addr uint16) string {

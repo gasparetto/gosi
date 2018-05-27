@@ -517,7 +517,7 @@ func decode(op uint8) func() int {
 		return opRST_7
 	}
 
-	trace()
+	traceState()
 	log.Fatalf("ERROR: Unknown opcode 0x%02x\n", op)
 	return nil
 }
