@@ -3,3 +3,10 @@
 *.iws
 *.iml
 *.ipr
+
+### Object files
+pkg/darwin_amd64/gosi/
+
+### 3dy party libraries
+src/github.com/
+pkg/darwin_amd64/github.com/

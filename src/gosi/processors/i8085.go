@@ -71,6 +71,6 @@ func (I8085) DebugPrint() {
 }
 
 func (I8085) DebugBreakpoint() bool {
-	//return debugPC == 0x9999
+	//return debugPC == 0x0aa5
 	return false
 }

@@ -5,7 +5,6 @@ GOSI :: GOlang Space Invaders emulator
 # GO lang
 
 https://github.com/a8m/go-lang-cheat-sheet
-https://github.com/veandco/go-sdl2
 
 
 # Midway 8080 black/white arcade machine
@@ -37,15 +36,18 @@ MW8080BW_MASTER_CLOCK 19968000
 MW8080BW_CPU_CLOCK    1996800   (MW8080BW_MASTER_CLOCK / 10)
 MW8080BW_PIXEL_CLOCK  4992000   (MW8080BW_MASTER_CLOCK / 4)
 MW8080BW_HTOTAL       320       (0x140)
+MW8080BW_HBEND        0         (0x000)
+MW8080BW_HBSTART      256       (0x100)
 MW8080BW_VTOTAL       262       (0x106)
+MW8080BW_VBEND        0         (0x000)
+MW8080BW_VBSTART      224       (0x0e0)
+MW8080BW_VCOUNTER_START_NO_VBLANK 32  (0x020)
+MW8080BW_VCOUNTER_START_VBLANK    218 (0x0da)
 MW8080BW_60HZ         59,541984 (MW8080BW_PIXEL_CLOCK / MW8080BW_HTOTAL / MW8080BW_VTOTAL)
 MW8080BW_INT_TRIGGER_COUNT_1 128 (0x080)
 MW8080BW_INT_TRIGGER_COUNT_2 218 (0x0da)
 
-10/4=2,5
-
-96*320=24576 -> /2,5=9830
-224*320=57344 -> /2,5=22937
+10 cpu cycles / 4 pixel cycles = 2,5
 
 128*320=40960 -> /2,5=16384
 218*320=69760 -> /2,5=27904
@@ -77,4 +79,4 @@ https://github.com/mamedev/mame/blob/master/src/devices/cpu/i8085/i8085.cpp
 
 # SDL library
 
-https://github.com/faiface/pixel
+https://github.com/veandco/go-sdl2

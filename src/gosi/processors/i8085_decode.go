@@ -20,7 +20,7 @@ func decode(op uint8) func() int {
 	case 0x06:
 		return opMVI_B
 	case 0x07:
-		//fixme RLC
+		return opRLC
 	case 0x08:
 		//undocumented NOP
 	case 0x09:
@@ -356,7 +356,21 @@ func decode(op uint8) func() int {
 	case 0xaf:
 		return opXRA_A
 	case 0xb0:
-		//fixme ORA + CMP
+		return opORA_B
+	case 0xb1:
+		return opORA_C
+	case 0xb2:
+		return opORA_D
+	case 0xb3:
+		return opORA_E
+	case 0xb4:
+		return opORA_H
+	case 0xb5:
+		return opORA_L
+	case 0xb6:
+		return opORA_M
+	case 0xb7:
+		return opORA_A
 	case 0xc0:
 		return opRNZ
 	case 0xc1:
@@ -426,7 +440,7 @@ func decode(op uint8) func() int {
 	case 0xe2:
 		return opJPO
 	case 0xe3:
-		//fixme XTHL
+		return opXTHL
 	case 0xe4:
 		return opCPO
 	case 0xe5:
@@ -438,7 +452,7 @@ func decode(op uint8) func() int {
 	case 0xe8:
 		return opRPE
 	case 0xe9:
-		//fixme PCHL
+		return opPCHL
 	case 0xea:
 		return opJPE
 	case 0xeb:

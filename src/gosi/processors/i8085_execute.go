@@ -775,7 +775,7 @@ func opADD_M() int {
 	addr := getHL()
 	dasmOpAddr("ADD", addr)
 	regs.A = add_CY(regs.A, memRead(addr))
-	return 3
+	return 2
 }
 
 //endregion
@@ -861,7 +861,7 @@ func opADC_M() int {
 	addr := getHL()
 	dasmOpAddr("ADC", addr)
 	regs.A = add3_CY(regs.A, memRead(addr), btoi(flags.CY))
-	return 3
+	return 2
 }
 
 //endregion
@@ -946,7 +946,7 @@ func opSUB_M() int {
 	addr := getHL()
 	dasmOpAddr("SUB", addr)
 	regs.A = sub_CY(regs.A, memRead(addr))
-	return 3
+	return 2
 }
 
 //endregion
@@ -1032,7 +1032,7 @@ func opSBB_M() int {
 	addr := getHL()
 	dasmOpAddr("SBB", addr)
 	regs.A = sub3_CY(regs.A, memRead(addr), btoi(flags.CY))
-	return 3
+	return 2
 }
 
 //endregion
@@ -1201,25 +1201,25 @@ func opDCR_M() int {
 
 func opINX_BC() int {
 	dasmOpReg("INX", "BC")
-	addr := getBC()
-	addr++
-	setBC(addr)
+	r := getBC()
+	r++
+	setBC(r)
 	return 1
 }
 
 func opINX_DE() int {
 	dasmOpReg("INX", "DE")
-	addr := getDE()
-	addr++
-	setDE(addr)
+	r := getDE()
+	r++
+	setDE(r)
 	return 1
 }
 
 func opINX_HL() int {
 	dasmOpReg("INX", "HL")
-	addr := getHL()
-	addr++
-	setHL(addr)
+	r := getHL()
+	r++
+	setHL(r)
 	return 1
 }
 
@@ -1240,25 +1240,25 @@ func opINX_SP() int {
 
 func opDCX_BC() int {
 	dasmOpReg("DCX", "BC")
-	addr := getBC()
-	addr--
-	setBC(addr)
+	r := getBC()
+	r--
+	setBC(r)
 	return 1
 }
 
 func opDCX_DE() int {
 	dasmOpReg("DCX", "DE")
-	addr := getDE()
-	addr--
-	setDE(addr)
+	r := getDE()
+	r--
+	setDE(r)
 	return 1
 }
 
 func opDCX_HL() int {
 	dasmOpReg("DCX", "HL")
-	addr := getHL()
-	addr--
-	setHL(addr)
+	r := getHL()
+	r--
+	setHL(r)
 	return 1
 }
 
@@ -1281,37 +1281,33 @@ func opDCX_SP() int {
 
 func opDAD_BC() int {
 	dasmOpReg("DAD", "BC")
-	addr := getHL()
-	addr += getBC()
-	// todo flag CY
-	setHL(addr)
+	r := uint32(getHL()) + uint32(getBC())
+	setHL(uint16(r))
+	flags.CY = (r & 0xffff0000) > 0
 	return 3
 }
 
 func opDAD_DE() int {
 	dasmOpReg("DAD", "DE")
-	addr := getHL()
-	addr += getDE()
-	// todo flag CY
-	setHL(addr)
+	r := uint32(getHL()) + uint32(getDE())
+	setHL(uint16(r))
+	flags.CY = (r & 0xffff0000) > 0
 	return 3
 }
 
 func opDAD_HL() int {
 	dasmOpReg("DAD", "HL")
-	addr := getHL()
-	addr += addr
-	// todo flag CY
-	setHL(addr)
+	r := uint32(getHL()) + uint32(getHL())
+	setHL(uint16(r))
+	flags.CY = (r & 0xffff0000) > 0
 	return 3
 }
 
 func opDAD_SP() int {
 	dasmOpReg("DAD", "SP")
-	addr := getHL()
-	addr += regs.SP
-	// todo flag CY
-	setHL(addr)
+	r := uint32(getHL()) + uint32(regs.SP)
+	setHL(uint16(r))
+	flags.CY = (r & 0xffff0000) > 0
 	return 3
 }
 
@@ -1332,7 +1328,8 @@ func opDAD_SP() int {
 func opANA_B() int {
 	dasmOpReg("ANA", "B")
 	regs.A = regs.A & regs.B
-	sub(regs.A, regs.B)
+	flags_Z_S_P(regs.A)
+	flags.AC = false
 	flags.CY = false
 	return 1
 }
@@ -1340,7 +1337,8 @@ func opANA_B() int {
 func opANA_C() int {
 	dasmOpReg("ANA", "C")
 	regs.A = regs.A & regs.C
-	sub(regs.A, regs.C)
+	flags_Z_S_P(regs.A)
+	flags.AC = false
 	flags.CY = false
 	return 1
 }
@@ -1348,7 +1346,8 @@ func opANA_C() int {
 func opANA_D() int {
 	dasmOpReg("ANA", "D")
 	regs.A = regs.A & regs.D
-	sub(regs.A, regs.D)
+	flags_Z_S_P(regs.A)
+	flags.AC = false
 	flags.CY = false
 	return 1
 }
@@ -1356,7 +1355,8 @@ func opANA_D() int {
 func opANA_E() int {
 	dasmOpReg("ANA", "E")
 	regs.A = regs.A & regs.E
-	sub(regs.A, regs.E)
+	flags_Z_S_P(regs.A)
+	flags.AC = false
 	flags.CY = false
 	return 1
 }
@@ -1364,7 +1364,8 @@ func opANA_E() int {
 func opANA_H() int {
 	dasmOpReg("ANA", "H")
 	regs.A = regs.A & regs.H
-	sub(regs.A, regs.H)
+	flags_Z_S_P(regs.A)
+	flags.AC = false
 	flags.CY = false
 	return 1
 }
@@ -1372,7 +1373,8 @@ func opANA_H() int {
 func opANA_L() int {
 	dasmOpReg("ANA", "L")
 	regs.A = regs.A & regs.L
-	sub(regs.A, regs.L)
+	flags_Z_S_P(regs.A)
+	flags.AC = false
 	flags.CY = false
 	return 1
 }
@@ -1380,7 +1382,8 @@ func opANA_L() int {
 func opANA_A() int {
 	dasmOpReg("ANA", "A")
 	regs.A = regs.A & regs.A
-	sub(regs.A, regs.A)
+	flags_Z_S_P(regs.A)
+	flags.AC = false
 	flags.CY = false
 	return 1
 }
@@ -1399,8 +1402,9 @@ func opANA_M() int {
 	addr := getHL()
 	dasmOpAddr("ANA", addr)
 	v := memRead(addr)
+	sub(regs.A, v) // flags
+	//todo check
 	regs.A = regs.A & v
-	sub(regs.A, v)
 	flags.CY = false
 	return 2
 }
@@ -1522,8 +1526,100 @@ func opXRA_M() int {
 
 //todo XRI data
 
-//todo ORA r
-//todo ORA m
+
+//region ORA r (OR Register)
+
+//   (A) <- (A) V (r)
+//   The content of register r is inclusive-or'd with the content of the accumulator. The result is placed in the accumulator.
+//   The CY and AC flags are cleared.
+//   10110SSS
+//   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
+
+func opORA_B() int {
+	dasmOpReg("ORA", "B")
+	regs.A = regs.A | regs.B
+	flags_Z_S_P(regs.A)
+	flags.AC = false
+	flags.CY = false
+	return 2
+}
+
+func opORA_C() int {
+	dasmOpReg("ORA", "C")
+	regs.A = regs.A | regs.C
+	flags_Z_S_P(regs.A)
+	flags.AC = false
+	flags.CY = false
+	return 2
+}
+
+func opORA_D() int {
+	dasmOpReg("ORA", "D")
+	regs.A = regs.A | regs.D
+	flags_Z_S_P(regs.A)
+	flags.AC = false
+	flags.CY = false
+	return 2
+}
+
+func opORA_E() int {
+	dasmOpReg("ORA", "E")
+	regs.A = regs.A | regs.E
+	flags_Z_S_P(regs.A)
+	flags.AC = false
+	flags.CY = false
+	return 2
+}
+
+func opORA_H() int {
+	dasmOpReg("ORA", "H")
+	regs.A = regs.A | regs.H
+	flags_Z_S_P(regs.A)
+	flags.AC = false
+	flags.CY = false
+	return 2
+}
+
+func opORA_L() int {
+	dasmOpReg("ORA", "L")
+	regs.A = regs.A | regs.L
+	flags_Z_S_P(regs.A)
+	flags.AC = false
+	flags.CY = false
+	return 2
+}
+
+func opORA_A() int {
+	dasmOpReg("ORA", "A")
+	regs.A = regs.A | regs.A
+	flags_Z_S_P(regs.A)
+	flags.AC = false
+	flags.CY = false
+	return 2
+}
+
+//endregion
+
+//region ORA M (OR Memory)
+
+//   (A) <- (A) V ((H) (L))
+//   The content of the memory location whose address is contained in the H and L registers is inclusive-OR'd with the content of
+//   the accumulator. The result is placed in the accumulator. The CY and AC flags are cleared.
+//   10110110
+//   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
+
+func opORA_M() int {
+	addr := getHL()
+	dasmOpAddr("ORA", addr)
+	regs.A = regs.A | memRead(addr)
+	flags_Z_S_P(regs.A)
+	flags.AC = false
+	flags.CY = false
+	return 2
+}
+
+// endregion
+
 //todo ORI data
 
 //todo CMP r
@@ -1546,7 +1642,23 @@ func opCPI() int {
 
 //endregion
 
-//todo RLC
+//region RLC (Rotate left)
+
+//   (An+1) <- (An) ; (A0) <- (A7) ; (CY) <- (A7)
+//   The content of the accumulator is rotated left one position. The low order bit and the CY flag are both set to the value
+//   shifted out of the high order bit position. Only the CY flag is affected.
+//   00000111
+//   Cycles: 1  States: 4  Flags: CY
+
+func opRLC() int {
+	dasmOp("RLC")
+	a0 := regs.A & 0x80
+	regs.A = (regs.A << 1 & 0xfe) | a0>>7
+	flags.CY = a0 != 0
+	return 1
+}
+
+//endregion
 
 //region RRC (Rotate right)
 
@@ -1937,8 +2049,7 @@ func opRM() int {
 
 func opRST_0() int {
 	dasmOpReg("RST", "0")
-	nextOp := regs.PC + 1
-	memWrite16(regs.SP-2, nextOp)
+	memWrite16(regs.SP-2, regs.PC)
 	regs.SP -= 2
 	regs.PC = 0x0000
 	return 3
@@ -1946,8 +2057,7 @@ func opRST_0() int {
 
 func opRST_1() int {
 	dasmOpReg("RST", "1")
-	nextOp := regs.PC + 1
-	memWrite16(regs.SP-2, nextOp)
+	memWrite16(regs.SP-2, regs.PC)
 	regs.SP -= 2
 	regs.PC = 0x0008
 	return 3
@@ -1955,8 +2065,7 @@ func opRST_1() int {
 
 func opRST_2() int {
 	dasmOpReg("RST", "2")
-	nextOp := regs.PC + 1
-	memWrite16(regs.SP-2, nextOp)
+	memWrite16(regs.SP-2, regs.PC)
 	regs.SP -= 2
 	regs.PC = 0x0010
 	return 3
@@ -1964,8 +2073,7 @@ func opRST_2() int {
 
 func opRST_3() int {
 	dasmOpReg("RST", "3")
-	nextOp := regs.PC + 1
-	memWrite16(regs.SP-2, nextOp)
+	memWrite16(regs.SP-2, regs.PC)
 	regs.SP -= 2
 	regs.PC = 0x0018
 	return 3
@@ -1973,8 +2081,7 @@ func opRST_3() int {
 
 func opRST_4() int {
 	dasmOpReg("RST", "4")
-	nextOp := regs.PC + 1
-	memWrite16(regs.SP-2, nextOp)
+	memWrite16(regs.SP-2, regs.PC)
 	regs.SP -= 2
 	regs.PC = 0x0020
 	return 3
@@ -1982,8 +2089,7 @@ func opRST_4() int {
 
 func opRST_5() int {
 	dasmOpReg("RST", "5")
-	nextOp := regs.PC + 1
-	memWrite16(regs.SP-2, nextOp)
+	memWrite16(regs.SP-2, regs.PC)
 	regs.SP -= 2
 	regs.PC = 0x0028
 	return 3
@@ -1991,8 +2097,7 @@ func opRST_5() int {
 
 func opRST_6() int {
 	dasmOpReg("RST", "6")
-	nextOp := regs.PC + 1
-	memWrite16(regs.SP-2, nextOp)
+	memWrite16(regs.SP-2, regs.PC)
 	regs.SP -= 2
 	regs.PC = 0x0030
 	return 3
@@ -2000,8 +2105,7 @@ func opRST_6() int {
 
 func opRST_7() int {
 	dasmOpReg("RST", "7")
-	nextOp := regs.PC + 1
-	memWrite16(regs.SP-2, nextOp)
+	memWrite16(regs.SP-2, regs.PC)
 	regs.SP -= 2
 	regs.PC = 0x0038
 	return 3
@@ -2010,6 +2114,22 @@ func opRST_7() int {
 //endregion
 
 //todo PCHL
+
+//region PCHL (Jump H and L indirect - move H and L to PC)
+
+//   (PCH) <- (H) ; (PCL) <- (L)
+//   The content of register H is moved to the high-order eight bits of register PC. The content of register l is moved to the
+//   low-order eight bits of register PC.
+//   11101001
+//   Cycles: 1  States: 5  Addressing: register  Flags: none
+
+func opPCHL() int {
+	dasmOp("PCHL")
+	regs.PC = getHL()
+	return 1
+}
+
+//endregion
 
 // ********** Stack, I/O, and Machine Control Group **********
 // This group of instructions performs I/O, manipulates the Stack, and alters internal control flags.
@@ -2124,6 +2244,29 @@ func opPOP_PSW() int {
 //endregion
 
 //todo XTHL
+
+//region XTHL (Exchange stack top with H and L)
+
+//   (L) <-> ((SP)) ; (H) <-> ((SP + 1))
+//   The content of the L register is exchanged with the content of the memory location whose address is specified by the content
+//   of register SP. The content of the H register is exchanged with the content of the memory location whose address is one more
+//   than the content of register SP.
+//   11100011
+//   Cycles: 5  States: 18  Addressing: reg. indirect  Flags: none
+
+func opXTHL() int {
+	dasmOp("XTHL")
+	addr := regs.SP
+	r1 := regs.H
+	regs.H = memRead(addr+1)
+	memWrite(addr+1, r1)
+	r2 := regs.L
+	regs.L = memRead(addr)
+	memWrite(addr, r2)
+	return 5
+}
+
+//endregion
 
 //todo SPHL
 
