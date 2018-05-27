@@ -1,4 +1,4 @@
-package processors
+package i8085
 
 import "log"
 
@@ -52,7 +52,7 @@ func decode(op uint8) func() int {
 	case 0x16:
 		return opMVI_D
 	case 0x17:
-		//fixme RAL
+		return opRAL
 	case 0x18:
 		//undocumented NOP
 	case 0x19:
@@ -67,6 +67,8 @@ func decode(op uint8) func() int {
 		return opDCR_E
 	case 0x1e:
 		return opMVI_E
+	case 0x1f:
+		return opRAR
 	case 0x20:
 		//undocumented NOP
 	case 0x21:
@@ -98,7 +100,7 @@ func decode(op uint8) func() int {
 	case 0x2e:
 		return opMVI_L
 	case 0x2f:
-		//fixme CMA
+		return opCMA
 	case 0x30:
 		//undocumented NOP
 	case 0x31:
@@ -371,6 +373,22 @@ func decode(op uint8) func() int {
 		return opORA_M
 	case 0xb7:
 		return opORA_A
+	case 0xb8:
+		return opCMP_B
+	case 0xb9:
+		return opCMP_C
+	case 0xba:
+		return opCMP_D
+	case 0xbb:
+		return opCMP_E
+	case 0xbc:
+		return opCMP_H
+	case 0xbd:
+		return opCMP_L
+	case 0xbe:
+		return opCMP_M
+	case 0xbf:
+		return opCMP_A
 	case 0xc0:
 		return opRNZ
 	case 0xc1:
@@ -478,7 +496,7 @@ func decode(op uint8) func() int {
 	case 0xf5:
 		return opPUSH_PSW
 	case 0xf6:
-		//fixme ORI nn
+		return opORI
 	case 0xf7:
 		return opRST_6
 	case 0xf8:
@@ -492,7 +510,7 @@ func decode(op uint8) func() int {
 	case 0xfc:
 		return opCM
 	case 0xfd:
-		//fixme undocumented CALL nnnn
+		//undocumented CALL nnnn
 	case 0xfe:
 		return opCPI
 	case 0xff:

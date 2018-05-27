@@ -1,4 +1,4 @@
-package processors
+package i8085
 
 import (
 	"fmt"
@@ -25,6 +25,9 @@ var ramStart, ramEnd uint16
 var rom []byte
 var romStart, romEnd uint16
 
+var ports_in = make(map[uint8]func() uint8)
+var ports_out = make(map[uint8]func(v uint8))
+
 func (I8085) AttachRam(buf []byte, offset uint16) {
 
 	fmt.Printf("--- CPU i8085 :: ATTACH RAM (%d bytes @ 0x%04x) ---\n", len(buf), offset)
@@ -41,6 +44,20 @@ func (I8085) AttachRom(buf []byte, offset uint16) {
 	rom = buf
 	romStart = offset
 	romEnd = offset + uint16(len(buf)) - 1
+}
+
+func (I8085) AttachPortIn(fp func() uint8, port uint8) {
+
+	fmt.Printf("--- CPU i8085 :: ATTACH func %p to PORT IN 0x%02x ---\n", fp, port)
+
+	ports_in[port] = fp
+}
+
+func (I8085) AttachPortOut(fp func(v uint8), port uint8) {
+
+	fmt.Printf("--- CPU i8085 :: ATTACH func %p to PORT OUT 0x%02x ---\n", fp, port)
+
+	ports_out[port] = fp
 }
 
 func (I8085) Step() int {

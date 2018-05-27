@@ -9,6 +9,8 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 	"gosi/videocards"
 	"gosi/processors"
+	"gosi/processors/i8085"
+	"gosi/processors/mb14241"
 	"strconv"
 )
 
@@ -44,7 +46,7 @@ func main() {
 	readRom("res/invaders/invaders.e", buffer)
 	fmt.Printf("> read %d bytes\n", buffer.Len())
 
-	var cpu = new(processors.I8085)
+	var cpu = new(i8085.I8085)
 
 	var vdc = new(videocards.SdlDisplayController)
 	vdc.Renderer(renderer)
@@ -54,6 +56,11 @@ func main() {
 	ram := make([]byte, 0x2000)
 	cpu.AttachRam(ram, 0x2000)
 	vdc.AttachRam(ram[0x0400:])
+
+	var shifter = new(mb14241.MB14241)
+	cpu.AttachPortIn(shifter.ReadResult, 0x03)
+	cpu.AttachPortOut(shifter.WriteCount, 0x02)
+	cpu.AttachPortOut(shifter.WriteData, 0x04)
 
 	mainLoop(cpu, vdc)
 	//debugLoop(cpu, vdc)
@@ -127,16 +134,16 @@ func mainLoop(cpu processors.Cpu, vdc videocards.DisplayController) {
 func checkQuit() bool {
 
 	//if sdl.HasEvent(sdl.QUIT) {
-		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
-			switch t := event.(type) {
-			case *sdl.QuitEvent:
+	for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
+		switch t := event.(type) {
+		case *sdl.QuitEvent:
+			return true
+		case *sdl.KeyboardEvent:
+			if t.Type == sdl.KEYDOWN && t.Keysym.Sym == sdl.K_ESCAPE {
 				return true
-			case *sdl.KeyboardEvent:
-				if t.Type == sdl.KEYDOWN && t.Keysym.Sym == sdl.K_ESCAPE {
-					return true
-				}
 			}
 		}
+	}
 	//}
 	return false
 }

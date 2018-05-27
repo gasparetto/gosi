@@ -1,6 +1,4 @@
-package processors
-
-import "log"
+package i8085
 
 // ********** Symbols and Abbreviations **********
 //
@@ -1402,9 +1400,9 @@ func opANA_M() int {
 	addr := getHL()
 	dasmOpAddr("ANA", addr)
 	v := memRead(addr)
-	sub(regs.A, v) // flags
-	//todo check
 	regs.A = regs.A & v
+	flags_Z_S_P(regs.A)
+	//fixme flags.AC
 	flags.CY = false
 	return 2
 }
@@ -1526,7 +1524,6 @@ func opXRA_M() int {
 
 //todo XRI data
 
-
 //region ORA r (OR Register)
 
 //   (A) <- (A) V (r)
@@ -1620,10 +1617,104 @@ func opORA_M() int {
 
 // endregion
 
-//todo ORI data
+//region ORI data (OR immediate)
 
-//todo CMP r
-//todo CMP m
+//   (A) <- (A) V (byte 2)
+//   The content of the second byte of the instruction is inclusive-OR'd with the contents of the accumulator.
+//   The result is placed in the accumulator. The CY and AC flags are cleared.
+//   11100110
+//   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
+
+func opORI() int {
+	r := fetch()
+	dasmOpVal("ORI", r)
+	regs.A = regs.A | r
+	flags_Z_S_P(regs.A)
+	flags.AC = false
+	flags.CY = false
+	return 2
+}
+
+//endregion
+
+//region CMP r (Compare Register)
+
+//   (A) - (r)
+//   The content of register r is subtracted from the accumulator. The accumulator remains unchanged. The condition flags are set
+//   as a result of the subtraction. The Z flag is set to 1 if (A) = (r). The CY flag is set to 1 if (A) < (r).
+//   10111SSS
+//   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
+
+func opCMP_B() int {
+	dasmOpReg("CMP", "B")
+	sub(regs.A, regs.B)
+	flags.CY = regs.A < regs.B
+	return 1
+}
+
+func opCMP_C() int {
+	dasmOpReg("CMP", "C")
+	sub(regs.A, regs.C)
+	flags.CY = regs.A < regs.C
+	return 1
+}
+
+func opCMP_D() int {
+	dasmOpReg("CMP", "D")
+	sub(regs.A, regs.D)
+	flags.CY = regs.A < regs.D
+	return 1
+}
+
+func opCMP_E() int {
+	dasmOpReg("CMP", "E")
+	sub(regs.A, regs.E)
+	flags.CY = regs.A < regs.E
+	return 1
+}
+
+func opCMP_H() int {
+	dasmOpReg("CMP", "H")
+	sub(regs.A, regs.H)
+	flags.CY = regs.A < regs.H
+	return 1
+}
+
+func opCMP_L() int {
+	dasmOpReg("CMP", "L")
+	sub(regs.A, regs.L)
+	flags.CY = regs.A < regs.L
+	return 1
+}
+
+func opCMP_A() int {
+	dasmOpReg("CMP", "A")
+	sub(regs.A, regs.A)
+	flags.CY = regs.A < regs.A
+	return 1
+}
+
+//endregion
+
+//region CMP M (Compare memory)
+
+//   (A) - ((H) (L))
+//   The content of the memory location whose address is contained in the H and L registers is subtracted from the accumulator.
+//   The accumulator remains unchanged. The condition flags are set as a result of the subtraction. The Z flag is set to 1 if
+//   (A) = ((H) (L)). The CY flag is set to 1 if (A) < ((H) (L)).
+//   10111110
+//   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
+
+func opCMP_M() int {
+	addr := getHL()
+	dasmOpAddr("CMP", addr)
+	v := memRead(addr)
+	sub(regs.A, v)
+	flags.CY = regs.A < v
+	return 2
+}
+
+//endregion
 
 //region CPI data (Compare immediate)
 
@@ -1678,10 +1769,58 @@ func opRRC() int {
 
 //endregion
 
-//todo RAL
-//todo RAR
+//region RAL (Rotate left through carry)
 
-//todo CMA
+//   (An+1) <- (An) ; (CY) <- (A7) ; (A0) <- (CY)
+//   The content of the accumulator is rotated left one position through the CY flag. The low order bit is set equal to the CY
+//   flag and the CY flag is set to the value shifted out of the high order bit. Only the CY flag is affected.
+//   00010111
+//   Cycles: 1  States: 4  Flags: CY
+
+func opRAL() int {
+	dasmOp("RAL")
+	a0 := regs.A & 0x80
+	regs.A = (regs.A << 1 & 0xfe) | btoi(flags.CY)
+	flags.CY = a0 != 0
+	return 1
+}
+
+//endregion
+
+//region RAR (Rotate right through carry)
+
+//   (An) <- (An-1) ; (CY) <- (A0) ; (A7) <- (CY)
+//   The content of the accumulator is rotated right one position through the CY flag. The high order bit is set to the CY flag
+//   and the CY flag is set to the value shifted out of the low order bit. Only the CY flag is affected.
+//   00011111
+//   Cycles: 1  States: 4  Flags: CY
+
+func opRAR() int {
+	dasmOp("RAR")
+	a0 := regs.A & 0x01
+	regs.A = (regs.A >> 1 & 0x7f) | btoi(flags.CY)<<7
+	flags.CY = a0 != 0
+	return 1
+}
+
+//endregion
+
+
+//region CMA (Complement accumulator)
+
+//   (A) <- (!A)
+//   The contents of the accumulator are complemented (zero bits become 1, one bits become 0). No flags are affected.
+//   00101111
+//   Cycles: 1  States: 4  Flags: none
+
+func opCMA() int {
+	dasmOp("CMA")
+	regs.A = ^regs.A
+	return 1
+}
+
+//endregion
+
 //todo CMC
 
 //region STC (Set carry)
@@ -2113,8 +2252,6 @@ func opRST_7() int {
 
 //endregion
 
-//todo PCHL
-
 //region PCHL (Jump H and L indirect - move H and L to PC)
 
 //   (PCH) <- (H) ; (PCL) <- (L)
@@ -2243,8 +2380,6 @@ func opPOP_PSW() int {
 
 //endregion
 
-//todo XTHL
-
 //region XTHL (Exchange stack top with H and L)
 
 //   (L) <-> ((SP)) ; (H) <-> ((SP + 1))
@@ -2280,10 +2415,10 @@ func opXTHL() int {
 func opIN() int {
 	port := fetch()
 	dasmOpVal("IN", port)
-	if port == 0x03 {
-		log.Fatal("16 bit shift register")
+	fp, ok := ports_in[port]
+	if ok {
+		regs.A = fp()
 	}
-	//fixme
 	return 3
 }
 
@@ -2299,10 +2434,10 @@ func opIN() int {
 func opOUT() int {
 	port := fetch()
 	dasmOpVal("OUT", port)
-	if port == 0x02 || port == 0x04 {
-		log.Fatal("16 bit shift register")
+	fp, ok := ports_out[port]
+	if ok {
+		fp(regs.A)
 	}
-	//fixme
 	return 3
 }
 
