@@ -11,588 +11,594 @@ func printOp() {
 
 	switch op {
 	case 0x00:
-		dasmOp("NOP")
+		_op("NOP")
 	case 0x01:
-		dasmOpRegVal1Val2("LXI", "BC", readByte3(), readByte2())
+		_opRegValVal("LXI", "BC", _byte3(), _byte2())
 	case 0x02:
-		dasmOpReg("STAX", "BC")
+		_opReg("STAX", "BC")
 	case 0x03:
-		dasmOpReg("INX", "BC")
+		_opReg("INX", "BC")
 	case 0x04:
-		dasmOpReg("INR", "B")
+		_opReg("INR", "B")
 	case 0x05:
-		dasmOpReg("DCR", "B")
+		_opReg("DCR", "B")
 	case 0x06:
-		dasmOpRegVal("MVI", "B", readByte2())
+		_opRegVal("MVI", "B", _byte2())
 	case 0x07:
-		dasmOp("RLC")
+		_op("RLC")
 	case 0x08:
-		log.Fatal("undocumented NOP")
+		_logFatal("undocumented NOP")
 	case 0x09:
-		dasmOpReg("DAD", "BC")
+		_opReg("DAD", "BC")
 	case 0x0a:
-		dasmOpReg("LDAX", "BC")
+		_opReg("LDAX", "BC")
 	case 0x0b:
-		dasmOpReg("DCX", "BC")
+		_opReg("DCX", "BC")
 	case 0x0c:
-		dasmOpReg("INR", "C")
+		_opReg("INR", "C")
 	case 0x0d:
-		dasmOpReg("DCR", "C")
+		_opReg("DCR", "C")
 	case 0x0e:
-		dasmOpRegVal("MVI", "C", readByte2())
+		_opRegVal("MVI", "C", _byte2())
 	case 0x0f:
-		dasmOp("RRC")
+		_op("RRC")
 	case 0x10:
-		log.Fatal("undocumented NOP")
+		_logFatal("undocumented NOP")
 	case 0x11:
-		dasmOpRegVal1Val2("LXI", "DE", readByte3(), readByte2())
+		_opRegValVal("LXI", "DE", _byte3(), _byte2())
 	case 0x12:
-		dasmOpReg("STAX", "DE")
+		_opReg("STAX", "DE")
 	case 0x13:
-		dasmOpReg("INX", "DE")
+		_opReg("INX", "DE")
 	case 0x14:
-		dasmOpReg("INR", "D")
+		_opReg("INR", "D")
 	case 0x15:
-		dasmOpReg("DCR", "D")
+		_opReg("DCR", "D")
 	case 0x16:
-		dasmOpRegVal("MVI", "D", readByte2())
+		_opRegVal("MVI", "D", _byte2())
 	case 0x17:
-		dasmOp("RAL")
+		_op("RAL")
 	case 0x18:
-		log.Fatal("undocumented NOP")
+		_logFatal("undocumented NOP")
 	case 0x19:
-		dasmOpReg("DAD", "DE")
+		_opReg("DAD", "DE")
 	case 0x1a:
-		dasmOpReg("LDAX", "DE")
+		_opReg("LDAX", "DE")
 	case 0x1b:
-		dasmOpReg("DCX", "DE")
+		_opReg("DCX", "DE")
 	case 0x1c:
-		dasmOpReg("INR", "E")
+		_opReg("INR", "E")
 	case 0x1d:
-		dasmOpReg("DCR", "E")
+		_opReg("DCR", "E")
 	case 0x1e:
-		dasmOpRegVal("MVI", "E", readByte2())
+		_opRegVal("MVI", "E", _byte2())
 	case 0x1f:
-		dasmOp("RAR")
+		_op("RAR")
 	case 0x20:
-		log.Fatal("undocumented NOP")
+		_logFatal("undocumented NOP")
 	case 0x21:
-		dasmOpRegVal1Val2("LXI", "HL", readByte3(), readByte2())
+		_opRegValVal("LXI", "HL", _byte3(), _byte2())
 	case 0x22:
-		dasmOpAddr("SHLD", readAddr())
+		_opAddr("SHLD", _addr())
 	case 0x23:
-		dasmOpReg("INX", "HL")
+		_opReg("INX", "HL")
 	case 0x24:
-		dasmOpReg("INR", "H")
+		_opReg("INR", "H")
 	case 0x25:
-		dasmOpReg("DCR", "H")
+		_opReg("DCR", "H")
 	case 0x26:
-		dasmOpRegVal("MVI", "H", readByte2())
-	//case 0x27: fixme DAA
+		_opRegVal("MVI", "H", _byte2())
+	case 0x27:
+		_op("DAA")
 	case 0x28:
-		log.Fatal("undocumented NOP")
+		_logFatal("undocumented NOP")
 	case 0x29:
-		dasmOpReg("DAD", "HL")
+		_opReg("DAD", "HL")
 	case 0x2a:
-		dasmOpAddr("LHLD", readAddr())
+		_opAddr("LHLD", _addr())
 	case 0x2b:
-		dasmOpReg("DCX", "HL")
+		_opReg("DCX", "HL")
 	case 0x2c:
-		dasmOpReg("INR", "L")
+		_opReg("INR", "L")
 	case 0x2d:
-		dasmOpReg("DCR", "L")
+		_opReg("DCR", "L")
 	case 0x2e:
-		dasmOpRegVal("MVI", "L", readByte2())
+		_opRegVal("MVI", "L", _byte2())
 	case 0x2f:
-		dasmOp("CMA")
+		_op("CMA")
 	case 0x30:
-		log.Fatal("undocumented NOP")
+		_logFatal("undocumented NOP")
 	case 0x31:
-		dasmOpRegAddr("LXI", "SP", readAddr())
+		_opRegAddr("LXI", "SP", _addr())
 	case 0x32:
-		dasmOpAddr("STA", readAddr())
+		_opAddr("STA", _addr())
 	case 0x33:
-		dasmOpReg("INX", "SP")
+		_opReg("INX", "SP")
 	case 0x34:
-		dasmOpReg("INR", "M")
+		_opReg("INR", "M")
 	case 0x35:
-		dasmOpReg("DCR", "M")
+		_opReg("DCR", "M")
 	case 0x36:
-		dasmOpRegAddr("MVI", "M", readAddr())
+		_opRegAddr("MVI", "M", _addr())
 	case 0x37:
-		dasmOp("STC")
+		_op("STC")
 	case 0x38:
-		log.Fatal("undocumented NOP")
+		_logFatal("undocumented NOP")
 	case 0x39:
-		dasmOpReg("DAD", "SP")
+		_opReg("DAD", "SP")
 	case 0x3a:
-		dasmOpAddr("LDA", readAddr())
+		_opAddr("LDA", _addr())
 	case 0x3b:
-		dasmOpReg("DCX", "SP")
+		_opReg("DCX", "SP")
 	case 0x3c:
-		dasmOpReg("INR", "A")
+		_opReg("INR", "A")
 	case 0x3d:
-		dasmOpReg("DCR", "A")
+		_opReg("DCR", "A")
 	case 0x3e:
-		dasmOpRegVal("MVI", "A", readByte2())
-	//case 0x3f: fixme CMC
+		_opRegVal("MVI", "A", _byte2())
+	case 0x3f:
+		_op("CMC")
 	case 0x40:
-		dasmOpReg1Reg2("MOV", "B", "B")
+		_opRegReg("MOV", "B", "B")
 	case 0x41:
-		dasmOpReg1Reg2("MOV", "C", "B")
+		_opRegReg("MOV", "C", "B")
 	case 0x42:
-		dasmOpReg1Reg2("MOV", "D", "B")
+		_opRegReg("MOV", "D", "B")
 	case 0x43:
-		dasmOpReg1Reg2("MOV", "E", "B")
+		_opRegReg("MOV", "E", "B")
 	case 0x44:
-		dasmOpReg1Reg2("MOV", "H", "B")
+		_opRegReg("MOV", "H", "B")
 	case 0x45:
-		dasmOpReg1Reg2("MOV", "L", "B")
+		_opRegReg("MOV", "L", "B")
 	case 0x46:
-		dasmOpRegAddr("MOV", "B", readAddr())
+		_opRegAddr("MOV", "B", _addr())
 	case 0x47:
-		dasmOpReg1Reg2("MOV", "B", "A")
+		_opRegReg("MOV", "B", "A")
 	case 0x48:
-		dasmOpReg1Reg2("MOV", "B", "C")
+		_opRegReg("MOV", "B", "C")
 	case 0x49:
-		dasmOpReg1Reg2("MOV", "C", "C")
+		_opRegReg("MOV", "C", "C")
 	case 0x4a:
-		dasmOpReg1Reg2("MOV", "D", "C")
+		_opRegReg("MOV", "D", "C")
 	case 0x4b:
-		dasmOpReg1Reg2("MOV", "E", "C")
+		_opRegReg("MOV", "E", "C")
 	case 0x4c:
-		dasmOpReg1Reg2("MOV", "H", "C")
+		_opRegReg("MOV", "H", "C")
 	case 0x4d:
-		dasmOpReg1Reg2("MOV", "L", "C")
+		_opRegReg("MOV", "L", "C")
 	case 0x4e:
-		dasmOpRegAddr("MOV", "C", readAddr())
+		_opRegAddr("MOV", "C", _addr())
 	case 0x4f:
-		dasmOpReg1Reg2("MOV", "C", "A")
+		_opRegReg("MOV", "C", "A")
 	case 0x50:
-		dasmOpReg1Reg2("MOV", "B", "D")
+		_opRegReg("MOV", "B", "D")
 	case 0x51:
-		dasmOpReg1Reg2("MOV", "C", "D")
+		_opRegReg("MOV", "C", "D")
 	case 0x52:
-		dasmOpReg1Reg2("MOV", "D", "D")
+		_opRegReg("MOV", "D", "D")
 	case 0x53:
-		dasmOpReg1Reg2("MOV", "E", "D")
+		_opRegReg("MOV", "E", "D")
 	case 0x54:
-		dasmOpReg1Reg2("MOV", "H", "D")
+		_opRegReg("MOV", "H", "D")
 	case 0x55:
-		dasmOpReg1Reg2("MOV", "L", "D")
+		_opRegReg("MOV", "L", "D")
 	case 0x56:
-		dasmOpRegAddr("MOV", "D", readAddr())
+		_opRegAddr("MOV", "D", _addr())
 	case 0x57:
-		dasmOpReg1Reg2("MOV", "D", "A")
+		_opRegReg("MOV", "D", "A")
 	case 0x58:
-		dasmOpReg1Reg2("MOV", "B", "E")
+		_opRegReg("MOV", "B", "E")
 	case 0x59:
-		dasmOpReg1Reg2("MOV", "C", "E")
+		_opRegReg("MOV", "C", "E")
 	case 0x5a:
-		dasmOpReg1Reg2("MOV", "D", "E")
+		_opRegReg("MOV", "D", "E")
 	case 0x5b:
-		dasmOpReg1Reg2("MOV", "E", "E")
+		_opRegReg("MOV", "E", "E")
 	case 0x5c:
-		dasmOpReg1Reg2("MOV", "H", "E")
+		_opRegReg("MOV", "H", "E")
 	case 0x5d:
-		dasmOpReg1Reg2("MOV", "L", "E")
+		_opRegReg("MOV", "L", "E")
 	case 0x5e:
-		dasmOpRegAddr("MOV", "E", readAddr())
+		_opRegAddr("MOV", "E", _addr())
 	case 0x5f:
-		dasmOpReg1Reg2("MOV", "E", "A")
+		_opRegReg("MOV", "E", "A")
 	case 0x60:
-		dasmOpReg1Reg2("MOV", "B", "H")
+		_opRegReg("MOV", "B", "H")
 	case 0x61:
-		dasmOpReg1Reg2("MOV", "C", "H")
+		_opRegReg("MOV", "C", "H")
 	case 0x62:
-		dasmOpReg1Reg2("MOV", "D", "H")
+		_opRegReg("MOV", "D", "H")
 	case 0x63:
-		dasmOpReg1Reg2("MOV", "E", "H")
+		_opRegReg("MOV", "E", "H")
 	case 0x64:
-		dasmOpReg1Reg2("MOV", "H", "H")
+		_opRegReg("MOV", "H", "H")
 	case 0x65:
-		dasmOpReg1Reg2("MOV", "L", "H")
+		_opRegReg("MOV", "L", "H")
 	case 0x66:
-		dasmOpRegAddr("MOV", "H", readAddr())
+		_opRegAddr("MOV", "H", _addr())
 	case 0x67:
-		dasmOpReg1Reg2("MOV", "H", "A")
+		_opRegReg("MOV", "H", "A")
 	case 0x68:
-		dasmOpReg1Reg2("MOV", "B", "L")
+		_opRegReg("MOV", "B", "L")
 	case 0x69:
-		dasmOpReg1Reg2("MOV", "C", "L")
+		_opRegReg("MOV", "C", "L")
 	case 0x6a:
-		dasmOpReg1Reg2("MOV", "D", "L")
+		_opRegReg("MOV", "D", "L")
 	case 0x6b:
-		dasmOpReg1Reg2("MOV", "E", "L")
+		_opRegReg("MOV", "E", "L")
 	case 0x6c:
-		dasmOpReg1Reg2("MOV", "H", "L")
+		_opRegReg("MOV", "H", "L")
 	case 0x6d:
-		dasmOpReg1Reg2("MOV", "L", "L")
+		_opRegReg("MOV", "L", "L")
 	case 0x6e:
-		dasmOpRegAddr("MOV", "L", readAddr())
+		_opRegAddr("MOV", "L", _addr())
 	case 0x6f:
-		dasmOpReg1Reg2("MOV", "L", "A")
+		_opRegReg("MOV", "L", "A")
 	case 0x70:
-		dasmOpAddrReg("MOV", readAddr(), "B")
+		_opAddrReg("MOV", _addr(), "B")
 	case 0x71:
-		dasmOpAddrReg("MOV", readAddr(), "C")
+		_opAddrReg("MOV", _addr(), "C")
 	case 0x72:
-		dasmOpAddrReg("MOV", readAddr(), "D")
+		_opAddrReg("MOV", _addr(), "D")
 	case 0x73:
-		dasmOpAddrReg("MOV", readAddr(), "E")
+		_opAddrReg("MOV", _addr(), "E")
 	case 0x74:
-		dasmOpAddrReg("MOV", readAddr(), "H")
+		_opAddrReg("MOV", _addr(), "H")
 	case 0x75:
-		dasmOpAddrReg("MOV", readAddr(), "L")
+		_opAddrReg("MOV", _addr(), "L")
 	case 0x76:
-		dasmOp("HLT")
+		_op("HLT")
 	case 0x77:
-		dasmOpAddrReg("MOV", readAddr(), "A")
+		_opAddrReg("MOV", _addr(), "A")
 	case 0x78:
-		dasmOpReg1Reg2("MOV", "A", "B")
+		_opRegReg("MOV", "A", "B")
 	case 0x79:
-		dasmOpReg1Reg2("MOV", "A", "C")
+		_opRegReg("MOV", "A", "C")
 	case 0x7a:
-		dasmOpReg1Reg2("MOV", "A", "D")
+		_opRegReg("MOV", "A", "D")
 	case 0x7b:
-		dasmOpReg1Reg2("MOV", "A", "E")
+		_opRegReg("MOV", "A", "E")
 	case 0x7c:
-		dasmOpReg1Reg2("MOV", "A", "H")
+		_opRegReg("MOV", "A", "H")
 	case 0x7d:
-		dasmOpReg1Reg2("MOV", "A", "L")
+		_opRegReg("MOV", "A", "L")
 	case 0x7e:
-		dasmOpRegAddr("MOV", "A", readAddr())
+		_opRegAddr("MOV", "A", _addr())
 	case 0x7f:
-		dasmOpReg1Reg2("MOV", "A", "A")
+		_opRegReg("MOV", "A", "A")
 	case 0x80:
-		dasmOpReg("ADD", "B")
+		_opReg("ADD", "B")
 	case 0x81:
-		dasmOpReg("ADD", "C")
+		_opReg("ADD", "C")
 	case 0x82:
-		dasmOpReg("ADD", "D")
+		_opReg("ADD", "D")
 	case 0x83:
-		dasmOpReg("ADD", "E")
+		_opReg("ADD", "E")
 	case 0x84:
-		dasmOpReg("ADD", "H")
+		_opReg("ADD", "H")
 	case 0x85:
-		dasmOpReg("ADD", "L")
+		_opReg("ADD", "L")
 	case 0x86:
-		dasmOpAddr("ADD", readAddr())
+		_opAddr("ADD", _addr())
 	case 0x87:
-		dasmOpReg("ADD", "A")
+		_opReg("ADD", "A")
 	case 0x88:
-		dasmOpReg("ADC", "B")
+		_opReg("ADC", "B")
 	case 0x89:
-		dasmOpReg("ADC", "C")
+		_opReg("ADC", "C")
 	case 0x8a:
-		dasmOpReg("ADC", "D")
+		_opReg("ADC", "D")
 	case 0x8b:
-		dasmOpReg("ADC", "E")
+		_opReg("ADC", "E")
 	case 0x8c:
-		dasmOpReg("ADC", "H")
+		_opReg("ADC", "H")
 	case 0x8d:
-		dasmOpReg("ADC", "L")
+		_opReg("ADC", "L")
 	case 0x8e:
-		dasmOpAddr("ADC", readAddr())
+		_opAddr("ADC", _addr())
 	case 0x8f:
-		dasmOpReg("ADC", "A")
+		_opReg("ADC", "A")
 	case 0x90:
-		dasmOpReg("SUB", "B")
+		_opReg("SUB", "B")
 	case 0x91:
-		dasmOpReg("SUB", "C")
+		_opReg("SUB", "C")
 	case 0x92:
-		dasmOpReg("SUB", "D")
+		_opReg("SUB", "D")
 	case 0x93:
-		dasmOpReg("SUB", "E")
+		_opReg("SUB", "E")
 	case 0x94:
-		dasmOpReg("SUB", "H")
+		_opReg("SUB", "H")
 	case 0x95:
-		dasmOpReg("SUB", "L")
+		_opReg("SUB", "L")
 	case 0x96:
-		dasmOpAddr("SUB", readAddr())
+		_opAddr("SUB", _addr())
 	case 0x97:
-		dasmOpReg("SUB", "A")
+		_opReg("SUB", "A")
 	case 0x98:
-		dasmOpReg("SBB", "B")
+		_opReg("SBB", "B")
 	case 0x99:
-		dasmOpReg("SBB", "C")
+		_opReg("SBB", "C")
 	case 0x9a:
-		dasmOpReg("SBB", "D")
+		_opReg("SBB", "D")
 	case 0x9b:
-		dasmOpReg("SBB", "E")
+		_opReg("SBB", "E")
 	case 0x9c:
-		dasmOpReg("SBB", "H")
+		_opReg("SBB", "H")
 	case 0x9d:
-		dasmOpReg("SBB", "L")
+		_opReg("SBB", "L")
 	case 0x9e:
-		dasmOpAddr("SBB", readAddr())
+		_opAddr("SBB", _addr())
 	case 0x9f:
-		dasmOpReg("SBB", "A")
+		_opReg("SBB", "A")
 	case 0xa0:
-		dasmOpReg("ANA", "B")
+		_opReg("ANA", "B")
 	case 0xa1:
-		dasmOpReg("ANA", "C")
+		_opReg("ANA", "C")
 	case 0xa2:
-		dasmOpReg("ANA", "D")
+		_opReg("ANA", "D")
 	case 0xa3:
-		dasmOpReg("ANA", "E")
+		_opReg("ANA", "E")
 	case 0xa4:
-		dasmOpReg("ANA", "H")
+		_opReg("ANA", "H")
 	case 0xa5:
-		dasmOpReg("ANA", "L")
+		_opReg("ANA", "L")
 	case 0xa6:
-		dasmOpAddr("ANA", readAddr())
+		_opAddr("ANA", _addr())
 	case 0xa7:
-		dasmOpReg("ANA", "A")
+		_opReg("ANA", "A")
 	case 0xa8:
-		dasmOpReg("XRA", "B")
+		_opReg("XRA", "B")
 	case 0xa9:
-		dasmOpReg("XRA", "C")
+		_opReg("XRA", "C")
 	case 0xaa:
-		dasmOpReg("XRA", "D")
+		_opReg("XRA", "D")
 	case 0xab:
-		dasmOpReg("XRA", "E")
+		_opReg("XRA", "E")
 	case 0xac:
-		dasmOpReg("XRA", "H")
+		_opReg("XRA", "H")
 	case 0xad:
-		dasmOpReg("XRA", "L")
+		_opReg("XRA", "L")
 	case 0xae:
-		dasmOpAddr("XRA", readAddr())
+		_opAddr("XRA", _addr())
 	case 0xaf:
-		dasmOpReg("XRA", "A")
+		_opReg("XRA", "A")
 	case 0xb0:
-		dasmOpReg("ORA", "B")
+		_opReg("ORA", "B")
 	case 0xb1:
-		dasmOpReg("ORA", "C")
+		_opReg("ORA", "C")
 	case 0xb2:
-		dasmOpReg("ORA", "D")
+		_opReg("ORA", "D")
 	case 0xb3:
-		dasmOpReg("ORA", "E")
+		_opReg("ORA", "E")
 	case 0xb4:
-		dasmOpReg("ORA", "H")
+		_opReg("ORA", "H")
 	case 0xb5:
-		dasmOpReg("ORA", "L")
+		_opReg("ORA", "L")
 	case 0xb6:
-		dasmOpAddr("ORA", readAddr())
+		_opAddr("ORA", _addr())
 	case 0xb7:
-		dasmOpReg("ORA", "A")
+		_opReg("ORA", "A")
 	case 0xb8:
-		dasmOpReg("CMP", "B")
+		_opReg("CMP", "B")
 	case 0xb9:
-		dasmOpReg("CMP", "C")
+		_opReg("CMP", "C")
 	case 0xba:
-		dasmOpReg("CMP", "D")
+		_opReg("CMP", "D")
 	case 0xbb:
-		dasmOpReg("CMP", "E")
+		_opReg("CMP", "E")
 	case 0xbc:
-		dasmOpReg("CMP", "H")
+		_opReg("CMP", "H")
 	case 0xbd:
-		dasmOpReg("CMP", "L")
+		_opReg("CMP", "L")
 	case 0xbe:
-		dasmOpAddr("CMP", readAddr())
+		_opAddr("CMP", _addr())
 	case 0xbf:
-		dasmOpReg("CMP", "A")
+		_opReg("CMP", "A")
 	case 0xc0:
-		dasmOp("RNZ")
+		_op("RNZ")
 	case 0xc1:
-		dasmOpReg("POP", "BC")
+		_opReg("POP", "BC")
 	case 0xc2:
-		dasmOpAddr("JNZ", readAddr())
+		_opAddr("JNZ", _addr())
 	case 0xc3:
-		dasmOpAddr("JMP", readAddr())
+		_opAddr("JMP", _addr())
 	case 0xc4:
-		dasmOpAddr("CNZ", readAddr())
+		_opAddr("CNZ", _addr())
 	case 0xc5:
-		dasmOpReg("PUSH", "BC")
+		_opReg("PUSH", "BC")
 	case 0xc6:
-		dasmOpVal("ADI", readByte2())
+		_opVal("ADI", _byte2())
 	case 0xc7:
-		dasmOpReg("RST", "0")
+		_opReg("RST", "0")
 	case 0xc8:
-		dasmOp("RZ")
+		_op("RZ")
 	case 0xc9:
-		dasmOp("RET")
+		_op("RET")
 	case 0xca:
-		dasmOpAddr("JZ", readAddr())
+		_opAddr("JZ", _addr())
 	case 0xcb:
-		log.Fatal("undocumented JMP nnnn")
+		_logFatal("undocumented JMP nnnn")
 	case 0xcc:
-		dasmOpAddr("CZ", readAddr())
+		_opAddr("CZ", _addr())
 	case 0xcd:
-		dasmOpAddr("CALL", readAddr())
+		_opAddr("CALL", _addr())
 	case 0xce:
-		dasmOpVal("ACI", readByte2())
+		_opVal("ACI", _byte2())
 	case 0xcf:
-		dasmOpReg("RST", "1")
+		_opReg("RST", "1")
 	case 0xd0:
-		dasmOp("RNC")
+		_op("RNC")
 	case 0xd1:
-		dasmOpReg("POP", "DE")
+		_opReg("POP", "DE")
 	case 0xd2:
-		dasmOpAddr("JNC", readAddr())
+		_opAddr("JNC", _addr())
 	case 0xd3:
-		dasmOpVal("OUT", readByte2())
+		_opVal("OUT", _byte2())
 	case 0xd4:
-		dasmOpAddr("CNC", readAddr())
+		_opAddr("CNC", _addr())
 	case 0xd5:
-		dasmOpReg("PUSH", "DE")
+		_opReg("PUSH", "DE")
 	case 0xd6:
-		dasmOpVal("SUI", readByte2())
+		_opVal("SUI", _byte2())
 	case 0xd7:
-		dasmOpReg("RST", "2")
+		_opReg("RST", "2")
 	case 0xd8:
-		dasmOp("RC")
+		_op("RC")
 	case 0xd9:
-		log.Fatal("undocumented RET")
+		_logFatal("undocumented RET")
 	case 0xda:
-		dasmOpAddr("JC", readAddr())
+		_opAddr("JC", _addr())
 	case 0xdb:
-		dasmOpVal("IN", readByte2())
+		_opVal("IN", _byte2())
 	case 0xdc:
-		dasmOpAddr("CC", readAddr())
+		_opAddr("CC", _addr())
 	case 0xde:
-		dasmOpVal("SBI", readByte2())
+		_opVal("SBI", _byte2())
 	case 0xdf:
-		dasmOpReg("RST", "3")
+		_opReg("RST", "3")
 	case 0xe0:
-		dasmOp("RPO")
+		_op("RPO")
 	case 0xe1:
-		dasmOpReg("POP", "HL")
+		_opReg("POP", "HL")
 	case 0xe2:
-		dasmOpAddr("JPO", readAddr())
+		_opAddr("JPO", _addr())
 	case 0xe3:
-		dasmOp("XTHL")
+		_op("XTHL")
 	case 0xe4:
-		dasmOpAddr("CPO", readAddr())
+		_opAddr("CPO", _addr())
 	case 0xe5:
-		dasmOpReg("PUSH", "HL")
+		_opReg("PUSH", "HL")
 	case 0xe6:
-		dasmOpVal("ANI", readByte2())
+		_opVal("ANI", _byte2())
 	case 0xe7:
-		dasmOpReg("RST", "4")
+		_opReg("RST", "4")
 	case 0xe8:
-		dasmOp("RPE")
+		_op("RPE")
 	case 0xe9:
-		dasmOp("PCHL")
+		_op("PCHL")
 	case 0xea:
-		dasmOpAddr("JPE", readAddr())
+		_opAddr("JPE", _addr())
 	case 0xeb:
-		dasmOp("XCHG")
+		_op("XCHG")
 	case 0xec:
-		dasmOpAddr("CPE", readAddr())
+		_opAddr("CPE", _addr())
 	case 0xed:
-		log.Fatal("undocumented CALL nnnn")
-	//case 0xee: fixme XRI nn
+		_logFatal("undocumented CALL nnnn")
+	case 0xee:
+		_opVal("XRI", _byte2())
 	case 0xef:
-		dasmOpReg("RST", "5")
+		_opReg("RST", "5")
 	case 0xf0:
-		dasmOp("RP")
+		_op("RP")
 	case 0xf1:
-		dasmOpReg("POP", "PSW")
+		_opReg("POP", "PSW")
 	case 0xf2:
-		dasmOpAddr("JP", readAddr())
+		_opAddr("JP", _addr())
 	case 0xf3:
-		dasmOp("DI")
+		_op("DI")
 	case 0xf4:
-		dasmOpAddr("CP", readAddr())
+		_opAddr("CP", _addr())
 	case 0xf5:
-		dasmOpReg("PUSH", "PSW")
+		_opReg("PUSH", "PSW")
 	case 0xf6:
-		dasmOpVal("ORI", readByte2())
+		_opVal("ORI", _byte2())
 	case 0xf7:
-		dasmOpReg("RST", "6")
+		_opReg("RST", "6")
 	case 0xf8:
-		dasmOp("RM")
-	//case 0xf9: fixme SPHL
+		_op("RM")
+	case 0xf9:
+		_op("SPHL")
 	case 0xfa:
-		dasmOpAddr("JM", readAddr())
+		_opAddr("JM", _addr())
 	case 0xfb:
-		dasmOp("EI")
+		_op("EI")
 	case 0xfc:
-		dasmOpAddr("CM", readAddr())
+		_opAddr("CM", _addr())
 	case 0xfd:
-		log.Fatal("undocumented CALL nnnn")
+		_logFatal("undocumented CALL nnnn")
 	case 0xfe:
-		dasmOpVal("CPI", readByte2())
+		_opVal("CPI", _byte2())
 	case 0xff:
-		dasmOpReg("RST", "7")
+		_opReg("RST", "7")
 	}
 }
 
-func readByte2() uint8 {
+func _byte2() uint8 {
 	return memRead(regs.PC+1)
 }
 
-func readByte3() uint8 {
+func _byte3() uint8 {
 	return memRead(regs.PC+2)
 }
 
-func readAddr() uint16 {
-	return uint16(readByte2()) | uint16(readByte3())<<8
+func _addr() uint16 {
+	return uint16(_byte2()) | uint16(_byte3())<<8
 }
 
-func dasmOp(op string) {
-	printLine(op)
+func _op(op string) {
+	_log(op)
 }
 
-func dasmOpReg(op string, r string) {
-	printLine(fmt.Sprintf("%s\t%s", op, r))
+func _opReg(op string, r string) {
+	_log(fmt.Sprintf("%s\t%s", op, r))
 }
 
-func dasmOpVal(op string, v uint8) {
-	printLine(fmt.Sprintf("%s\t0x%02x", op, v))
+func _opVal(op string, v uint8) {
+	_log(fmt.Sprintf("%s\t0x%02x", op, v))
 }
 
-func dasmOpRegVal(op string, r string, v uint8) {
-	printLine(fmt.Sprintf("%s\t%s, 0x%02x", op, r, v))
+func _opRegVal(op string, r string, v uint8) {
+	_log(fmt.Sprintf("%s\t%s, 0x%02x", op, r, v))
 }
 
-func dasmOpReg1Reg2(op string, r1 string, r2 string) {
-	printLine(fmt.Sprintf("%s\t%s, %s", op, r1, r2))
+func _opRegReg(op string, r1 string, r2 string) {
+	_log(fmt.Sprintf("%s\t%s, %s", op, r1, r2))
 }
 
-func dasmOpRegVal1Val2(op string, r string, v1 uint8, v2 uint8) {
-	printLine(fmt.Sprintf("%s\t%s, 0x%02x%02x", op, r, v1, v2))
+func _opRegValVal(op string, r string, v1 uint8, v2 uint8) {
+	_log(fmt.Sprintf("%s\t%s, 0x%02x%02x", op, r, v1, v2))
 }
 
-func dasmOpAddr(op string, addr uint16) {
-	printLine(fmt.Sprintf("%s\t0x%04x", op, addr))
+func _opAddr(op string, addr uint16) {
+	_log(fmt.Sprintf("%s\t0x%04x", op, addr))
 }
 
-func dasmOpRegAddr(op string, r string, addr uint16) {
-	printLine(fmt.Sprintf("%s\t%s, 0x%04x", op, r, addr))
+func _opRegAddr(op string, r string, addr uint16) {
+	_log(fmt.Sprintf("%s\t%s, 0x%04x", op, r, addr))
 }
 
-func dasmOpAddrReg(op string, addr uint16, r string) {
-	printLine(fmt.Sprintf("%s\t0x%04x, %s", op, addr, r))
+func _opAddrReg(op string, addr uint16, r string) {
+	_log(fmt.Sprintf("%s\t0x%04x, %s", op, addr, r))
 }
 
-func printLine(message string) {
+func _log(message string) {
 	fmt.Printf("0x%04x   %s\n", regs.PC, message)
 }
 
-//func traceState() {
-//	if trace {
-//		fmt.Printf("> PC = %04x   mem = %s\n", debugPC, traceMem(debugPC))
-//		fmt.Printf("> SP = %04x   mem = %s\n", regs.SP, traceMem(regs.SP))
-//		fmt.Printf("> regs A:%02x B:%02x C:%02x D:%02x E:%02x H:%02x L:%02x\n",
-//			regs.A, regs.B, regs.C, regs.D, regs.E, regs.H, regs.L)
-//		fmt.Printf("> flags Z:%t S:%t P:%t AC:%t CY:%t\n", flags.Z, flags.S, flags.P, flags.AC, flags.CY)
-//	}
-//}
-//
-//func traceMem(addr uint16) string {
-//	return fmt.Sprintf("%02x %02x [%02x] %02x %02x", memReadUnsafe(addr-2), memReadUnsafe(addr-1),
-//		memReadUnsafe(addr), memReadUnsafe(addr+1), memReadUnsafe(addr+2))
-//}
-//
-//func memReadUnsafe(addr uint16) uint8 {
-//	switch {
-//	case inBetween(addr, ramStart, ramEnd):
-//		return ram[addr-ramStart]
-//	case inBetween(addr, romStart, romEnd):
-//		return rom[addr-romStart]
-//	default:
-//		return 0
-//	}
-//}
+func _logFatal(message string) {
+	log.Fatalf("0x%04x   %s\n", regs.PC, message)
+}
+
+func printInternalState() {
+	fmt.Printf("> PC = %04x   mem = %s\n", regs.PC, _logMem(regs.PC))
+	fmt.Printf("> SP = %04x   mem = %s\n", regs.SP, _logMem(regs.SP))
+	fmt.Printf("> regs A:%02x B:%02x C:%02x D:%02x E:%02x H:%02x L:%02x\n",
+		regs.A, regs.B, regs.C, regs.D, regs.E, regs.H, regs.L)
+	fmt.Printf("> flags Z:%t S:%t P:%t AC:%t CY:%t\n", flags.Z, flags.S, flags.P, flags.AC, flags.CY)
+}
+
+func _logMem(addr uint16) string {
+	return fmt.Sprintf("%02x %02x [%02x] %02x %02x", _memReadUnsafe(addr-2), _memReadUnsafe(addr-1),
+		_memReadUnsafe(addr), _memReadUnsafe(addr+1), _memReadUnsafe(addr+2))
+}
+
+func _memReadUnsafe(addr uint16) uint8 {
+	switch {
+	case inBetween(addr, ramStart, ramEnd):
+		return ram[addr-ramStart]
+	case inBetween(addr, romStart, romEnd):
+		return rom[addr-romStart]
+	default:
+		return 0
+	}
+}

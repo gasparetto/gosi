@@ -9,11 +9,13 @@ type Cpu interface {
 
 	AttachPortOut(fp func(v uint8), port uint8)
 
+	GetProgramCounter() uint16
+
 	Step() int
 
 	Interrupt(op uint8) int
 
-	//DebugTrace()
-	//
-	//DebugBreakpoint() bool
+	DebugPrintNextOperation()
+
+	DebugPrintInternalState()
 }

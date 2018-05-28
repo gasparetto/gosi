@@ -14,6 +14,11 @@ import (
 	"strconv"
 )
 
+var cpu processors.Cpu
+var vdc videocards.DisplayController
+//var breakpoints []uint16
+var breakpoints = []uint16 {0x0ae1, 0x09dc}
+
 func main() {
 
 	//defer profile.Start().Stop()
@@ -46,10 +51,11 @@ func main() {
 	readRom("res/invaders/invaders.e", buffer)
 	fmt.Printf("> read %d bytes\n", buffer.Len())
 
-	var cpu = new(i8085.I8085)
+	cpu = new(i8085.I8085)
 
-	var vdc = new(videocards.SdlDisplayController)
-	vdc.Renderer(renderer)
+	sdlVdc := new(videocards.SdlDisplayController)
+	sdlVdc.Renderer(renderer)
+	vdc = sdlVdc
 
 	cpu.AttachRom(buffer.Bytes(), 0x0000)
 
@@ -62,24 +68,35 @@ func main() {
 	cpu.AttachPortOut(shifter.WriteCount, 0x02)
 	cpu.AttachPortOut(shifter.WriteData, 0x04)
 
-	mainLoop(cpu, vdc)
-	//debugLoop(cpu, vdc)
+	mainLoop()
 
 	fmt.Printf("%s end\n", time.Now().Format(time.StampMicro))
 }
 
-func mainLoop(cpu processors.Cpu, vdc videocards.DisplayController) {
+func mainLoop() {
 
 	cycles := 0
 	frames := 0
-	fpsTime := time.Now().Add(time.Second)
+	//currentFrameStartTime := time.Now().UnixNano()
+	nextFps := time.Now().Add(time.Second)
 
+	// timing and interrupts
 	int64V := false
 	int128V := false
 	vbStart := false
 
 	running := true
 	for running {
+
+		pc := cpu.GetProgramCounter()
+
+		// check for breakpoints
+		for i, breakpoint := range breakpoints {
+			if breakpoint == pc {
+				fmt.Printf("--- Stopped at breakpoint %d ---\n", i+1)
+				debugLoop()
+			}
+		}
 
 		cycles += cpu.Step()
 
@@ -112,21 +129,20 @@ func mainLoop(cpu processors.Cpu, vdc videocards.DisplayController) {
 			running = !checkQuit()
 		}
 
+		//time.Sleep(16 * time.Millisecond)
+		//dt := (currentFrameStartTime + 16666666) - time.Now().UnixNano()
+		//if dt > 0 {
+		//	time.Sleep(time.Duration(dt) * time.Nanosecond)
+		//	currentFrameStartTime = time.Now().UnixNano()
+		//}
+
 		// fps
 		now := time.Now()
-		if now.After(fpsTime) {
+		if now.After(nextFps) {
 			fmt.Printf("%s --- FPS %d ---\n", time.Now().Format(time.StampMicro), frames)
 			frames = 0
-			fpsTime = now.Add(time.Second)
+			nextFps = now.Add(time.Second)
 		}
-
-		// breakpoints
-		//if cpu.DebugBreakpoint() {
-		//	fmt.Println("--- Stopped at breakpoint ---")
-		//	vdc.Render()
-		//	//vdc.DasmTrace()
-		//	debugLoop(cpu, vdc)
-		//}
 	}
 }
 
@@ -147,7 +163,11 @@ func checkQuit() bool {
 	return false
 }
 
-func debugLoop(cpu processors.Cpu, vdc videocards.DisplayController) {
+func debugLoop() {
+
+	cpu.DebugPrintNextOperation()
+	cpu.DebugPrintInternalState()
+	vdc.Render()
 
 	running := true
 	for running {
@@ -164,10 +184,12 @@ func debugLoop(cpu processors.Cpu, vdc videocards.DisplayController) {
 					break
 				}
 				count := getIntFromKeycode(t.Keysym.Sym)
-				for i := 0; i < count; i++ {
-					cpu.Step()
-				}
 				if count > 0 {
+					for i := 0; i < count; i++ {
+						cpu.Step()
+						cpu.DebugPrintNextOperation()
+					}
+					cpu.DebugPrintInternalState()
 					vdc.Render()
 				}
 			}

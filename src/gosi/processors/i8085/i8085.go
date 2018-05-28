@@ -61,16 +61,19 @@ func (I8085) AttachPortOut(fp func(v uint8), port uint8) {
 	ports_out[port] = fp
 }
 
+func (I8085) GetProgramCounter() uint16 {
+
+	return regs.PC
+}
+
 func (I8085) Step() int {
 
-	//debugPC = regs.PC
 	//printOp()
+	//printInternalState()
 
 	op := fetch()
 	fp := decode(op)
-	cycles := execute(fp)
-	//traceState()
-	return cycles
+	return execute(fp)
 }
 
 func (I8085) Interrupt(op uint8) int {
@@ -89,17 +92,13 @@ func (I8085) Interrupt(op uint8) int {
 	return 0
 }
 
-//func (I8085) DebugTrace() {
-//	b := trace
-//	trace = true
-//	traceState()
-//	trace = b
-//}
-//
-//func (I8085) DebugBreakpoint() bool {
-//	return debugPC == 0x0ae1
-//	//return false
-//}
+func (I8085) DebugPrintNextOperation() {
+	printOp()
+}
+
+func (I8085) DebugPrintInternalState() {
+	printInternalState()
+}
 
 func setBC(v uint16) {
 	regs.B = uint8(v >> 8)
