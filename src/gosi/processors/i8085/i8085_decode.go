@@ -1,7 +1,5 @@
 package i8085
 
-import "log"
-
 func decode(op uint8) func() int {
 
 	switch op {
@@ -84,7 +82,7 @@ func decode(op uint8) func() int {
 	case 0x26:
 		return opMVI_H
 	case 0x27:
-		//fixme DAA
+		return opDAA
 	case 0x28:
 		//undocumented NOP
 	case 0x29:
@@ -132,7 +130,7 @@ func decode(op uint8) func() int {
 	case 0x3e:
 		return opMVI_A
 	case 0x3f:
-		//fixme CMC
+		return opCMC
 	case 0x40:
 		return opMOV_B_B
 	case 0x41:
@@ -242,7 +240,7 @@ func decode(op uint8) func() int {
 	case 0x75:
 		return opMOV_M_L
 	case 0x76:
-		//fixme HLT
+		return opHLT
 	case 0x77:
 		return opMOV_M_A
 	case 0x78:
@@ -480,7 +478,7 @@ func decode(op uint8) func() int {
 	case 0xed:
 		//undocumented CALL nnnn
 	case 0xee:
-		//fixme XRI nn
+		return opXRI
 	case 0xef:
 		return opRST_5
 	case 0xf0:
@@ -502,7 +500,7 @@ func decode(op uint8) func() int {
 	case 0xf8:
 		return opRM
 	case 0xf9:
-		//fixme SPHL
+		return opSPHL
 	case 0xfa:
 		return opJM
 	case 0xfb:
@@ -516,6 +514,6 @@ func decode(op uint8) func() int {
 	case 0xff:
 		return opRST_7
 	}
-	log.Fatalf("Unknown opcode 0x%02x\n", op)
+	_logFatal("Unknown opcode")
 	return nil
 }

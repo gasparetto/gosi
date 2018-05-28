@@ -16,8 +16,8 @@ import (
 
 var cpu processors.Cpu
 var vdc videocards.DisplayController
-//var breakpoints []uint16
-var breakpoints = []uint16 {0x0ae1, 0x09dc}
+var breakpoints []uint16
+//var breakpoints = []uint16 {0x0ae1, 0x09dc}
 
 func main() {
 
