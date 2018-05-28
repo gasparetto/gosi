@@ -17,7 +17,7 @@ import (
 var cpu processors.Cpu
 var vdc videocards.DisplayController
 var breakpoints []uint16
-//var breakpoints = []uint16 {0x014a}
+//var breakpoints = []uint16 {0x15de}
 
 func main() {
 
@@ -97,6 +97,7 @@ func mainLoop() {
 			}
 		}
 
+		//cpu.DebugPrintNextOperation()
 		cycles += cpu.Step()
 
 		// interrupt 1: 320*128=40960 pixels -> /2,5=16384 cpu clock cycles

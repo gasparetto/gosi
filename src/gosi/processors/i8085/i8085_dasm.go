@@ -119,7 +119,7 @@ func printOp() {
 	case 0x35:
 		_opReg("DCR", "M")
 	case 0x36:
-		_opRegAddr("MVI", "M", _addr())
+		_opRegVal("MVI", "M", _byte2())
 	case 0x37:
 		_op("STC")
 	case 0x38:
@@ -141,115 +141,115 @@ func printOp() {
 	case 0x40:
 		_opRegReg("MOV", "B", "B")
 	case 0x41:
-		_opRegReg("MOV", "C", "B")
+		_opRegReg("MOV", "B", "C")
 	case 0x42:
-		_opRegReg("MOV", "D", "B")
+		_opRegReg("MOV", "B", "D")
 	case 0x43:
-		_opRegReg("MOV", "E", "B")
+		_opRegReg("MOV", "B", "E")
 	case 0x44:
-		_opRegReg("MOV", "H", "B")
+		_opRegReg("MOV", "B", "H")
 	case 0x45:
-		_opRegReg("MOV", "L", "B")
+		_opRegReg("MOV", "B", "L")
 	case 0x46:
-		_opRegAddr("MOV", "B", _addr())
+		_opRegReg("MOV", "B", "M")
 	case 0x47:
 		_opRegReg("MOV", "B", "A")
 	case 0x48:
-		_opRegReg("MOV", "B", "C")
+		_opRegReg("MOV", "C", "B")
 	case 0x49:
 		_opRegReg("MOV", "C", "C")
 	case 0x4a:
-		_opRegReg("MOV", "D", "C")
+		_opRegReg("MOV", "C", "D")
 	case 0x4b:
-		_opRegReg("MOV", "E", "C")
+		_opRegReg("MOV", "C", "E")
 	case 0x4c:
-		_opRegReg("MOV", "H", "C")
+		_opRegReg("MOV", "C", "H")
 	case 0x4d:
-		_opRegReg("MOV", "L", "C")
+		_opRegReg("MOV", "C", "L")
 	case 0x4e:
-		_opRegAddr("MOV", "C", _addr())
+		_opRegReg("MOV", "C", "M")
 	case 0x4f:
 		_opRegReg("MOV", "C", "A")
 	case 0x50:
-		_opRegReg("MOV", "B", "D")
+		_opRegReg("MOV", "D", "B")
 	case 0x51:
-		_opRegReg("MOV", "C", "D")
+		_opRegReg("MOV", "D", "C")
 	case 0x52:
 		_opRegReg("MOV", "D", "D")
 	case 0x53:
-		_opRegReg("MOV", "E", "D")
+		_opRegReg("MOV", "D", "E")
 	case 0x54:
-		_opRegReg("MOV", "H", "D")
+		_opRegReg("MOV", "D", "H")
 	case 0x55:
-		_opRegReg("MOV", "L", "D")
+		_opRegReg("MOV", "D", "L")
 	case 0x56:
-		_opRegAddr("MOV", "D", _addr())
+		_opRegReg("MOV", "D", "M")
 	case 0x57:
 		_opRegReg("MOV", "D", "A")
 	case 0x58:
-		_opRegReg("MOV", "B", "E")
+		_opRegReg("MOV", "E", "B")
 	case 0x59:
-		_opRegReg("MOV", "C", "E")
+		_opRegReg("MOV", "E", "C")
 	case 0x5a:
-		_opRegReg("MOV", "D", "E")
+		_opRegReg("MOV", "E", "D")
 	case 0x5b:
 		_opRegReg("MOV", "E", "E")
 	case 0x5c:
-		_opRegReg("MOV", "H", "E")
+		_opRegReg("MOV", "E", "H")
 	case 0x5d:
-		_opRegReg("MOV", "L", "E")
+		_opRegReg("MOV", "E", "L")
 	case 0x5e:
-		_opRegAddr("MOV", "E", _addr())
+		_opRegReg("MOV", "E", "M")
 	case 0x5f:
 		_opRegReg("MOV", "E", "A")
 	case 0x60:
-		_opRegReg("MOV", "B", "H")
+		_opRegReg("MOV", "H", "B")
 	case 0x61:
-		_opRegReg("MOV", "C", "H")
+		_opRegReg("MOV", "H", "C")
 	case 0x62:
-		_opRegReg("MOV", "D", "H")
+		_opRegReg("MOV", "H", "D")
 	case 0x63:
-		_opRegReg("MOV", "E", "H")
+		_opRegReg("MOV", "H", "E")
 	case 0x64:
 		_opRegReg("MOV", "H", "H")
 	case 0x65:
-		_opRegReg("MOV", "L", "H")
+		_opRegReg("MOV", "H", "L")
 	case 0x66:
-		_opRegAddr("MOV", "H", _addr())
+		_opRegReg("MOV", "H", "M")
 	case 0x67:
 		_opRegReg("MOV", "H", "A")
 	case 0x68:
-		_opRegReg("MOV", "B", "L")
+		_opRegReg("MOV", "L", "B")
 	case 0x69:
-		_opRegReg("MOV", "C", "L")
+		_opRegReg("MOV", "L", "C")
 	case 0x6a:
-		_opRegReg("MOV", "D", "L")
+		_opRegReg("MOV", "L", "D")
 	case 0x6b:
-		_opRegReg("MOV", "E", "L")
+		_opRegReg("MOV", "L", "E")
 	case 0x6c:
-		_opRegReg("MOV", "H", "L")
+		_opRegReg("MOV", "L", "H")
 	case 0x6d:
 		_opRegReg("MOV", "L", "L")
 	case 0x6e:
-		_opRegAddr("MOV", "L", _addr())
+		_opRegReg("MOV", "L", "M")
 	case 0x6f:
 		_opRegReg("MOV", "L", "A")
 	case 0x70:
-		_opAddrReg("MOV", _addr(), "B")
+		_opRegReg("MOV","M", "B")
 	case 0x71:
-		_opAddrReg("MOV", _addr(), "C")
+		_opRegReg("MOV", "M", "C")
 	case 0x72:
-		_opAddrReg("MOV", _addr(), "D")
+		_opRegReg("MOV", "M", "D")
 	case 0x73:
-		_opAddrReg("MOV", _addr(), "E")
+		_opRegReg("MOV", "M", "E")
 	case 0x74:
-		_opAddrReg("MOV", _addr(), "H")
+		_opRegReg("MOV", "M", "H")
 	case 0x75:
-		_opAddrReg("MOV", _addr(), "L")
+		_opRegReg("MOV", "M", "L")
 	case 0x76:
 		_op("HLT")
 	case 0x77:
-		_opAddrReg("MOV", _addr(), "A")
+		_opRegReg("MOV", "M", "A")
 	case 0x78:
 		_opRegReg("MOV", "A", "B")
 	case 0x79:
@@ -263,7 +263,7 @@ func printOp() {
 	case 0x7d:
 		_opRegReg("MOV", "A", "L")
 	case 0x7e:
-		_opRegAddr("MOV", "A", _addr())
+		_opRegReg("MOV", "A", "M")
 	case 0x7f:
 		_opRegReg("MOV", "A", "A")
 	case 0x80:
@@ -279,7 +279,7 @@ func printOp() {
 	case 0x85:
 		_opReg("ADD", "L")
 	case 0x86:
-		_opAddr("ADD", _addr())
+		_opReg("ADD", "M")
 	case 0x87:
 		_opReg("ADD", "A")
 	case 0x88:
@@ -295,7 +295,7 @@ func printOp() {
 	case 0x8d:
 		_opReg("ADC", "L")
 	case 0x8e:
-		_opAddr("ADC", _addr())
+		_opReg("ADC", "M")
 	case 0x8f:
 		_opReg("ADC", "A")
 	case 0x90:
@@ -311,7 +311,7 @@ func printOp() {
 	case 0x95:
 		_opReg("SUB", "L")
 	case 0x96:
-		_opAddr("SUB", _addr())
+		_opReg("SUB", "M")
 	case 0x97:
 		_opReg("SUB", "A")
 	case 0x98:
@@ -327,7 +327,7 @@ func printOp() {
 	case 0x9d:
 		_opReg("SBB", "L")
 	case 0x9e:
-		_opAddr("SBB", _addr())
+		_opReg("SBB", "M")
 	case 0x9f:
 		_opReg("SBB", "A")
 	case 0xa0:
@@ -343,7 +343,7 @@ func printOp() {
 	case 0xa5:
 		_opReg("ANA", "L")
 	case 0xa6:
-		_opAddr("ANA", _addr())
+		_opReg("ANA", "M")
 	case 0xa7:
 		_opReg("ANA", "A")
 	case 0xa8:
@@ -359,7 +359,7 @@ func printOp() {
 	case 0xad:
 		_opReg("XRA", "L")
 	case 0xae:
-		_opAddr("XRA", _addr())
+		_opReg("XRA", "M")
 	case 0xaf:
 		_opReg("XRA", "A")
 	case 0xb0:
@@ -375,7 +375,7 @@ func printOp() {
 	case 0xb5:
 		_opReg("ORA", "L")
 	case 0xb6:
-		_opAddr("ORA", _addr())
+		_opReg("ORA", "M")
 	case 0xb7:
 		_opReg("ORA", "A")
 	case 0xb8:
@@ -391,7 +391,7 @@ func printOp() {
 	case 0xbd:
 		_opReg("CMP", "L")
 	case 0xbe:
-		_opAddr("CMP", _addr())
+		_opReg("CMP", "M")
 	case 0xbf:
 		_opReg("CMP", "A")
 	case 0xc0:

@@ -143,10 +143,12 @@ func memWrite(addr uint16, v uint8) {
 	switch {
 	case inBetween(addr, ramStart, ramEnd):
 		ram[addr-ramStart] = v
+	case inBetween(addr-0x2000, ramStart, ramEnd): // RAM mirror
+		ram[addr-0x2000-ramStart] = v
 	case inBetween(addr, romStart, romEnd):
-		log.Fatal("Attempted write to readonly memory")
+		log.Fatalf("Attempted write to readonly memory 0x%04x\n", addr)
 	default:
-		log.Fatal("Attempted write to unknown memory")
+		log.Fatalf("Attempted write to unknown memory 0x%04x\n", addr)
 	}
 }
 
@@ -159,10 +161,12 @@ func memRead(addr uint16) uint8 {
 	switch {
 	case inBetween(addr, ramStart, ramEnd):
 		return ram[addr-ramStart]
+	case inBetween(addr-0x2000, ramStart, ramEnd): // RAM mirror
+		return ram[addr-0x2000-ramStart]
 	case inBetween(addr, romStart, romEnd):
 		return rom[addr-romStart]
 	default:
-		log.Fatal("Attempted read to unknown memory")
+		log.Fatalf("Attempted read to unknown memory 0x%04x\n", addr)
 		return 0
 	}
 }
