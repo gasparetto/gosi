@@ -42,295 +42,246 @@ func execute(fp func() int) int {
 //   Cycles: 1  States: 5  Addressing: register  Flags: none
 
 func opMOV_B_B() int {
-	dasmOpReg1Reg2("MOV", "B", "B")
 	//regs.B = regs.B
 	return 1
 }
 
 func opMOV_B_C() int {
-	dasmOpReg1Reg2("MOV", "B", "C")
 	regs.B = regs.C
 	return 1
 }
 
 func opMOV_B_D() int {
-	dasmOpReg1Reg2("MOV", "B", "D")
 	regs.B = regs.D
 	return 1
 }
 
 func opMOV_B_E() int {
-	dasmOpReg1Reg2("MOV", "B", "E")
 	regs.B = regs.E
 	return 1
 }
 
 func opMOV_B_H() int {
-	dasmOpReg1Reg2("MOV", "B", "H")
 	regs.B = regs.H
 	return 1
 }
 
 func opMOV_B_L() int {
-	dasmOpReg1Reg2("MOV", "B", "L")
 	regs.B = regs.L
 	return 1
 }
 
 func opMOV_B_A() int {
-	dasmOpReg1Reg2("MOV", "B", "A")
 	regs.B = regs.A
 	return 1
 }
 
 func opMOV_C_B() int {
-	dasmOpReg1Reg2("MOV", "C", "B")
 	regs.C = regs.B
 	return 1
 }
 
 func opMOV_C_C() int {
-	dasmOpReg1Reg2("MOV", "C", "C")
 	//regs.C = regs.C
 	return 1
 }
 
 func opMOV_C_D() int {
-	dasmOpReg1Reg2("MOV", "C", "D")
 	regs.C = regs.D
 	return 1
 }
 
 func opMOV_C_E() int {
-	dasmOpReg1Reg2("MOV", "C", "E")
 	regs.C = regs.E
 	return 1
 }
 
 func opMOV_C_H() int {
-	dasmOpReg1Reg2("MOV", "C", "H")
 	regs.C = regs.H
 	return 1
 }
 
 func opMOV_C_L() int {
-	dasmOpReg1Reg2("MOV", "C", "L")
 	regs.C = regs.L
 	return 1
 }
 
 func opMOV_C_A() int {
-	dasmOpReg1Reg2("MOV", "C", "A")
 	regs.C = regs.A
 	return 1
 }
 
 func opMOV_D_B() int {
-	dasmOpReg1Reg2("MOV", "D", "B")
 	regs.D = regs.B
 	return 1
 }
 
 func opMOV_D_C() int {
-	dasmOpReg1Reg2("MOV", "D", "C")
 	regs.D = regs.C
 	return 1
 }
 
 func opMOV_D_D() int {
-	dasmOpReg1Reg2("MOV", "D", "D")
 	//regs.D = regs.D
 	return 1
 }
 
 func opMOV_D_E() int {
-	dasmOpReg1Reg2("MOV", "D", "E")
 	regs.D = regs.E
 	return 1
 }
 
 func opMOV_D_H() int {
-	dasmOpReg1Reg2("MOV", "D", "H")
 	regs.D = regs.H
 	return 1
 }
 
 func opMOV_D_L() int {
-	dasmOpReg1Reg2("MOV", "D", "L")
 	regs.D = regs.L
 	return 1
 }
 
 func opMOV_D_A() int {
-	dasmOpReg1Reg2("MOV", "D", "A")
 	regs.D = regs.A
 	return 1
 }
 
 func opMOV_E_B() int {
-	dasmOpReg1Reg2("MOV", "E", "B")
 	regs.E = regs.B
 	return 1
 }
 
 func opMOV_E_C() int {
-	dasmOpReg1Reg2("MOV", "E", "C")
 	regs.E = regs.C
 	return 1
 }
 
 func opMOV_E_D() int {
-	dasmOpReg1Reg2("MOV", "E", "D")
 	regs.E = regs.D
 	return 1
 }
 
 func opMOV_E_E() int {
-	dasmOpReg1Reg2("MOV", "E", "E")
 	//regs.E = regs.E
 	return 1
 }
 
 func opMOV_E_H() int {
-	dasmOpReg1Reg2("MOV", "E", "H")
 	regs.E = regs.H
 	return 1
 }
 
 func opMOV_E_L() int {
-	dasmOpReg1Reg2("MOV", "E", "L")
 	regs.E = regs.L
 	return 1
 }
 
 func opMOV_E_A() int {
-	dasmOpReg1Reg2("MOV", "E", "A")
 	regs.E = regs.A
 	return 1
 }
 
 func opMOV_H_B() int {
-	dasmOpReg1Reg2("MOV", "H", "B")
 	regs.H = regs.B
 	return 1
 }
 
 func opMOV_H_C() int {
-	dasmOpReg1Reg2("MOV", "H", "C")
 	regs.H = regs.C
 	return 1
 }
 
 func opMOV_H_D() int {
-	dasmOpReg1Reg2("MOV", "H", "D")
 	regs.H = regs.D
 	return 1
 }
 
 func opMOV_H_E() int {
-	dasmOpReg1Reg2("MOV", "H", "E")
 	regs.H = regs.E
 	return 1
 }
 
 func opMOV_H_H() int {
-	dasmOpReg1Reg2("MOV", "H", "H")
 	//regs.H = regs.H
 	return 1
 }
 
 func opMOV_H_L() int {
-	dasmOpReg1Reg2("MOV", "H", "L")
 	regs.H = regs.L
 	return 1
 }
 
 func opMOV_H_A() int {
-	dasmOpReg1Reg2("MOV", "H", "A")
 	regs.H = regs.A
 	return 1
 }
 
 func opMOV_L_B() int {
-	dasmOpReg1Reg2("MOV", "L", "B")
 	regs.L = regs.B
 	return 1
 }
 
 func opMOV_L_C() int {
-	dasmOpReg1Reg2("MOV", "L", "C")
 	regs.L = regs.C
 	return 1
 }
 
 func opMOV_L_D() int {
-	dasmOpReg1Reg2("MOV", "L", "D")
 	regs.L = regs.D
 	return 1
 }
 
 func opMOV_L_E() int {
-	dasmOpReg1Reg2("MOV", "L", "E")
 	regs.L = regs.E
 	return 1
 }
 
 func opMOV_L_H() int {
-	dasmOpReg1Reg2("MOV", "L", "H")
 	regs.L = regs.H
 	return 1
 }
 
 func opMOV_L_L() int {
-	dasmOpReg1Reg2("MOV", "L", "L")
 	//regs.L = regs.L
 	return 1
 }
 
 func opMOV_L_A() int {
-	dasmOpReg1Reg2("MOV", "L", "A")
 	regs.L = regs.A
 	return 1
 }
 
 func opMOV_A_B() int {
-	dasmOpReg1Reg2("MOV", "A", "B")
 	regs.A = regs.B
 	return 1
 }
 
 func opMOV_A_C() int {
-	dasmOpReg1Reg2("MOV", "A", "C")
 	regs.A = regs.C
 	return 1
 }
 
 func opMOV_A_D() int {
-	dasmOpReg1Reg2("MOV", "A", "D")
 	regs.A = regs.D
 	return 1
 }
 
 func opMOV_A_E() int {
-	dasmOpReg1Reg2("MOV", "A", "E")
 	regs.A = regs.E
 	return 1
 }
 
 func opMOV_A_H() int {
-	dasmOpReg1Reg2("MOV", "A", "H")
 	regs.A = regs.H
 	return 1
 }
 
 func opMOV_A_L() int {
-	dasmOpReg1Reg2("MOV", "A", "L")
 	regs.A = regs.L
 	return 1
 }
 
 func opMOV_A_A() int {
-	dasmOpReg1Reg2("MOV", "A", "A")
 	//regs.A = regs.A
 	return 1
 }
@@ -345,51 +296,37 @@ func opMOV_A_A() int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: none
 
 func opMOV_B_M() int {
-	addr := getHL()
-	dasmOpRegAddr("MOV", "B", addr)
-	regs.B = memRead(addr)
+	regs.B = memRead(getHL())
 	return 2
 }
 
 func opMOV_C_M() int {
-	addr := getHL()
-	dasmOpRegAddr("MOV", "C", addr)
-	regs.C = memRead(addr)
+	regs.C = memRead(getHL())
 	return 2
 }
 
 func opMOV_D_M() int {
-	addr := getHL()
-	dasmOpRegAddr("MOV", "D", addr)
-	regs.D = memRead(addr)
+	regs.D = memRead(getHL())
 	return 2
 }
 
 func opMOV_E_M() int {
-	addr := getHL()
-	dasmOpRegAddr("MOV", "E", addr)
-	regs.E = memRead(addr)
+	regs.E = memRead(getHL())
 	return 2
 }
 
 func opMOV_H_M() int {
-	addr := getHL()
-	dasmOpRegAddr("MOV", "H", addr)
-	regs.H = memRead(addr)
+	regs.H = memRead(getHL())
 	return 2
 }
 
 func opMOV_L_M() int {
-	addr := getHL()
-	dasmOpRegAddr("MOV", "L", addr)
-	regs.L = memRead(addr)
+	regs.L = memRead(getHL())
 	return 2
 }
 
 func opMOV_A_M() int {
-	addr := getHL()
-	dasmOpRegAddr("MOV", "A", addr)
-	regs.A = memRead(addr)
+	regs.A = memRead(getHL())
 	return 2
 }
 
@@ -403,51 +340,37 @@ func opMOV_A_M() int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: none
 
 func opMOV_M_B() int {
-	addr := getHL()
-	dasmOpAddrReg("MOV", addr, "B")
-	memWrite(addr, regs.B)
+	memWrite(getHL(), regs.B)
 	return 2
 }
 
 func opMOV_M_C() int {
-	addr := getHL()
-	dasmOpAddrReg("MOV", addr, "C")
-	memWrite(addr, regs.C)
+	memWrite(getHL(), regs.C)
 	return 2
 }
 
 func opMOV_M_D() int {
-	addr := getHL()
-	dasmOpAddrReg("MOV", addr, "D")
-	memWrite(addr, regs.D)
+	memWrite(getHL(), regs.D)
 	return 2
 }
 
 func opMOV_M_E() int {
-	addr := getHL()
-	dasmOpAddrReg("MOV", addr, "E")
-	memWrite(addr, regs.E)
+	memWrite(getHL(), regs.E)
 	return 2
 }
 
 func opMOV_M_H() int {
-	addr := getHL()
-	dasmOpAddrReg("MOV", addr, "H")
-	memWrite(addr, regs.H)
+	memWrite(getHL(), regs.H)
 	return 2
 }
 
 func opMOV_M_L() int {
-	addr := getHL()
-	dasmOpAddrReg("MOV", addr, "L")
-	memWrite(addr, regs.L)
+	memWrite(getHL(), regs.L)
 	return 2
 }
 
 func opMOV_M_A() int {
-	addr := getHL()
-	dasmOpAddrReg("MOV", addr, "A")
-	memWrite(addr, regs.A)
+	memWrite(getHL(), regs.A)
 	return 2
 }
 
@@ -461,51 +384,37 @@ func opMOV_M_A() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: none
 
 func opMVI_B() int {
-	r := fetch()
-	dasmOpRegVal("MVI", "B", r)
-	regs.B = r
+	regs.B = fetch()
 	return 2
 }
 
 func opMVI_C() int {
-	r := fetch()
-	dasmOpRegVal("MVI", "C", r)
-	regs.C = r
+	regs.C = fetch()
 	return 2
 }
 
 func opMVI_D() int {
-	r := fetch()
-	dasmOpRegVal("MVI", "D", r)
-	regs.D = r
+	regs.D = fetch()
 	return 2
 }
 
 func opMVI_E() int {
-	r := fetch()
-	dasmOpRegVal("MVI", "E", r)
-	regs.E = r
+	regs.E = fetch()
 	return 2
 }
 
 func opMVI_H() int {
-	r := fetch()
-	dasmOpRegVal("MVI", "H", r)
-	regs.H = r
+	regs.H = fetch()
 	return 2
 }
 
 func opMVI_L() int {
-	r := fetch()
-	dasmOpRegVal("MVI", "L", r)
-	regs.L = r
+	regs.L = fetch()
 	return 2
 }
 
 func opMVI_A() int {
-	r := fetch()
-	dasmOpRegVal("MVI", "A", r)
-	regs.A = r
+	regs.A = fetch()
 	return 2
 }
 
@@ -519,10 +428,7 @@ func opMVI_A() int {
 //   Cycles: 3  States: 10  Addressing: immed./reg. indirect  Flags: none
 
 func opMVI_M() int {
-	r := fetch()
-	addr := getHL()
-	dasmOpAddrVal("MVI", addr, r)
-	memWrite(addr, r)
+	memWrite(getHL(), fetch())
 	return 3
 }
 
@@ -538,36 +444,25 @@ func opMVI_M() int {
 //   Cycles: 3  States: 10  Addressing: immediate  Flags: none
 
 func opLXI_BC() int {
-	rl := fetch()
-	rh := fetch()
-	dasmOpRegVal1Val2("LXI", "BC", rh, rl)
-	regs.B = rh
-	regs.C = rl
+	regs.C = fetch()
+	regs.B = fetch()
 	return 3
 }
 
 func opLXI_DE() int {
-	rl := fetch()
-	rh := fetch()
-	dasmOpRegVal1Val2("LXI", "DE", rh, rl)
-	regs.D = rh
-	regs.E = rl
+	regs.E = fetch()
+	regs.D = fetch()
 	return 3
 }
 
 func opLXI_HL() int {
-	rl := fetch()
-	rh := fetch()
-	dasmOpRegVal1Val2("LXI", "HL", rh, rl)
-	regs.H = rh
-	regs.L = rl
+	regs.L = fetch()
+	regs.H = fetch()
 	return 3
 }
 
 func opLXI_SP() int {
-	rp := fetch16()
-	dasmOpRegAddr("LXI", "SP", rp)
-	regs.SP = rp
+	regs.SP = fetch16()
 	return 3
 }
 
@@ -581,9 +476,7 @@ func opLXI_SP() int {
 //   Cycles: 4  States: 13  Addressing: direct  Flags: none
 
 func opLDA() int {
-	addr := fetch16()
-	dasmOpAddr("LDA", addr)
-	regs.A = memRead(addr)
+	regs.A = memRead(fetch16())
 	return 4
 }
 
@@ -598,9 +491,7 @@ func opLDA() int {
 //   Cycles: 4  States: 13  Addressing: direct  Flags: none
 
 func opSTA() int {
-	addr := fetch16()
-	dasmOpAddr("STA", addr)
-	memWrite(addr, regs.A)
+	memWrite(fetch16(), regs.A)
 	return 4
 }
 
@@ -615,9 +506,7 @@ func opSTA() int {
 //   Cycles: 5  States: 16  Addressing: direct  Flags: none
 
 func opLHLD() int {
-	addr := fetch16()
-	dasmOpAddr("LHLD", addr)
-	setHL(memRead16(addr))
+	setHL(memRead16(fetch16()))
 	return 5
 }
 
@@ -632,9 +521,7 @@ func opLHLD() int {
 //   Cycles: 5  States: 16  Addressing: direct  Flags: none
 
 func opSHLD() int {
-	addr := fetch16()
-	dasmOpAddr("SHLD", addr)
-	memWrite16(addr, getHL())
+	memWrite16(fetch16(), getHL())
 	return 5
 }
 
@@ -648,16 +535,12 @@ func opSHLD() int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: none
 
 func opLDAX_BC() int {
-	dasmOpReg("LDAX", "BC")
-	addr := getBC()
-	regs.A = memRead(addr)
+	regs.A = memRead(getBC())
 	return 2
 }
 
 func opLDAX_DE() int {
-	dasmOpReg("LDAX", "DE")
-	addr := getDE()
-	regs.A = memRead(addr)
+	regs.A = memRead(getDE())
 	return 2
 }
 
@@ -671,16 +554,12 @@ func opLDAX_DE() int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: none
 
 func opSTAX_BC() int {
-	dasmOpReg("STAX", "BC")
-	addr := getBC()
-	memWrite(addr, regs.A)
+	memWrite(getBC(), regs.A)
 	return 2
 }
 
 func opSTAX_DE() int {
-	dasmOpReg("STAX", "DE")
-	addr := getDE()
-	memWrite(addr, regs.A)
+	memWrite(getDE(), regs.A)
 	return 2
 }
 
@@ -694,7 +573,6 @@ func opSTAX_DE() int {
 //   Cycles: 1  States: 4  Addressing: register  Flags: none
 
 func opXCHG() int {
-	dasmOp("XCHG")
 	r1 := regs.H
 	regs.H = regs.D
 	regs.D = r1
@@ -718,43 +596,36 @@ func opXCHG() int {
 //   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
 
 func opADD_B() int {
-	dasmOpReg("ADD", "B")
 	regs.A = add_CY(regs.A, regs.B)
 	return 1
 }
 
 func opADD_C() int {
-	dasmOpReg("ADD", "C")
 	regs.A = add_CY(regs.A, regs.C)
 	return 1
 }
 
 func opADD_D() int {
-	dasmOpReg("ADD", "D")
 	regs.A = add_CY(regs.A, regs.D)
 	return 1
 }
 
 func opADD_E() int {
-	dasmOpReg("ADD", "E")
 	regs.A = add_CY(regs.A, regs.E)
 	return 1
 }
 
 func opADD_H() int {
-	dasmOpReg("ADD", "H")
 	regs.A = add_CY(regs.A, regs.H)
 	return 1
 }
 
 func opADD_L() int {
-	dasmOpReg("ADD", "L")
 	regs.A = add_CY(regs.A, regs.L)
 	return 1
 }
 
 func opADD_A() int {
-	dasmOpReg("ADD", "A")
 	regs.A = add_CY(regs.A, regs.A)
 	return 1
 }
@@ -770,9 +641,7 @@ func opADD_A() int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
 
 func opADD_M() int {
-	addr := getHL()
-	dasmOpAddr("ADD", addr)
-	regs.A = add_CY(regs.A, memRead(addr))
+	regs.A = add_CY(regs.A, memRead(getHL()))
 	return 2
 }
 
@@ -787,9 +656,7 @@ func opADD_M() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
 
 func opADI() int {
-	r := fetch()
-	dasmOpVal("ADI", r)
-	regs.A = add_CY(regs.A, r)
+	regs.A = add_CY(regs.A, fetch())
 	return 2
 }
 
@@ -804,43 +671,36 @@ func opADI() int {
 //   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
 
 func opADC_B() int {
-	dasmOpReg("ADC", "B")
 	regs.A = add3_CY(regs.A, regs.B, btoi(flags.CY))
 	return 1
 }
 
 func opADC_C() int {
-	dasmOpReg("ADC", "C")
 	regs.A = add3_CY(regs.A, regs.C, btoi(flags.CY))
 	return 1
 }
 
 func opADC_D() int {
-	dasmOpReg("ADC", "D")
 	regs.A = add3_CY(regs.A, regs.D, btoi(flags.CY))
 	return 1
 }
 
 func opADC_E() int {
-	dasmOpReg("ADC", "E")
 	regs.A = add3_CY(regs.A, regs.E, btoi(flags.CY))
 	return 1
 }
 
 func opADC_H() int {
-	dasmOpReg("ADC", "H")
 	regs.A = add3_CY(regs.A, regs.H, btoi(flags.CY))
 	return 1
 }
 
 func opADC_L() int {
-	dasmOpReg("ADC", "L")
 	regs.A = add3_CY(regs.A, regs.L, btoi(flags.CY))
 	return 1
 }
 
 func opADC_A() int {
-	dasmOpReg("ADC", "A")
 	regs.A = add3_CY(regs.A, regs.A, btoi(flags.CY))
 	return 1
 }
@@ -856,9 +716,7 @@ func opADC_A() int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
 
 func opADC_M() int {
-	addr := getHL()
-	dasmOpAddr("ADC", addr)
-	regs.A = add3_CY(regs.A, memRead(addr), btoi(flags.CY))
+	regs.A = add3_CY(regs.A, memRead(getHL()), btoi(flags.CY))
 	return 2
 }
 
@@ -873,9 +731,7 @@ func opADC_M() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
 
 func opACI() int {
-	r := fetch()
-	dasmOpVal("ACI", r)
-	regs.A = add3_CY(regs.A, r, btoi(flags.CY))
+	regs.A = add3_CY(regs.A, fetch(), btoi(flags.CY))
 	return 2
 }
 
@@ -889,43 +745,36 @@ func opACI() int {
 //   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
 
 func opSUB_B() int {
-	dasmOpReg("SUB", "B")
 	regs.A = sub_CY(regs.A, regs.B)
 	return 1
 }
 
 func opSUB_C() int {
-	dasmOpReg("SUB", "C")
 	regs.A = sub_CY(regs.A, regs.C)
 	return 1
 }
 
 func opSUB_D() int {
-	dasmOpReg("SUB", "D")
 	regs.A = sub_CY(regs.A, regs.D)
 	return 1
 }
 
 func opSUB_E() int {
-	dasmOpReg("SUB", "E")
 	regs.A = sub_CY(regs.A, regs.E)
 	return 1
 }
 
 func opSUB_H() int {
-	dasmOpReg("SUB", "H")
 	regs.A = sub_CY(regs.A, regs.H)
 	return 1
 }
 
 func opSUB_L() int {
-	dasmOpReg("SUB", "L")
 	regs.A = sub_CY(regs.A, regs.L)
 	return 1
 }
 
 func opSUB_A() int {
-	dasmOpReg("SUB", "A")
 	regs.A = sub_CY(regs.A, regs.A)
 	return 1
 }
@@ -941,9 +790,7 @@ func opSUB_A() int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
 
 func opSUB_M() int {
-	addr := getHL()
-	dasmOpAddr("SUB", addr)
-	regs.A = sub_CY(regs.A, memRead(addr))
+	regs.A = sub_CY(regs.A, memRead(getHL()))
 	return 2
 }
 
@@ -958,9 +805,7 @@ func opSUB_M() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
 
 func opSUI() int {
-	r := fetch()
-	dasmOpVal("SUI", r)
-	regs.A = sub_CY(regs.A, r)
+	regs.A = sub_CY(regs.A, fetch())
 	return 2
 }
 
@@ -975,43 +820,36 @@ func opSUI() int {
 //   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
 
 func opSBB_B() int {
-	dasmOpReg("SBB", "B")
 	regs.A = sub3_CY(regs.A, regs.B, btoi(flags.CY))
 	return 1
 }
 
 func opSBB_C() int {
-	dasmOpReg("SBB", "C")
 	regs.A = sub3_CY(regs.A, regs.C, btoi(flags.CY))
 	return 1
 }
 
 func opSBB_D() int {
-	dasmOpReg("SBB", "D")
 	regs.A = sub3_CY(regs.A, regs.D, btoi(flags.CY))
 	return 1
 }
 
 func opSBB_E() int {
-	dasmOpReg("SBB", "E")
 	regs.A = sub3_CY(regs.A, regs.E, btoi(flags.CY))
 	return 1
 }
 
 func opSBB_H() int {
-	dasmOpReg("SBB", "H")
 	regs.A = sub3_CY(regs.A, regs.H, btoi(flags.CY))
 	return 1
 }
 
 func opSBB_L() int {
-	dasmOpReg("SBB", "L")
 	regs.A = sub3_CY(regs.A, regs.L, btoi(flags.CY))
 	return 1
 }
 
 func opSBB_A() int {
-	dasmOpReg("SBB", "A")
 	regs.A = sub3_CY(regs.A, regs.A, btoi(flags.CY))
 	return 1
 }
@@ -1027,9 +865,7 @@ func opSBB_A() int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
 
 func opSBB_M() int {
-	addr := getHL()
-	dasmOpAddr("SBB", addr)
-	regs.A = sub3_CY(regs.A, memRead(addr), btoi(flags.CY))
+	regs.A = sub3_CY(regs.A, memRead(getHL()), btoi(flags.CY))
 	return 2
 }
 
@@ -1044,9 +880,7 @@ func opSBB_M() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
 
 func opSBI() int {
-	r := fetch()
-	dasmOpVal("SBI", r)
-	regs.A = sub3_CY(regs.A, r, btoi(flags.CY))
+	regs.A = sub3_CY(regs.A, fetch(), btoi(flags.CY))
 	return 2
 }
 
@@ -1060,43 +894,36 @@ func opSBI() int {
 //   Cycles: 1  States: 5  Addressing: register  Flags: Z,S,P,AC
 
 func opINR_B() int {
-	dasmOpReg("INR", "B")
 	regs.B = add(regs.B, 1)
 	return 1
 }
 
 func opINR_C() int {
-	dasmOpReg("INR", "C")
 	regs.C = add(regs.C, 1)
 	return 1
 }
 
 func opINR_D() int {
-	dasmOpReg("INR", "D")
 	regs.D = add(regs.D, 1)
 	return 1
 }
 
 func opINR_E() int {
-	dasmOpReg("INR", "E")
 	regs.E = add(regs.E, 1)
 	return 1
 }
 
 func opINR_H() int {
-	dasmOpReg("INR", "H")
 	regs.H = add(regs.H, 1)
 	return 1
 }
 
 func opINR_L() int {
-	dasmOpReg("INR", "L")
 	regs.L = add(regs.L, 1)
 	return 1
 }
 
 func opINR_A() int {
-	dasmOpReg("INR", "A")
 	regs.A = add(regs.A, 1)
 	return 1
 }
@@ -1112,7 +939,6 @@ func opINR_A() int {
 
 func opINR_M() int {
 	addr := getHL()
-	dasmOpAddr("INR", addr)
 	v := memRead(addr)
 	v = add(v, 1)
 	memWrite(addr, v)
@@ -1129,43 +955,36 @@ func opINR_M() int {
 //   Cycles: 1  States: 5  Addressing: register  Flags: Z,S,P,AC
 
 func opDCR_B() int {
-	dasmOpReg("DCR", "B")
 	regs.B = sub(regs.B, 1)
 	return 1
 }
 
 func opDCR_C() int {
-	dasmOpReg("DCR", "C")
 	regs.C = sub(regs.C, 1)
 	return 1
 }
 
 func opDCR_D() int {
-	dasmOpReg("DCR", "D")
 	regs.D = sub(regs.D, 1)
 	return 1
 }
 
 func opDCR_E() int {
-	dasmOpReg("DCR", "E")
 	regs.E = sub(regs.E, 1)
 	return 1
 }
 
 func opDCR_H() int {
-	dasmOpReg("DCR", "H")
 	regs.H = sub(regs.H, 1)
 	return 1
 }
 
 func opDCR_L() int {
-	dasmOpReg("DCR", "L")
 	regs.L = sub(regs.L, 1)
 	return 1
 }
 
 func opDCR_A() int {
-	dasmOpReg("DCR", "A")
 	regs.A = sub(regs.A, 1)
 	return 1
 }
@@ -1181,7 +1000,6 @@ func opDCR_A() int {
 
 func opDCR_M() int {
 	addr := getHL()
-	dasmOpAddr("DCR", addr)
 	v := memRead(addr)
 	v = sub(v, 1)
 	memWrite(addr, v)
@@ -1198,7 +1016,6 @@ func opDCR_M() int {
 //   Cycles: 1  States: 5  Addressing: register  Flags: none
 
 func opINX_BC() int {
-	dasmOpReg("INX", "BC")
 	r := getBC()
 	r++
 	setBC(r)
@@ -1206,7 +1023,6 @@ func opINX_BC() int {
 }
 
 func opINX_DE() int {
-	dasmOpReg("INX", "DE")
 	r := getDE()
 	r++
 	setDE(r)
@@ -1214,7 +1030,6 @@ func opINX_DE() int {
 }
 
 func opINX_HL() int {
-	dasmOpReg("INX", "HL")
 	r := getHL()
 	r++
 	setHL(r)
@@ -1222,7 +1037,6 @@ func opINX_HL() int {
 }
 
 func opINX_SP() int {
-	dasmOpReg("INX", "SP")
 	regs.SP++
 	return 1
 }
@@ -1237,7 +1051,6 @@ func opINX_SP() int {
 //   Cycles: 1  States: 5  Addressing: register  Flags: none
 
 func opDCX_BC() int {
-	dasmOpReg("DCX", "BC")
 	r := getBC()
 	r--
 	setBC(r)
@@ -1245,7 +1058,6 @@ func opDCX_BC() int {
 }
 
 func opDCX_DE() int {
-	dasmOpReg("DCX", "DE")
 	r := getDE()
 	r--
 	setDE(r)
@@ -1253,7 +1065,6 @@ func opDCX_DE() int {
 }
 
 func opDCX_HL() int {
-	dasmOpReg("DCX", "HL")
 	r := getHL()
 	r--
 	setHL(r)
@@ -1261,7 +1072,6 @@ func opDCX_HL() int {
 }
 
 func opDCX_SP() int {
-	dasmOpReg("DCX", "SP")
 	regs.SP--
 	return 1
 }
@@ -1278,7 +1088,6 @@ func opDCX_SP() int {
 //   Cycles: 3  States: 10  Addressing: register  Flags: CY
 
 func opDAD_BC() int {
-	dasmOpReg("DAD", "BC")
 	r := uint32(getHL()) + uint32(getBC())
 	setHL(uint16(r))
 	flags.CY = (r & 0xffff0000) > 0
@@ -1286,7 +1095,6 @@ func opDAD_BC() int {
 }
 
 func opDAD_DE() int {
-	dasmOpReg("DAD", "DE")
 	r := uint32(getHL()) + uint32(getDE())
 	setHL(uint16(r))
 	flags.CY = (r & 0xffff0000) > 0
@@ -1294,7 +1102,6 @@ func opDAD_DE() int {
 }
 
 func opDAD_HL() int {
-	dasmOpReg("DAD", "HL")
 	r := uint32(getHL()) + uint32(getHL())
 	setHL(uint16(r))
 	flags.CY = (r & 0xffff0000) > 0
@@ -1302,7 +1109,6 @@ func opDAD_HL() int {
 }
 
 func opDAD_SP() int {
-	dasmOpReg("DAD", "SP")
 	r := uint32(getHL()) + uint32(regs.SP)
 	setHL(uint16(r))
 	flags.CY = (r & 0xffff0000) > 0
@@ -1324,7 +1130,6 @@ func opDAD_SP() int {
 //   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
 
 func opANA_B() int {
-	dasmOpReg("ANA", "B")
 	regs.A = regs.A & regs.B
 	flags_Z_S_P(regs.A)
 	flags.AC = false
@@ -1333,7 +1138,6 @@ func opANA_B() int {
 }
 
 func opANA_C() int {
-	dasmOpReg("ANA", "C")
 	regs.A = regs.A & regs.C
 	flags_Z_S_P(regs.A)
 	flags.AC = false
@@ -1342,7 +1146,6 @@ func opANA_C() int {
 }
 
 func opANA_D() int {
-	dasmOpReg("ANA", "D")
 	regs.A = regs.A & regs.D
 	flags_Z_S_P(regs.A)
 	flags.AC = false
@@ -1351,7 +1154,6 @@ func opANA_D() int {
 }
 
 func opANA_E() int {
-	dasmOpReg("ANA", "E")
 	regs.A = regs.A & regs.E
 	flags_Z_S_P(regs.A)
 	flags.AC = false
@@ -1360,7 +1162,6 @@ func opANA_E() int {
 }
 
 func opANA_H() int {
-	dasmOpReg("ANA", "H")
 	regs.A = regs.A & regs.H
 	flags_Z_S_P(regs.A)
 	flags.AC = false
@@ -1369,7 +1170,6 @@ func opANA_H() int {
 }
 
 func opANA_L() int {
-	dasmOpReg("ANA", "L")
 	regs.A = regs.A & regs.L
 	flags_Z_S_P(regs.A)
 	flags.AC = false
@@ -1378,7 +1178,6 @@ func opANA_L() int {
 }
 
 func opANA_A() int {
-	dasmOpReg("ANA", "A")
 	regs.A = regs.A & regs.A
 	flags_Z_S_P(regs.A)
 	flags.AC = false
@@ -1397,9 +1196,7 @@ func opANA_A() int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
 
 func opANA_M() int {
-	addr := getHL()
-	dasmOpAddr("ANA", addr)
-	v := memRead(addr)
+	v := memRead(getHL())
 	regs.A = regs.A & v
 	flags_Z_S_P(regs.A)
 	//fixme flags.AC
@@ -1418,9 +1215,7 @@ func opANA_M() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
 
 func opANI() int {
-	r := fetch()
-	dasmOpVal("ANI", r)
-	regs.A = regs.A & r
+	regs.A = regs.A & fetch()
 	flags_Z_S_P(regs.A)
 	flags.AC = false
 	flags.CY = false
@@ -1438,7 +1233,6 @@ func opANI() int {
 //   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
 
 func opXRA_B() int {
-	dasmOpReg("XRA", "B")
 	regs.A = regs.A ^ regs.B
 	flags_Z_S_P(regs.A)
 	flags.AC = false
@@ -1447,7 +1241,6 @@ func opXRA_B() int {
 }
 
 func opXRA_C() int {
-	dasmOpReg("XRA", "C")
 	regs.A = regs.A ^ regs.C
 	flags_Z_S_P(regs.A)
 	flags.AC = false
@@ -1456,7 +1249,6 @@ func opXRA_C() int {
 }
 
 func opXRA_D() int {
-	dasmOpReg("XRA", "D")
 	regs.A = regs.A ^ regs.D
 	flags_Z_S_P(regs.A)
 	flags.AC = false
@@ -1465,7 +1257,6 @@ func opXRA_D() int {
 }
 
 func opXRA_E() int {
-	dasmOpReg("XRA", "E")
 	regs.A = regs.A ^ regs.E
 	flags_Z_S_P(regs.A)
 	flags.AC = false
@@ -1474,7 +1265,6 @@ func opXRA_E() int {
 }
 
 func opXRA_H() int {
-	dasmOpReg("XRA", "H")
 	regs.A = regs.A ^ regs.H
 	flags_Z_S_P(regs.A)
 	flags.AC = false
@@ -1483,7 +1273,6 @@ func opXRA_H() int {
 }
 
 func opXRA_L() int {
-	dasmOpReg("XRA", "L")
 	regs.A = regs.A ^ regs.L
 	flags_Z_S_P(regs.A)
 	flags.AC = false
@@ -1492,7 +1281,6 @@ func opXRA_L() int {
 }
 
 func opXRA_A() int {
-	dasmOpReg("XRA", "A")
 	regs.A = regs.A ^ regs.A
 	flags_Z_S_P(regs.A)
 	flags.AC = false
@@ -1511,9 +1299,7 @@ func opXRA_A() int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
 
 func opXRA_M() int {
-	addr := getHL()
-	dasmOpAddr("XRA", addr)
-	regs.A = regs.A ^ memRead(addr)
+	regs.A = regs.A ^ memRead(getHL())
 	flags_Z_S_P(regs.A)
 	flags.AC = false
 	flags.CY = false
@@ -1533,62 +1319,35 @@ func opXRA_M() int {
 //   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
 
 func opORA_B() int {
-	dasmOpReg("ORA", "B")
-	regs.A = regs.A | regs.B
-	flags_Z_S_P(regs.A)
-	flags.AC = false
-	flags.CY = false
-	return 2
+	return _or(regs.B)
 }
 
 func opORA_C() int {
-	dasmOpReg("ORA", "C")
-	regs.A = regs.A | regs.C
-	flags_Z_S_P(regs.A)
-	flags.AC = false
-	flags.CY = false
-	return 2
+	return _or(regs.C)
 }
 
 func opORA_D() int {
-	dasmOpReg("ORA", "D")
-	regs.A = regs.A | regs.D
-	flags_Z_S_P(regs.A)
-	flags.AC = false
-	flags.CY = false
-	return 2
+	return _or(regs.D)
 }
 
 func opORA_E() int {
-	dasmOpReg("ORA", "E")
-	regs.A = regs.A | regs.E
-	flags_Z_S_P(regs.A)
-	flags.AC = false
-	flags.CY = false
-	return 2
+	return _or(regs.E)
 }
 
 func opORA_H() int {
-	dasmOpReg("ORA", "H")
-	regs.A = regs.A | regs.H
-	flags_Z_S_P(regs.A)
-	flags.AC = false
-	flags.CY = false
-	return 2
+	return _or(regs.H)
 }
 
 func opORA_L() int {
-	dasmOpReg("ORA", "L")
-	regs.A = regs.A | regs.L
-	flags_Z_S_P(regs.A)
-	flags.AC = false
-	flags.CY = false
-	return 2
+	return _or(regs.L)
 }
 
 func opORA_A() int {
-	dasmOpReg("ORA", "A")
-	regs.A = regs.A | regs.A
+	return _or(regs.A)
+}
+
+func _or(v uint8) int {
+	regs.A = regs.A | v
 	flags_Z_S_P(regs.A)
 	flags.AC = false
 	flags.CY = false
@@ -1606,13 +1365,7 @@ func opORA_A() int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
 
 func opORA_M() int {
-	addr := getHL()
-	dasmOpAddr("ORA", addr)
-	regs.A = regs.A | memRead(addr)
-	flags_Z_S_P(regs.A)
-	flags.AC = false
-	flags.CY = false
-	return 2
+	return _or(memRead(getHL()))
 }
 
 // endregion
@@ -1626,13 +1379,7 @@ func opORA_M() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
 
 func opORI() int {
-	r := fetch()
-	dasmOpVal("ORI", r)
-	regs.A = regs.A | r
-	flags_Z_S_P(regs.A)
-	flags.AC = false
-	flags.CY = false
-	return 2
+	return _or(fetch())
 }
 
 //endregion
@@ -1646,49 +1393,42 @@ func opORI() int {
 //   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
 
 func opCMP_B() int {
-	dasmOpReg("CMP", "B")
 	sub(regs.A, regs.B)
 	flags.CY = regs.A < regs.B
 	return 1
 }
 
 func opCMP_C() int {
-	dasmOpReg("CMP", "C")
 	sub(regs.A, regs.C)
 	flags.CY = regs.A < regs.C
 	return 1
 }
 
 func opCMP_D() int {
-	dasmOpReg("CMP", "D")
 	sub(regs.A, regs.D)
 	flags.CY = regs.A < regs.D
 	return 1
 }
 
 func opCMP_E() int {
-	dasmOpReg("CMP", "E")
 	sub(regs.A, regs.E)
 	flags.CY = regs.A < regs.E
 	return 1
 }
 
 func opCMP_H() int {
-	dasmOpReg("CMP", "H")
 	sub(regs.A, regs.H)
 	flags.CY = regs.A < regs.H
 	return 1
 }
 
 func opCMP_L() int {
-	dasmOpReg("CMP", "L")
 	sub(regs.A, regs.L)
 	flags.CY = regs.A < regs.L
 	return 1
 }
 
 func opCMP_A() int {
-	dasmOpReg("CMP", "A")
 	sub(regs.A, regs.A)
 	flags.CY = regs.A < regs.A
 	return 1
@@ -1706,9 +1446,7 @@ func opCMP_A() int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
 
 func opCMP_M() int {
-	addr := getHL()
-	dasmOpAddr("CMP", addr)
-	v := memRead(addr)
+	v := memRead(getHL())
 	sub(regs.A, v)
 	flags.CY = regs.A < v
 	return 2
@@ -1725,9 +1463,7 @@ func opCMP_M() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
 
 func opCPI() int {
-	r := fetch()
-	dasmOpVal("CPI", r)
-	sub_CY(regs.A, r)
+	sub_CY(regs.A, fetch())
 	return 2
 }
 
@@ -1742,7 +1478,6 @@ func opCPI() int {
 //   Cycles: 1  States: 4  Flags: CY
 
 func opRLC() int {
-	dasmOp("RLC")
 	a0 := regs.A & 0x80
 	regs.A = (regs.A << 1 & 0xfe) | a0>>7
 	flags.CY = a0 != 0
@@ -1760,7 +1495,6 @@ func opRLC() int {
 //   Cycles: 1  States: 4  Flags: CY
 
 func opRRC() int {
-	dasmOp("RRC")
 	a0 := regs.A & 0x01
 	regs.A = (regs.A >> 1 & 0x7f) | a0<<7
 	flags.CY = a0 != 0
@@ -1778,7 +1512,6 @@ func opRRC() int {
 //   Cycles: 1  States: 4  Flags: CY
 
 func opRAL() int {
-	dasmOp("RAL")
 	a0 := regs.A & 0x80
 	regs.A = (regs.A << 1 & 0xfe) | btoi(flags.CY)
 	flags.CY = a0 != 0
@@ -1796,7 +1529,6 @@ func opRAL() int {
 //   Cycles: 1  States: 4  Flags: CY
 
 func opRAR() int {
-	dasmOp("RAR")
 	a0 := regs.A & 0x01
 	regs.A = (regs.A >> 1 & 0x7f) | btoi(flags.CY)<<7
 	flags.CY = a0 != 0
@@ -1814,7 +1546,6 @@ func opRAR() int {
 //   Cycles: 1  States: 4  Flags: none
 
 func opCMA() int {
-	dasmOp("CMA")
 	regs.A = ^regs.A
 	return 1
 }
@@ -1831,7 +1562,6 @@ func opCMA() int {
 //   Cycles: 1  States: 4  Flags: CY
 
 func opSTC() int {
-	dasmOp("STC")
 	flags.CY = true
 	return 1
 }
@@ -1850,9 +1580,7 @@ func opSTC() int {
 //   Cycles: 3  States: 10  Addressing: immediate  Flags: none
 
 func opJMP() int {
-	addr := fetch16()
-	dasmOpAddr("JMP", addr)
-	regs.PC = addr
+	regs.PC = fetch16()
 	return 3
 }
 
@@ -1868,73 +1596,42 @@ func opJMP() int {
 //   Cycles: 3  States: 10  Addressing: immediate  Flags: none
 
 func opJNZ() int {
-	addr := fetch16()
-	dasmOpAddr("JNZ", addr)
-	if !flags.Z {
-		regs.PC = addr
-	}
-	return 3
+	return _j(!flags.Z)
 }
 
 func opJZ() int {
-	addr := fetch16()
-	dasmOpAddr("JZ", addr)
-	if flags.Z {
-		regs.PC = addr
-	}
-	return 3
+	return _j(flags.Z)
 }
 
 func opJNC() int {
-	addr := fetch16()
-	dasmOpAddr("JNC", addr)
-	if !flags.CY {
-		regs.PC = addr
-	}
-	return 3
+	return _j(!flags.CY)
 }
 
 func opJC() int {
-	addr := fetch16()
-	dasmOpAddr("JC", addr)
-	if flags.CY {
-		regs.PC = addr
-	}
-	return 3
+	return _j(flags.CY)
 }
 
 func opJPO() int {
-	addr := fetch16()
-	dasmOpAddr("JPO", addr)
-	if !flags.P {
-		regs.PC = addr
-	}
-	return 3
+	return _j(!flags.P)
 }
 
 func opJPE() int {
-	addr := fetch16()
-	dasmOpAddr("JPE", addr)
-	if flags.P {
-		regs.PC = addr
-	}
-	return 3
+	return _j(flags.P)
 }
 
 func opJP() int {
-	addr := fetch16()
-	dasmOpAddr("JP", addr)
-	if !flags.S {
-		regs.PC = addr
-	}
-	return 3
+	return _j(!flags.S)
 }
 
 func opJM() int {
-	addr := fetch16()
-	dasmOpAddr("JM", addr)
-	if flags.S {
-		regs.PC = addr
+	return _j(flags.S)
+}
+
+func _j(condition bool) int {
+	if condition {
+		regs.PC = fetch16()
+	} else {
+		regs.PC += 2
 	}
 	return 3
 }
@@ -1952,11 +1649,9 @@ func opJM() int {
 //   Cycles: 5  States: 17  Addressing: immediate/reg. indirect  Flags: none
 
 func opCALL() int {
-	addr := fetch16()
-	dasmOpAddr("CALL", addr)
-	memWrite16(regs.SP-2, regs.PC)
+	memWrite16(regs.SP-2, regs.PC+2)
 	regs.SP -= 2
-	regs.PC = addr
+	regs.PC = fetch16()
 	return 5
 }
 
@@ -1971,97 +1666,45 @@ func opCALL() int {
 //   Cycles: 3/5  States: 11/17  Addressing: immediate/reg. indirect  Flags: none
 
 func opCNZ() int {
-	addr := fetch16()
-	dasmOpAddr("CNZ", addr)
-	if !flags.Z {
-		memWrite16(regs.SP-2, regs.PC)
-		regs.SP -= 2
-		regs.PC = addr
-		return 5
-	}
-	return 3
+	return _cp(!flags.Z)
 }
 
 func opCZ() int {
-	addr := fetch16()
-	dasmOpAddr("CZ", addr)
-	if flags.Z {
-		memWrite16(regs.SP-2, regs.PC)
-		regs.SP -= 2
-		regs.PC = addr
-		return 5
-	}
-	return 3
+	return _cp(flags.Z)
 }
 
 func opCNC() int {
-	addr := fetch16()
-	dasmOpAddr("CNC", addr)
-	if !flags.CY {
-		memWrite16(regs.SP-2, regs.PC)
-		regs.SP -= 2
-		regs.PC = addr
-		return 5
-	}
-	return 3
+	return _cp(!flags.CY)
 }
 
 func opCC() int {
-	addr := fetch16()
-	dasmOpAddr("CC", addr)
-	if flags.CY {
-		memWrite16(regs.SP-2, regs.PC)
-		regs.SP -= 2
-		regs.PC = addr
-		return 5
-	}
-	return 3
+	return _cp(flags.CY)
 }
 
 func opCPO() int {
-	addr := fetch16()
-	dasmOpAddr("CPO", addr)
-	if !flags.P {
-		memWrite16(regs.SP-2, regs.PC)
-		regs.SP -= 2
-		regs.PC = addr
-		return 5
-	}
-	return 3
+	return _cp(!flags.P)
 }
 
 func opCPE() int {
-	addr := fetch16()
-	dasmOpAddr("CPE", addr)
-	if flags.P {
-		memWrite16(regs.SP-2, regs.PC)
-		regs.SP -= 2
-		regs.PC = addr
-		return 5
-	}
-	return 3
+	return _cp(flags.P)
 }
 
 func opCP() int {
-	addr := fetch16()
-	dasmOpAddr("CP", addr)
-	if !flags.S {
-		memWrite16(regs.SP-2, regs.PC)
-		regs.SP -= 2
-		regs.PC = addr
-		return 5
-	}
-	return 3
+	return _cp(!flags.S)
 }
 
 func opCM() int {
-	addr := fetch16()
-	dasmOpAddr("CM", addr)
-	if flags.S {
-		memWrite16(regs.SP-2, regs.PC)
+	return _cp(flags.S)
+}
+
+func _cp(condition bool) int {
+	if condition {
+		memWrite16(regs.SP-2, regs.PC+2)
 		regs.SP -= 2
-		regs.PC = addr
+		regs.PC = fetch16()
 		return 5
+	} else {
+		regs.PC += 2
 	}
 	return 3
 }
@@ -2078,7 +1721,6 @@ func opCM() int {
 //   Cycles: 3  States: 10  Addressing: reg. indirect  Flags: none
 
 func opRET() int {
-	dasmOp("RET")
 	regs.PC = memRead16(regs.SP)
 	regs.SP += 2
 	return 5
@@ -2095,78 +1737,39 @@ func opRET() int {
 //   Cycles: 1/3  States: 5/11  Addressing: reg. indirect  Flags: none
 
 func opRNZ() int {
-	dasmOp("RNZ")
-	if !flags.Z {
-		regs.PC = memRead16(regs.SP)
-		regs.SP += 2
-		return 3
-	}
-	return 1
+	return _r(!flags.Z)
 }
 
 func opRZ() int {
-	dasmOp("RZ")
-	if flags.Z {
-		regs.PC = memRead16(regs.SP)
-		regs.SP += 2
-		return 3
-	}
-	return 1
+	return _r(flags.Z)
 }
 
 func opRNC() int {
-	dasmOp("RNC")
-	if !flags.CY {
-		regs.PC = memRead16(regs.SP)
-		regs.SP += 2
-		return 3
-	}
-	return 1
+	return _r(!flags.CY)
 }
 
 func opRC() int {
-	dasmOp("RC")
-	if flags.CY {
-		regs.PC = memRead16(regs.SP)
-		regs.SP += 2
-		return 3
-	}
-	return 1
+	return _r(flags.CY)
 }
 
 func opRPO() int {
-	dasmOp("RPO")
-	if !flags.P {
-		regs.PC = memRead16(regs.SP)
-		regs.SP += 2
-		return 3
-	}
-	return 1
+	return _r(!flags.P)
 }
 
 func opRPE() int {
-	dasmOp("RPE")
-	if flags.P {
-		regs.PC = memRead16(regs.SP)
-		regs.SP += 2
-		return 3
-	}
-	return 1
+	return _r(flags.P)
 }
 
 func opRP() int {
-	dasmOp("RP")
-	if !flags.S {
-		regs.PC = memRead16(regs.SP)
-		regs.SP += 2
-		return 3
-	}
-	return 1
+	return _r(!flags.S)
 }
 
 func opRM() int {
-	dasmOp("RM")
-	if flags.S {
+	return _r(flags.S)
+}
+
+func _r(condition bool) int {
+	if condition {
 		regs.PC = memRead16(regs.SP)
 		regs.SP += 2
 		return 3
@@ -2187,66 +1790,41 @@ func opRM() int {
 //   Cycles: 3  States: 11  Addressing: reg. indirect  Flags: none
 
 func opRST_0() int {
-	dasmOpReg("RST", "0")
-	memWrite16(regs.SP-2, regs.PC)
-	regs.SP -= 2
-	regs.PC = 0x0000
-	return 3
+	return _rst(0x0000)
 }
 
 func opRST_1() int {
-	dasmOpReg("RST", "1")
-	memWrite16(regs.SP-2, regs.PC)
-	regs.SP -= 2
-	regs.PC = 0x0008
-	return 3
+	return _rst(0x0008)
 }
 
 func opRST_2() int {
-	dasmOpReg("RST", "2")
-	memWrite16(regs.SP-2, regs.PC)
-	regs.SP -= 2
-	regs.PC = 0x0010
-	return 3
+	return _rst(0x0010)
 }
 
 func opRST_3() int {
-	dasmOpReg("RST", "3")
-	memWrite16(regs.SP-2, regs.PC)
-	regs.SP -= 2
-	regs.PC = 0x0018
-	return 3
+	return _rst(0x0018)
 }
 
 func opRST_4() int {
-	dasmOpReg("RST", "4")
-	memWrite16(regs.SP-2, regs.PC)
-	regs.SP -= 2
-	regs.PC = 0x0020
-	return 3
+	return _rst(0x0020)
 }
 
 func opRST_5() int {
-	dasmOpReg("RST", "5")
-	memWrite16(regs.SP-2, regs.PC)
-	regs.SP -= 2
-	regs.PC = 0x0028
-	return 3
+	return _rst(0x0028)
 }
 
 func opRST_6() int {
-	dasmOpReg("RST", "6")
-	memWrite16(regs.SP-2, regs.PC)
-	regs.SP -= 2
-	regs.PC = 0x0030
-	return 3
+	return _rst(0x0030)
 }
 
 func opRST_7() int {
-	dasmOpReg("RST", "7")
+	return _rst(0x0038)
+}
+
+func _rst(addr uint16) int {
 	memWrite16(regs.SP-2, regs.PC)
 	regs.SP -= 2
-	regs.PC = 0x0038
+	regs.PC = addr
 	return 3
 }
 
@@ -2261,7 +1839,6 @@ func opRST_7() int {
 //   Cycles: 1  States: 5  Addressing: register  Flags: none
 
 func opPCHL() int {
-	dasmOp("PCHL")
 	regs.PC = getHL()
 	return 1
 }
@@ -2282,7 +1859,6 @@ func opPCHL() int {
 //   Cycles: 3  States: 11  Addressing: reg. indirect  Flags: none
 
 func opPUSH_BC() int {
-	dasmOpReg("PUSH", "BC")
 	memWrite(regs.SP-1, regs.B)
 	memWrite(regs.SP-2, regs.C)
 	regs.SP -= 2
@@ -2290,7 +1866,6 @@ func opPUSH_BC() int {
 }
 
 func opPUSH_DE() int {
-	dasmOpReg("PUSH", "DE")
 	memWrite(regs.SP-1, regs.D)
 	memWrite(regs.SP-2, regs.E)
 	regs.SP -= 2
@@ -2298,7 +1873,6 @@ func opPUSH_DE() int {
 }
 
 func opPUSH_HL() int {
-	dasmOpReg("PUSH", "HL")
 	memWrite(regs.SP-1, regs.H)
 	memWrite(regs.SP-2, regs.L)
 	regs.SP -= 2
@@ -2317,7 +1891,6 @@ func opPUSH_HL() int {
 //   Cycles: 3  States: 11  Addressing: reg. indirect  Flags: none
 
 func opPUSH_PSW() int {
-	dasmOpReg("PUSH", "PSW")
 	memWrite(regs.SP-1, regs.A)
 	memWrite(regs.SP-2, getFlags())
 	regs.SP -= 2
@@ -2336,7 +1909,6 @@ func opPUSH_PSW() int {
 //   Cycles: 3  States: 11  Addressing: reg. indirect  Flags: none
 
 func opPOP_BC() int {
-	dasmOpReg("POP", "BC")
 	regs.C = memRead(regs.SP)
 	regs.B = memRead(regs.SP + 1)
 	regs.SP += 2
@@ -2344,7 +1916,6 @@ func opPOP_BC() int {
 }
 
 func opPOP_DE() int {
-	dasmOpReg("POP", "DE")
 	regs.E = memRead(regs.SP)
 	regs.D = memRead(regs.SP + 1)
 	regs.SP += 2
@@ -2352,7 +1923,6 @@ func opPOP_DE() int {
 }
 
 func opPOP_HL() int {
-	dasmOpReg("POP", "HL")
 	regs.L = memRead(regs.SP)
 	regs.H = memRead(regs.SP + 1)
 	regs.SP += 2
@@ -2371,7 +1941,6 @@ func opPOP_HL() int {
 //   Cycles: 3  States: 10  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
 
 func opPOP_PSW() int {
-	dasmOpReg("POP", "PSW")
 	setFlags(memRead(regs.SP))
 	regs.A = memRead(regs.SP + 1)
 	regs.SP += 2
@@ -2390,7 +1959,6 @@ func opPOP_PSW() int {
 //   Cycles: 5  States: 18  Addressing: reg. indirect  Flags: none
 
 func opXTHL() int {
-	dasmOp("XTHL")
 	addr := regs.SP
 	r1 := regs.H
 	regs.H = memRead(addr+1)
@@ -2414,7 +1982,6 @@ func opXTHL() int {
 
 func opIN() int {
 	port := fetch()
-	dasmOpVal("IN", port)
 	fp, ok := ports_in[port]
 	if ok {
 		regs.A = fp()
@@ -2433,7 +2000,6 @@ func opIN() int {
 
 func opOUT() int {
 	port := fetch()
-	dasmOpVal("OUT", port)
 	fp, ok := ports_out[port]
 	if ok {
 		fp(regs.A)
@@ -2450,7 +2016,6 @@ func opOUT() int {
 //   Cycles: 1  States: 4  Flags: none
 
 func opEI() int {
-	dasmOp("EI")
 	interrupt = true
 	return 1
 }
@@ -2464,7 +2029,6 @@ func opEI() int {
 //   Cycles: 1  States: 4  Flags: none
 
 func opDI() int {
-	dasmOp("DI")
 	interrupt = false
 	return 1
 }
@@ -2480,7 +2044,6 @@ func opDI() int {
 //   Cycles: 1  States: 4  Flags: none
 
 func opNOP() int {
-	dasmOp("NOP")
 	return 1
 }
 

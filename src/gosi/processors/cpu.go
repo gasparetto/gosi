@@ -13,5 +13,7 @@ type Cpu interface {
 
 	Interrupt(op uint8) int
 
-	DebugBreakpoint() bool
+	//DebugTrace()
+	//
+	//DebugBreakpoint() bool
 }

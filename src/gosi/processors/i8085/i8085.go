@@ -2,6 +2,7 @@ package i8085
 
 import (
 	"fmt"
+	"log"
 )
 
 type I8085 struct{}
@@ -62,12 +63,13 @@ func (I8085) AttachPortOut(fp func(v uint8), port uint8) {
 
 func (I8085) Step() int {
 
-	debugPC = regs.PC
+	//debugPC = regs.PC
+	//printOp()
 
 	op := fetch()
 	fp := decode(op)
 	cycles := execute(fp)
-	traceState()
+	//traceState()
 	return cycles
 }
 
@@ -75,19 +77,97 @@ func (I8085) Interrupt(op uint8) int {
 
 	if interrupt {
 
-		debugPC = 0x9999
+		//debugPC = 0x9999
 
 		interrupt = false
 
 		fp := decode(op)
 		cycles := execute(fp)
-		traceState()
+		//traceState()
 		return cycles
 	}
 	return 0
 }
 
-func (I8085) DebugBreakpoint() bool {
-	return debugPC == 0x0ae1
-	//return false
+//func (I8085) DebugTrace() {
+//	b := trace
+//	trace = true
+//	traceState()
+//	trace = b
+//}
+//
+//func (I8085) DebugBreakpoint() bool {
+//	return debugPC == 0x0ae1
+//	//return false
+//}
+
+func setBC(v uint16) {
+	regs.B = uint8(v >> 8)
+	regs.C = uint8(v)
+}
+
+func getBC() uint16 {
+	return uint16(regs.B)<<8 | uint16(regs.C)
+}
+
+func setDE(v uint16) {
+	regs.D = uint8(v >> 8)
+	regs.E = uint8(v)
+}
+
+func getDE() uint16 {
+	return uint16(regs.D)<<8 | uint16(regs.E)
+}
+
+func setHL(v uint16) {
+	regs.H = uint8(v >> 8)
+	regs.L = uint8(v)
+}
+
+func getHL() uint16 {
+	return uint16(regs.H)<<8 | uint16(regs.L)
+}
+
+func setFlags(v uint8) {
+	flags.S = v&0x80 > 0
+	flags.Z = v&0x40 > 0
+	flags.AC = v&0x10 > 0
+	flags.P = v&0x04 > 0
+	flags.CY = v&0x01 > 0
+}
+
+func getFlags() uint8 {
+	return uint8(btoi(flags.S)<<7 | btoi(flags.Z)<<6 | btoi(flags.AC)<<4 | btoi(flags.P)<<2 | 0x02 | btoi(flags.CY))
+}
+
+func memWrite(addr uint16, v uint8) {
+	switch {
+	case inBetween(addr, ramStart, ramEnd):
+		ram[addr-ramStart] = v
+	case inBetween(addr, romStart, romEnd):
+		log.Fatal("Attempted write to readonly memory")
+	default:
+		log.Fatal("Attempted write to unknown memory")
+	}
+}
+
+func memWrite16(addr uint16, v uint16) {
+	memWrite(addr, uint8(v))
+	memWrite(addr+1, uint8(v>>8))
+}
+
+func memRead(addr uint16) uint8 {
+	switch {
+	case inBetween(addr, ramStart, ramEnd):
+		return ram[addr-ramStart]
+	case inBetween(addr, romStart, romEnd):
+		return rom[addr-romStart]
+	default:
+		log.Fatal("Attempted read to unknown memory")
+		return 0
+	}
+}
+
+func memRead16(addr uint16) uint16 {
+	return uint16(memRead(addr)) | uint16(memRead(addr+1))<<8
 }

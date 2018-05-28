@@ -121,12 +121,12 @@ func mainLoop(cpu processors.Cpu, vdc videocards.DisplayController) {
 		}
 
 		// breakpoints
-		if cpu.DebugBreakpoint() {
-			fmt.Println("--- Stopped at breakpoint ---")
-			vdc.Render()
-			//vdc.DasmTrace()
-			debugLoop(cpu, vdc)
-		}
+		//if cpu.DebugBreakpoint() {
+		//	fmt.Println("--- Stopped at breakpoint ---")
+		//	vdc.Render()
+		//	//vdc.DasmTrace()
+		//	debugLoop(cpu, vdc)
+		//}
 	}
 }
 
