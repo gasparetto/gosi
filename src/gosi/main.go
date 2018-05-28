@@ -17,7 +17,7 @@ import (
 var cpu processors.Cpu
 var vdc videocards.DisplayController
 var breakpoints []uint16
-//var breakpoints = []uint16 {0x0ae1, 0x09dc}
+//var breakpoints = []uint16 {0x014a}
 
 func main() {
 
@@ -133,7 +133,7 @@ func mainLoop() {
 		// fps
 		now := time.Now()
 		if now.After(nextFps) {
-			fmt.Printf("%s --- FPS %d ---\n", time.Now().Format(time.StampMicro), frames)
+			//fmt.Printf("%s --- FPS %d ---\n", time.Now().Format(time.StampMicro), frames)
 			frames = 0
 			nextFps = now.Add(time.Second)
 		}

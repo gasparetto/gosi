@@ -134,93 +134,93 @@ func decode(op uint8) func() int {
 	case 0x40:
 		return opMOV_B_B
 	case 0x41:
-		return opMOV_C_B
+		return opMOV_B_C
 	case 0x42:
-		return opMOV_D_B
+		return opMOV_B_D
 	case 0x43:
-		return opMOV_E_B
+		return opMOV_B_E
 	case 0x44:
-		return opMOV_H_B
+		return opMOV_B_H
 	case 0x45:
-		return opMOV_L_B
+		return opMOV_B_L
 	case 0x46:
 		return opMOV_B_M
 	case 0x47:
 		return opMOV_B_A
 	case 0x48:
-		return opMOV_B_C
+		return opMOV_C_B
 	case 0x49:
 		return opMOV_C_C
 	case 0x4a:
-		return opMOV_D_C
+		return opMOV_C_D
 	case 0x4b:
-		return opMOV_E_C
+		return opMOV_C_E
 	case 0x4c:
-		return opMOV_H_C
+		return opMOV_C_H
 	case 0x4d:
-		return opMOV_L_C
+		return opMOV_C_L
 	case 0x4e:
 		return opMOV_C_M
 	case 0x4f:
 		return opMOV_C_A
 	case 0x50:
-		return opMOV_B_D
+		return opMOV_D_B
 	case 0x51:
-		return opMOV_C_D
+		return opMOV_D_C
 	case 0x52:
 		return opMOV_D_D
 	case 0x53:
-		return opMOV_E_D
+		return opMOV_D_E
 	case 0x54:
-		return opMOV_H_D
+		return opMOV_D_H
 	case 0x55:
-		return opMOV_L_D
+		return opMOV_D_L
 	case 0x56:
 		return opMOV_D_M
 	case 0x57:
 		return opMOV_D_A
 	case 0x58:
-		return opMOV_B_E
+		return opMOV_E_B
 	case 0x59:
-		return opMOV_C_E
+		return opMOV_E_C
 	case 0x5a:
-		return opMOV_D_E
+		return opMOV_E_D
 	case 0x5b:
 		return opMOV_E_E
 	case 0x5c:
-		return opMOV_H_E
+		return opMOV_E_H
 	case 0x5d:
-		return opMOV_L_E
+		return opMOV_E_L
 	case 0x5e:
 		return opMOV_E_M
 	case 0x5f:
 		return opMOV_E_A
 	case 0x60:
-		return opMOV_B_H
+		return opMOV_H_B
 	case 0x61:
-		return opMOV_C_H
+		return opMOV_H_C
 	case 0x62:
-		return opMOV_D_H
+		return opMOV_H_D
 	case 0x63:
-		return opMOV_E_H
+		return opMOV_H_E
 	case 0x64:
 		return opMOV_H_H
 	case 0x65:
-		return opMOV_L_H
+		return opMOV_H_L
 	case 0x66:
 		return opMOV_H_M
 	case 0x67:
 		return opMOV_H_A
 	case 0x68:
-		return opMOV_B_L
+		return opMOV_L_B
 	case 0x69:
-		return opMOV_C_L
+		return opMOV_L_C
 	case 0x6a:
-		return opMOV_D_L
+		return opMOV_L_D
 	case 0x6b:
-		return opMOV_E_L
+		return opMOV_L_E
 	case 0x6c:
-		return opMOV_H_L
+		return opMOV_L_H
 	case 0x6d:
 		return opMOV_L_L
 	case 0x6e:
