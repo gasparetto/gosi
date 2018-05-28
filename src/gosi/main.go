@@ -77,7 +77,6 @@ func mainLoop() {
 
 	cycles := 0
 	frames := 0
-	//currentFrameStartTime := time.Now().UnixNano()
 	nextFps := time.Now().Add(time.Second)
 
 	// timing and interrupts
@@ -126,15 +125,10 @@ func mainLoop() {
 			int64V = false
 			int128V = false
 			vbStart = false
-			running = !checkQuit()
-		}
 
-		//time.Sleep(16 * time.Millisecond)
-		//dt := (currentFrameStartTime + 16666666) - time.Now().UnixNano()
-		//if dt > 0 {
-		//	time.Sleep(time.Duration(dt) * time.Nanosecond)
-		//	currentFrameStartTime = time.Now().UnixNano()
-		//}
+			running = !checkQuit()
+			time.Sleep(12 * time.Millisecond)
+		}
 
 		// fps
 		now := time.Now()
@@ -148,7 +142,6 @@ func mainLoop() {
 
 func checkQuit() bool {
 
-	//if sdl.HasEvent(sdl.QUIT) {
 	for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 		switch t := event.(type) {
 		case *sdl.QuitEvent:
@@ -159,7 +152,6 @@ func checkQuit() bool {
 			}
 		}
 	}
-	//}
 	return false
 }
 
