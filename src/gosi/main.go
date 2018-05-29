@@ -23,15 +23,13 @@ func main() {
 
 	//defer profile.Start().Stop()
 
-	fmt.Printf("%s start\n", time.Now().Format(time.StampMicro))
-
 	if err := sdl.Init(sdl.INIT_EVERYTHING); err != nil {
 		panic(err)
 	}
 	defer sdl.Quit()
 
 	window, err := sdl.CreateWindow("GOSI", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
-		256, 224, sdl.WINDOW_SHOWN)
+		224, 256, sdl.WINDOW_SHOWN)
 	if err != nil {
 		panic(err)
 	}
@@ -69,8 +67,6 @@ func main() {
 	cpu.AttachPortOut(shifter.WriteData, 0x04)
 
 	mainLoop()
-
-	fmt.Printf("%s end\n", time.Now().Format(time.StampMicro))
 }
 
 func mainLoop() {

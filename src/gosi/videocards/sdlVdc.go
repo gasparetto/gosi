@@ -69,7 +69,8 @@ func renderByte(b uint8, x int32, y int32) {
 
 func renderPixel(x int32, y int32) {
 
-	renderer.DrawPoint(x, y)
+	//renderer.DrawPoint(x, y)
+	renderer.DrawPoint(y, 256 - x) // rotate 90° left
 }
 
 func (SdlDisplayController) AttachRam(buf []byte) {
