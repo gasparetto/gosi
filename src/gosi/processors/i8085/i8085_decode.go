@@ -445,6 +445,8 @@ func decode(op uint8) func() int {
 		return opIN
 	case 0xdc:
 		return opCC
+	case 0xdd:
+		//undocumented CALL nnnn
 	case 0xde:
 		return opSBI
 	case 0xdf:

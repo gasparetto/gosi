@@ -9,6 +9,8 @@ type Cpu interface {
 
 	AttachPortOut(fp func(v uint8), port uint8)
 
+	SetProgramCounter(uint16)
+
 	GetProgramCounter() uint16
 
 	Step() int

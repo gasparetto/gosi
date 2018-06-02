@@ -7,12 +7,14 @@ import (
 
 type I8085 struct{}
 
-var regs = struct {
+type Regs struct{
 	PC               uint16 // 16-bit program counter register
 	SP               uint16 // 16-bit stack pointer register
 	B, C, D, E, H, L uint8  // 8-bit general purpose registers
 	A                uint8  // ALU 8-bit accumulator
-}{0x0000, 0x0000, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
+}
+
+var regs = Regs{0x0000, 0x0000, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 
 var flags = struct {
 	Z, S, P, CY, AC bool // ALU condition flags: Zero, Sign, Parity, Carry, Auxiliary Carry
@@ -28,6 +30,14 @@ var romStart, romEnd uint16
 
 var ports_in = make(map[uint8]func() uint8)
 var ports_out = make(map[uint8]func(v uint8))
+
+func (I8085) GetRegs() Regs {
+	return regs
+}
+
+func (I8085) GetRegDE() uint16 {
+	return uint16(regs.D)<<8 | uint16(regs.E)
+}
 
 func (I8085) AttachRam(buf []byte, offset uint16) {
 
@@ -59,6 +69,11 @@ func (I8085) AttachPortOut(fp func(v uint8), port uint8) {
 	fmt.Printf("--- CPU i8085 :: ATTACH func %p to PORT OUT 0x%02x ---\n", fp, port)
 
 	ports_out[port] = fp
+}
+
+func (I8085) SetProgramCounter(addr uint16) {
+
+	regs.PC = addr
 }
 
 func (I8085) GetProgramCounter() uint16 {

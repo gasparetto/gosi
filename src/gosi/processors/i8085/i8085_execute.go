@@ -596,37 +596,37 @@ func opXCHG() int {
 //   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
 
 func opADD_B() int {
-	regs.A = add_CY(regs.A, regs.B)
+	add(regs.B)
 	return 1
 }
 
 func opADD_C() int {
-	regs.A = add_CY(regs.A, regs.C)
+	add(regs.C)
 	return 1
 }
 
 func opADD_D() int {
-	regs.A = add_CY(regs.A, regs.D)
+	add(regs.D)
 	return 1
 }
 
 func opADD_E() int {
-	regs.A = add_CY(regs.A, regs.E)
+	add(regs.E)
 	return 1
 }
 
 func opADD_H() int {
-	regs.A = add_CY(regs.A, regs.H)
+	add(regs.H)
 	return 1
 }
 
 func opADD_L() int {
-	regs.A = add_CY(regs.A, regs.L)
+	add(regs.L)
 	return 1
 }
 
 func opADD_A() int {
-	regs.A = add_CY(regs.A, regs.A)
+	add(regs.A)
 	return 1
 }
 
@@ -641,7 +641,7 @@ func opADD_A() int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
 
 func opADD_M() int {
-	regs.A = add_CY(regs.A, memRead(getHL()))
+	add(memRead(getHL()))
 	return 2
 }
 
@@ -656,7 +656,7 @@ func opADD_M() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
 
 func opADI() int {
-	regs.A = add_CY(regs.A, fetch())
+	add(fetch())
 	return 2
 }
 
@@ -671,37 +671,37 @@ func opADI() int {
 //   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
 
 func opADC_B() int {
-	regs.A = add3_CY(regs.A, regs.B, btoi(flags.CY))
+	adc(regs.B)
 	return 1
 }
 
 func opADC_C() int {
-	regs.A = add3_CY(regs.A, regs.C, btoi(flags.CY))
+	adc(regs.C)
 	return 1
 }
 
 func opADC_D() int {
-	regs.A = add3_CY(regs.A, regs.D, btoi(flags.CY))
+	adc(regs.D)
 	return 1
 }
 
 func opADC_E() int {
-	regs.A = add3_CY(regs.A, regs.E, btoi(flags.CY))
+	adc(regs.E)
 	return 1
 }
 
 func opADC_H() int {
-	regs.A = add3_CY(regs.A, regs.H, btoi(flags.CY))
+	adc(regs.H)
 	return 1
 }
 
 func opADC_L() int {
-	regs.A = add3_CY(regs.A, regs.L, btoi(flags.CY))
+	adc(regs.L)
 	return 1
 }
 
 func opADC_A() int {
-	regs.A = add3_CY(regs.A, regs.A, btoi(flags.CY))
+	adc(regs.A)
 	return 1
 }
 
@@ -716,7 +716,7 @@ func opADC_A() int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
 
 func opADC_M() int {
-	regs.A = add3_CY(regs.A, memRead(getHL()), btoi(flags.CY))
+	adc(memRead(getHL()))
 	return 2
 }
 
@@ -731,7 +731,7 @@ func opADC_M() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
 
 func opACI() int {
-	regs.A = add3_CY(regs.A, fetch(), btoi(flags.CY))
+	adc(fetch())
 	return 2
 }
 
@@ -745,37 +745,37 @@ func opACI() int {
 //   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
 
 func opSUB_B() int {
-	regs.A = sub_CY(regs.A, regs.B)
+	sub(regs.B)
 	return 1
 }
 
 func opSUB_C() int {
-	regs.A = sub_CY(regs.A, regs.C)
+	sub(regs.C)
 	return 1
 }
 
 func opSUB_D() int {
-	regs.A = sub_CY(regs.A, regs.D)
+	sub(regs.D)
 	return 1
 }
 
 func opSUB_E() int {
-	regs.A = sub_CY(regs.A, regs.E)
+	sub(regs.E)
 	return 1
 }
 
 func opSUB_H() int {
-	regs.A = sub_CY(regs.A, regs.H)
+	sub(regs.H)
 	return 1
 }
 
 func opSUB_L() int {
-	regs.A = sub_CY(regs.A, regs.L)
+	sub(regs.L)
 	return 1
 }
 
 func opSUB_A() int {
-	regs.A = sub_CY(regs.A, regs.A)
+	sub(regs.A)
 	return 1
 }
 
@@ -790,7 +790,7 @@ func opSUB_A() int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
 
 func opSUB_M() int {
-	regs.A = sub_CY(regs.A, memRead(getHL()))
+	sub(memRead(getHL()))
 	return 2
 }
 
@@ -805,7 +805,7 @@ func opSUB_M() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
 
 func opSUI() int {
-	regs.A = sub_CY(regs.A, fetch())
+	sub(fetch())
 	return 2
 }
 
@@ -820,35 +820,37 @@ func opSUI() int {
 //   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
 
 func opSBB_B() int {
-	return _sbb(regs.B)
+	sbb(regs.B)
+	return 1
 }
 
 func opSBB_C() int {
-	return _sbb(regs.C)
+	sbb(regs.C)
+	return 1
 }
 
 func opSBB_D() int {
-	return _sbb(regs.D)
+	sbb(regs.D)
+	return 1
 }
 
 func opSBB_E() int {
-	return _sbb(regs.E)
+	sbb(regs.E)
+	return 1
 }
 
 func opSBB_H() int {
-	return _sbb(regs.H)
+	sbb(regs.H)
+	return 1
 }
 
 func opSBB_L() int {
-	return _sbb(regs.L)
+	sbb(regs.L)
+	return 1
 }
 
 func opSBB_A() int {
-	return _sbb(regs.A)
-}
-
-func _sbb(v uint8) int {
-	regs.A = sub3_CY(regs.A, v, btoi(flags.CY))
+	sbb(regs.A)
 	return 1
 }
 
@@ -863,7 +865,8 @@ func _sbb(v uint8) int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
 
 func opSBB_M() int {
-	return _sbb(memRead(getHL())) + 1
+	sbb(memRead(getHL()))
+	return 2
 }
 
 //endregion
@@ -877,7 +880,8 @@ func opSBB_M() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
 
 func opSBI() int {
-	return _sbb(fetch()) + 1
+	sbb(fetch())
+	return 2
 }
 
 //endregion
@@ -885,42 +889,42 @@ func opSBI() int {
 //region INR r (Increment Register)
 
 //   (r) <- (r) + 1
-//   The content of register r is incremented by one.
+//   The content of register r is incremented by one. Note: All condition flags except CY are affected.
 //   00DDD100
 //   Cycles: 1  States: 5  Addressing: register  Flags: Z,S,P,AC
 
 func opINR_B() int {
-	regs.B = add(regs.B, 1)
+	regs.B = inr(regs.B)
 	return 1
 }
 
 func opINR_C() int {
-	regs.C = add(regs.C, 1)
+	regs.C = inr(regs.C)
 	return 1
 }
 
 func opINR_D() int {
-	regs.D = add(regs.D, 1)
+	regs.D = inr(regs.D)
 	return 1
 }
 
 func opINR_E() int {
-	regs.E = add(regs.E, 1)
+	regs.E = inr(regs.E)
 	return 1
 }
 
 func opINR_H() int {
-	regs.H = add(regs.H, 1)
+	regs.H = inr(regs.H)
 	return 1
 }
 
 func opINR_L() int {
-	regs.L = add(regs.L, 1)
+	regs.L = inr(regs.L)
 	return 1
 }
 
 func opINR_A() int {
-	regs.A = add(regs.A, 1)
+	regs.A = inr(regs.A)
 	return 1
 }
 
@@ -935,9 +939,7 @@ func opINR_A() int {
 
 func opINR_M() int {
 	addr := getHL()
-	v := memRead(addr)
-	v = add(v, 1)
-	memWrite(addr, v)
+	memWrite(addr, inr(memRead(addr)))
 	return 3
 }
 
@@ -946,42 +948,42 @@ func opINR_M() int {
 //region DCR r (Decrement Register)
 
 //   (r) <- (r) - 1
-//   The content of register r is decremented by one.
+//   The content of register r is decremented by one. Note: All condition except CY are affected.
 //   00DDD101
 //   Cycles: 1  States: 5  Addressing: register  Flags: Z,S,P,AC
 
 func opDCR_B() int {
-	regs.B = sub(regs.B, 1)
+	regs.B = dcr(regs.B)
 	return 1
 }
 
 func opDCR_C() int {
-	regs.C = sub(regs.C, 1)
+	regs.C = dcr(regs.C)
 	return 1
 }
 
 func opDCR_D() int {
-	regs.D = sub(regs.D, 1)
+	regs.D = dcr(regs.D)
 	return 1
 }
 
 func opDCR_E() int {
-	regs.E = sub(regs.E, 1)
+	regs.E = dcr(regs.E)
 	return 1
 }
 
 func opDCR_H() int {
-	regs.H = sub(regs.H, 1)
+	regs.H = dcr(regs.H)
 	return 1
 }
 
 func opDCR_L() int {
-	regs.L = sub(regs.L, 1)
+	regs.L = dcr(regs.L)
 	return 1
 }
 
 func opDCR_A() int {
-	regs.A = sub(regs.A, 1)
+	regs.A = dcr(regs.A)
 	return 1
 }
 
@@ -996,9 +998,7 @@ func opDCR_A() int {
 
 func opDCR_M() int {
 	addr := getHL()
-	v := memRead(addr)
-	v = sub(v, 1)
-	memWrite(addr, v)
+	memWrite(addr, dcr(memRead(addr)))
 	return 3
 }
 
@@ -1084,25 +1084,22 @@ func opDCX_SP() int {
 //   Cycles: 3  States: 10  Addressing: register  Flags: CY
 
 func opDAD_BC() int {
-	return _dad(getBC())
+	dad(getBC())
+	return 3
 }
 
 func opDAD_DE() int {
-	return _dad(getDE())
+	dad(getDE())
+	return 3
 }
 
 func opDAD_HL() int {
-	return _dad(getHL())
+	dad(getHL())
+	return 3
 }
 
 func opDAD_SP() int {
-	return _dad(regs.SP)
-}
-
-func _dad(v uint16) int {
-	r := uint32(getHL()) + uint32(v)
-	setHL(uint16(r))
-	flags.CY = (r & 0xffff0000) > 0
+	dad(regs.SP)
 	return 3
 }
 
@@ -1110,7 +1107,6 @@ func _dad(v uint16) int {
 
 //region DAA (Decimal Adjust Accumulator)
 
-//   (H) (L) <- (H) (L) + (rh) (rl)
 //   The eight-bit number in the accumulator is adjusted to form two four-bit Binary-Coded-Decimal digits by the following
 //   process:
 //   1. If the value of the least significant 4 bits of the accumulator is greater than 9 or if the AC flag is set, 6 is added
@@ -1122,7 +1118,17 @@ func _dad(v uint16) int {
 //   Cycles: 1  States: 4  Flags: Z,S,P,CY,AC
 
 func opDAA() int {
-	//todo
+	res16 := uint16(regs.A)
+	if (res16 & 0x0f) > 0x09 || flags.AC {
+		res16 += 0x06
+	}
+	if (res16 & 0xf0) > 0x90 || flags.CY {
+		res16 += 0x60
+	}
+	regs.A = uint8(res16)
+	flags_Z_S_P(regs.A)
+	flags.CY = res16 > 0x00ff
+	flags.AC = res16 > 0x000f
 	return 1
 }
 
@@ -1141,38 +1147,37 @@ func opDAA() int {
 //   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
 
 func opANA_B() int {
-	return _ana(regs.B)
+	ana(regs.B)
+	return 1
 }
 
 func opANA_C() int {
-	return _ana(regs.C)
+	ana(regs.C)
+	return 1
 }
 
 func opANA_D() int {
-	return _ana(regs.D)
+	ana(regs.D)
+	return 1
 }
 
 func opANA_E() int {
-	return _ana(regs.E)
+	ana(regs.E)
+	return 1
 }
 
 func opANA_H() int {
-	return _ana(regs.H)
+	ana(regs.H)
+	return 1
 }
 
 func opANA_L() int {
-	return _ana(regs.L)
+	ana(regs.L)
+	return 1
 }
 
 func opANA_A() int {
-	return _ana(regs.A)
-}
-
-func _ana(v uint8) int {
-	regs.A = regs.A & v
-	flags_Z_S_P(regs.A)
-	flags.AC = false
-	flags.CY = false
+	ana(regs.A)
 	return 1
 }
 
@@ -1187,10 +1192,7 @@ func _ana(v uint8) int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
 
 func opANA_M() int {
-	v := memRead(getHL())
-	regs.A = regs.A & v
-	sub(regs.A, v)
-	flags.CY = false
+	ana(memRead(getHL()))
 	return 2
 }
 
@@ -1205,7 +1207,8 @@ func opANA_M() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
 
 func opANI() int {
-	return _ana(fetch()) + 1
+	ana(fetch())
+	return 2
 }
 
 //endregion
@@ -1219,39 +1222,38 @@ func opANI() int {
 //   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
 
 func opXRA_B() int {
-	return _xra(regs.B)
+	xra(regs.B)
+	return 1
 }
 
 func opXRA_C() int {
-	return _xra(regs.C)
+	xra(regs.C)
+	return 1
 }
 
 func opXRA_D() int {
-	return _xra(regs.D)
+	xra(regs.D)
+	return 1
 }
 
 func opXRA_E() int {
-	return _xra(regs.E)
+	xra(regs.E)
+	return 1
 }
 
 func opXRA_H() int {
-	return _xra(regs.H)
+	xra(regs.H)
+	return 1
 }
 
 func opXRA_L() int {
-	return _xra(regs.L)
+	xra(regs.L)
+	return 1
 }
 
 func opXRA_A() int {
-	return _xra(regs.A)
-}
-
-func _xra(v uint8) int {
-	regs.A = regs.A ^ v
-	flags_Z_S_P(regs.A)
-	flags.AC = false
-	flags.CY = false
-	return 2
+	xra(regs.A)
+	return 1
 }
 
 //endregion
@@ -1265,7 +1267,8 @@ func _xra(v uint8) int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
 
 func opXRA_M() int {
-	return _xra(memRead(getHL()))
+	xra(memRead(getHL()))
+	return 2
 }
 
 // endregion
@@ -1279,7 +1282,8 @@ func opXRA_M() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
 
 func opXRI() int {
-	return _xra(fetch())
+	xra(fetch())
+	return 2
 }
 
 // endregion
@@ -1293,39 +1297,38 @@ func opXRI() int {
 //   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
 
 func opORA_B() int {
-	return _or(regs.B)
+	ora(regs.B)
+	return 1
 }
 
 func opORA_C() int {
-	return _or(regs.C)
+	ora(regs.C)
+	return 1
 }
 
 func opORA_D() int {
-	return _or(regs.D)
+	ora(regs.D)
+	return 1
 }
 
 func opORA_E() int {
-	return _or(regs.E)
+	ora(regs.E)
+	return 1
 }
 
 func opORA_H() int {
-	return _or(regs.H)
+	ora(regs.H)
+	return 1
 }
 
 func opORA_L() int {
-	return _or(regs.L)
+	ora(regs.L)
+	return 1
 }
 
 func opORA_A() int {
-	return _or(regs.A)
-}
-
-func _or(v uint8) int {
-	regs.A = regs.A | v
-	flags_Z_S_P(regs.A)
-	flags.AC = false
-	flags.CY = false
-	return 2
+	ora(regs.A)
+	return 1
 }
 
 //endregion
@@ -1339,7 +1342,8 @@ func _or(v uint8) int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
 
 func opORA_M() int {
-	return _or(memRead(getHL()))
+	ora(memRead(getHL()))
+	return 2
 }
 
 // endregion
@@ -1353,7 +1357,8 @@ func opORA_M() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
 
 func opORI() int {
-	return _or(fetch())
+	ora(fetch())
+	return 2
 }
 
 //endregion
@@ -1367,36 +1372,37 @@ func opORI() int {
 //   Cycles: 1  States: 4  Addressing: register  Flags: Z,S,P,CY,AC
 
 func opCMP_B() int {
-	return _cmp(regs.B)
+	cmp(regs.B)
+	return 1
 }
 
 func opCMP_C() int {
-	return _cmp(regs.C)
+	cmp(regs.C)
+	return 1
 }
 
 func opCMP_D() int {
-	return _cmp(regs.D)
+	cmp(regs.D)
+	return 1
 }
 
 func opCMP_E() int {
-	return _cmp(regs.E)
+	cmp(regs.E)
+	return 1
 }
 
 func opCMP_H() int {
-	return _cmp(regs.H)
+	cmp(regs.H)
+	return 1
 }
 
 func opCMP_L() int {
-	return _cmp(regs.L)
+	cmp(regs.L)
+	return 1
 }
 
 func opCMP_A() int {
-	return _cmp(regs.A)
-}
-
-func _cmp(v uint8) int {
-	sub(regs.A, v)
-	flags.CY = regs.A < v
+	cmp(regs.A)
 	return 1
 }
 
@@ -1412,7 +1418,8 @@ func _cmp(v uint8) int {
 //   Cycles: 2  States: 7  Addressing: reg. indirect  Flags: Z,S,P,CY,AC
 
 func opCMP_M() int {
-	return _cmp(memRead(getHL())) + 1
+	cmp(memRead(getHL()))
+	return 2
 }
 
 //endregion
@@ -1426,7 +1433,8 @@ func opCMP_M() int {
 //   Cycles: 2  States: 7  Addressing: immediate  Flags: Z,S,P,CY,AC
 
 func opCPI() int {
-	return _cmp(fetch()) + 1
+	cmp(fetch())
+	return 2
 }
 
 //endregion
@@ -1441,7 +1449,7 @@ func opCPI() int {
 
 func opRLC() int {
 	a0 := regs.A & 0x80
-	regs.A = (regs.A << 1 & 0xfe) | a0>>7
+	regs.A = regs.A<<1 | a0>>7
 	flags.CY = a0 != 0
 	return 1
 }
@@ -1458,7 +1466,7 @@ func opRLC() int {
 
 func opRRC() int {
 	a0 := regs.A & 0x01
-	regs.A = (regs.A >> 1 & 0x7f) | a0<<7
+	regs.A = regs.A>>1 | a0<<7
 	flags.CY = a0 != 0
 	return 1
 }
@@ -1475,7 +1483,7 @@ func opRRC() int {
 
 func opRAL() int {
 	a0 := regs.A & 0x80
-	regs.A = (regs.A << 1 & 0xfe) | btoi(flags.CY)
+	regs.A = regs.A<<1 | btoi(flags.CY)
 	flags.CY = a0 != 0
 	return 1
 }
@@ -1492,7 +1500,7 @@ func opRAL() int {
 
 func opRAR() int {
 	a0 := regs.A & 0x01
-	regs.A = (regs.A >> 1 & 0x7f) | btoi(flags.CY)<<7
+	regs.A = regs.A>>1 | btoi(flags.CY)<<7
 	flags.CY = a0 != 0
 	return 1
 }
@@ -2047,54 +2055,90 @@ func opNOP() int {
 
 // ********** Utils **********
 
-func add(a uint8, b uint8) uint8 {
-	res8 := a + b
-	flags_Z_S_P(res8)
-	//todo flags.AC
-	return res8
+func inr(v uint8) uint8 {
+	v++
+	flags_Z_S_P(v)
+	flags.AC = (v & 0x0f) == 0
+	return v
 }
 
-func add_CY(a uint8, b uint8) uint8 {
-	res16 := uint16(a) + uint16(b)
+func add(v uint8) {
+	res16 := uint16(regs.A) + uint16(v)
+	index := uint16((regs.A & 0x88) >> 1) | uint16((v & 0x88) >> 2) | ((res16 & 0x88) >> 3)
+	regs.A = uint8(res16)
+	flags_Z_S_P(regs.A)
+	flags.AC = half_carry_table[index & 0x7] == 1
+	flags.CY = (res16 & 0x0100) != 0
+}
+
+func adc(v uint8) {
+	res16 := uint16(regs.A) + uint16(v) + uint16(btoi(flags.CY))
+	index := uint16((regs.A & 0x88) >> 1) | uint16((v & 0x88) >> 2) | ((res16 & 0x88) >> 3)
+	regs.A = uint8(res16)
+	flags_Z_S_P(regs.A)
+	flags.AC = half_carry_table[index & 0x7] == 1
+	flags.CY = (res16 & 0x0100) != 0
+}
+
+func dcr(v uint8) uint8 {
+	v--
+	flags_Z_S_P(v)
+	flags.AC = (v & 0x0f) != 0x0f
+	return v
+}
+
+func sub(v uint8) {
+	res16 := uint16(regs.A) - uint16(v)
+	index := uint16((regs.A & 0x88) >> 1) | uint16((v & 0x88) >> 2) | ((res16 & 0x88) >> 3)
+	regs.A = uint8(res16)
+	flags_Z_S_P(regs.A)
+	flags.AC = sub_half_carry_table[index & 0x7] == 0
+	flags.CY = (res16 & 0x0100) != 0
+}
+
+func sbb(v uint8) {
+	res16 := uint16(regs.A) - uint16(v) - uint16(btoi(flags.CY))
+	index := uint16((regs.A & 0x88) >> 1) | uint16((v & 0x88) >> 2) | ((res16 & 0x88) >> 3)
+	regs.A = uint8(res16)
+	flags_Z_S_P(regs.A)
+	flags.AC = sub_half_carry_table[index & 0x7] == 0
+	flags.CY = (res16 & 0x0100) != 0
+}
+
+func cmp(v uint8) {
+	res16 := uint16(regs.A) - uint16(v)
+	index := uint16((regs.A & 0x88) >> 1) | uint16((v & 0x88) >> 2) | ((res16 & 0x88) >> 3)
 	res8 := uint8(res16)
 	flags_Z_S_P(res8)
-	flags.CY = (res16 & 0xff00) != 0
-	//todo flags.AC
-	return res8
+	flags.AC = sub_half_carry_table[index & 0x7] == 0
+	flags.CY = (res16 & 0x0100) != 0
 }
 
-func add3_CY(a uint8, b uint8, c uint8) uint8 {
-	res16 := uint16(a) + uint16(b) + uint16(c)
-	res8 := uint8(res16)
-	flags_Z_S_P(res8)
-	flags.CY = (res16 & 0xff00) != 0
-	//todo flags.AC
-	return res8
+func ana(v uint8) {
+	flags.AC = ((regs.A | v) & 0x08) != 0
+	regs.A &= v
+	flags_Z_S_P(regs.A)
+	flags.CY = false
 }
 
-func sub(a uint8, b uint8) uint8 {
-	res8 := a - b
-	flags_Z_S_P(res8)
-	//todo flags.AC
-	return res8
+func xra(v uint8) {
+	regs.A ^= v
+	flags_Z_S_P(regs.A)
+	flags.CY = false
+	flags.AC = false
 }
 
-func sub_CY(a uint8, b uint8) uint8 {
-	res16 := uint16(a) - uint16(b)
-	res8 := uint8(res16)
-	flags_Z_S_P(res8)
-	flags.CY = (res16 & 0xff00) != 0
-	//todo flags.AC
-	return res8
+func ora(v uint8) {
+	regs.A |= v
+	flags_Z_S_P(regs.A)
+	flags.CY = false
+	flags.AC = false
 }
 
-func sub3_CY(a uint8, b uint8, c uint8) uint8 {
-	res16 := uint16(a) - uint16(b) - uint16(c)
-	res8 := uint8(res16)
-	flags_Z_S_P(res8)
-	flags.CY = (res16 & 0xff00) != 0
-	//todo flags.AC
-	return res8
+func dad(v uint16) {
+	r := uint32(getHL()) + uint32(v)
+	setHL(uint16(r))
+	flags.CY = (r & 0x10000) != 0
 }
 
 func flags_Z_S_P(v uint8) {
@@ -2115,3 +2159,6 @@ func evenParity(v uint8) bool {
 	r := b7 + b6 + b5 + b4 + b3 + b2 + b1 + b0
 	return (r & 0x01) == 0
 }
+
+var half_carry_table = []int { 0, 0, 1, 0, 1, 0, 1, 1 }
+var sub_half_carry_table = []int { 0, 1, 1, 1, 0, 0, 0, 1 }
