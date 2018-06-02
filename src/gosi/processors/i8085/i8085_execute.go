@@ -1118,17 +1118,18 @@ func opDAD_SP() int {
 //   Cycles: 1  States: 4  Flags: Z,S,P,CY,AC
 
 func opDAA() int {
-	res16 := uint16(regs.A)
-	if (res16 & 0x0f) > 0x09 || flags.AC {
-		res16 += 0x06
+	carry := flags.CY
+	var v uint8 = 0
+	if flags.AC || (regs.A&0x0f > 9) {
+		v += 0x06
 	}
-	if (res16 & 0xf0) > 0x90 || flags.CY {
-		res16 += 0x60
+	if flags.CY || (regs.A>>4 > 9) || ((regs.A>>4 >= 9) && (regs.A&0x0f > 9)) {
+		v |= 0x60
+		carry = true
 	}
-	regs.A = uint8(res16)
-	flags_Z_S_P(regs.A)
-	flags.CY = res16 > 0x00ff
-	flags.AC = res16 > 0x000f
+	add(v)
+	flags.P = parity_table[regs.A] == 1
+	flags.CY = carry
 	return 1
 }
 
@@ -1942,7 +1943,7 @@ func opPOP_PSW() int {
 func opXTHL() int {
 	addr := regs.SP
 	r1 := regs.H
-	regs.H = memRead(addr+1)
+	regs.H = memRead(addr + 1)
 	memWrite(addr+1, r1)
 	r2 := regs.L
 	regs.L = memRead(addr)
@@ -2062,24 +2063,6 @@ func inr(v uint8) uint8 {
 	return v
 }
 
-func add(v uint8) {
-	res16 := uint16(regs.A) + uint16(v)
-	index := uint16((regs.A & 0x88) >> 1) | uint16((v & 0x88) >> 2) | ((res16 & 0x88) >> 3)
-	regs.A = uint8(res16)
-	flags_Z_S_P(regs.A)
-	flags.AC = half_carry_table[index & 0x7] == 1
-	flags.CY = (res16 & 0x0100) != 0
-}
-
-func adc(v uint8) {
-	res16 := uint16(regs.A) + uint16(v) + uint16(btoi(flags.CY))
-	index := uint16((regs.A & 0x88) >> 1) | uint16((v & 0x88) >> 2) | ((res16 & 0x88) >> 3)
-	regs.A = uint8(res16)
-	flags_Z_S_P(regs.A)
-	flags.AC = half_carry_table[index & 0x7] == 1
-	flags.CY = (res16 & 0x0100) != 0
-}
-
 func dcr(v uint8) uint8 {
 	v--
 	flags_Z_S_P(v)
@@ -2087,30 +2070,48 @@ func dcr(v uint8) uint8 {
 	return v
 }
 
-func sub(v uint8) {
-	res16 := uint16(regs.A) - uint16(v)
-	index := uint16((regs.A & 0x88) >> 1) | uint16((v & 0x88) >> 2) | ((res16 & 0x88) >> 3)
+func add(v uint8) {
+	res16 := uint16(regs.A) + uint16(v)
+	index := uint16((regs.A&0x88)>>1) | uint16((v&0x88)>>2) | ((res16 & 0x88) >> 3)
 	regs.A = uint8(res16)
 	flags_Z_S_P(regs.A)
-	flags.AC = sub_half_carry_table[index & 0x7] == 0
+	flags.AC = half_carry_table[index&0x7] == 1
+	flags.CY = (res16 & 0x0100) != 0
+}
+
+func adc(v uint8) {
+	res16 := uint16(regs.A) + uint16(v) + uint16(btoi(flags.CY))
+	index := uint16((regs.A&0x88)>>1) | uint16((v&0x88)>>2) | ((res16 & 0x88) >> 3)
+	regs.A = uint8(res16)
+	flags_Z_S_P(regs.A)
+	flags.AC = half_carry_table[index&0x7] == 1
+	flags.CY = (res16 & 0x0100) != 0
+}
+
+func sub(v uint8) {
+	res16 := uint16(regs.A) - uint16(v)
+	index := uint16((regs.A&0x88)>>1) | uint16((v&0x88)>>2) | ((res16 & 0x88) >> 3)
+	regs.A = uint8(res16)
+	flags_Z_S_P(regs.A)
+	flags.AC = sub_half_carry_table[index&0x7] == 0
 	flags.CY = (res16 & 0x0100) != 0
 }
 
 func sbb(v uint8) {
 	res16 := uint16(regs.A) - uint16(v) - uint16(btoi(flags.CY))
-	index := uint16((regs.A & 0x88) >> 1) | uint16((v & 0x88) >> 2) | ((res16 & 0x88) >> 3)
+	index := uint16((regs.A&0x88)>>1) | uint16((v&0x88)>>2) | ((res16 & 0x88) >> 3)
 	regs.A = uint8(res16)
 	flags_Z_S_P(regs.A)
-	flags.AC = sub_half_carry_table[index & 0x7] == 0
+	flags.AC = sub_half_carry_table[index&0x7] == 0
 	flags.CY = (res16 & 0x0100) != 0
 }
 
 func cmp(v uint8) {
 	res16 := uint16(regs.A) - uint16(v)
-	index := uint16((regs.A & 0x88) >> 1) | uint16((v & 0x88) >> 2) | ((res16 & 0x88) >> 3)
+	index := uint16((regs.A&0x88)>>1) | uint16((v&0x88)>>2) | ((res16 & 0x88) >> 3)
 	res8 := uint8(res16)
 	flags_Z_S_P(res8)
-	flags.AC = sub_half_carry_table[index & 0x7] == 0
+	flags.AC = sub_half_carry_table[index&0x7] == 0
 	flags.CY = (res16 & 0x0100) != 0
 }
 
@@ -2144,21 +2145,28 @@ func dad(v uint16) {
 func flags_Z_S_P(v uint8) {
 	flags.Z = v == 0
 	flags.S = (v & 0x80) != 0
-	flags.P = evenParity(v)
+	flags.P = parity_table[v] == 1
 }
 
-func evenParity(v uint8) bool {
-	b0 := btoi((v & 0x01) != 0)
-	b1 := btoi((v & 0x02) != 0)
-	b2 := btoi((v & 0x04) != 0)
-	b3 := btoi((v & 0x08) != 0)
-	b4 := btoi((v & 0x10) != 0)
-	b5 := btoi((v & 0x20) != 0)
-	b6 := btoi((v & 0x40) != 0)
-	b7 := btoi((v & 0x80) != 0)
-	r := b7 + b6 + b5 + b4 + b3 + b2 + b1 + b0
-	return (r & 0x01) == 0
+var parity_table = []int{
+	1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+	0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+	0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+	1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+	0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+	1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+	1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+	0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+	0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+	1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+	1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+	0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+	1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+	0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+	0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+	1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
 }
 
-var half_carry_table = []int { 0, 0, 1, 0, 1, 0, 1, 1 }
-var sub_half_carry_table = []int { 0, 1, 1, 1, 0, 0, 0, 1 }
+var half_carry_table = []int{0, 0, 1, 0, 1, 0, 1, 1}
+
+var sub_half_carry_table = []int{0, 1, 1, 1, 0, 0, 0, 1}
